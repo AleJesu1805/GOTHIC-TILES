@@ -63,11 +63,11 @@ const tileGreen = {
     x: windowWidth / 2 - anchTile * 2,
     y: windowHeight,
     color: "green",
-    speed: 1,
+    speed: 5,
     active: false,
     teclaPresionada: false,
-    min: 2,
-    max: 6,
+    min: 10,
+    max: 20,
     drawTile: function () {
         context.fillStyle = this.color;
         context.fillRect(this.x, this.y - altTile - 10, anchTile, altTile);
@@ -80,8 +80,8 @@ const tileGreen = {
 
                 
                 if (!this.teclaPresionada) {
-                    scoreGafo.gafoGreen += 1;
-                    document.getElementById("gafoGreen").textContent = scoreGafo.gafoGreen;
+                    scoreGafo[this.gafoScore] += 1;
+                    document.getElementById(this.id).textContent = scoreGafo[this.gafoScore];
                 }
 
                 this.teclaPresionada = false;
@@ -117,25 +117,28 @@ const tileYellow = {
 // ------------------- TILES QUE CAEN -----------------------
 
 
-
 var tileGreenCaida = {
     ...tileGreen,
-    // speed: Math.floor(Math.random() * (10 - 5 + 1) + 5),
+    id: "gafoGreenId",
+    gafoScore: "gafoGreen",
 }
 
 var tilePinkCaida = {
     ...tilePink,
-    // speed: Math.floor(Math.random() * (10 - 5 + 1) + 5),
+    id: "gafoPinkId",
+    gafoScore: "gafoPink",
 }
 
 var tileBlueCaida = {
     ...tileBlue,
-    // speed: Math.floor(Math.random() * (10 - 5 + 1) + 5),
+    id: "gafoBlueId",
+    gafoScore: "gafoBlue",
 }
 
 var tileYellowCaida = {
     ...tileYellow,
-    // speed: Math.floor(Math.random() * (10 - 5 + 1) + 5),
+    id: "gafoYellowId",
+    gafoScore: "gafoYellow",
 }
 
 // -------------- DETECCIÓN DE TECLAS PRESIONADAS ----------
@@ -150,40 +153,40 @@ document.addEventListener("keydown", (e) => {
         tileGreenCaida.teclaPresionada = true;
         if (tileGreenCaida.y <= windowHeight - altTile - 10) {
             scoreGafo.gafoGreen += 1;
-            document.getElementById("gafoGreen").textContent = scoreGafo.gafoGreen;
+            document.getElementById("gafoGreenId").textContent = scoreGafo.gafoGreen;
         } else if (tileGreenCaida.y >= windowHeight- altTile) {
             scoreFino.finoGreen += 1;
-            document.getElementById("finoGreen").textContent = scoreFino.finoGreen;
+            document.getElementById("finoGreenId").textContent = scoreFino.finoGreen;
         }
     }
 
     if (e.key === "b") {
         if (tilePinkCaida.y <= windowHeight - altTile - 10) {
             scoreGafo.gafoPink += 1;
-            document.getElementById("gafoPink").textContent = scoreGafo.gafoPink;
+            document.getElementById("gafoPinkId").textContent = scoreGafo.gafoPink;
         } else if (tilePinkCaida.y >= windowHeight - altTile) {
             scoreFino.finoPink += 1;
-            document.getElementById("finoPink").textContent = scoreFino.finoPink;
+            document.getElementById("finoPinkId").textContent = scoreFino.finoPink;
         }
     }
 
     if (e.key === "n") {
         if (tileBlueCaida.y <= windowHeight - altTile - 10) {
             scoreGafo.gafoBlue += 1;
-            document.getElementById("gafoBlue").textContent = scoreGafo.gafoBlue;
+            document.getElementById("gafoBlueId").textContent = scoreGafo.gafoBlue;
         } else if (tileBlueCaida.y >= windowHeight - altTile) {
             scoreFino.finoBlue += 1;
-            document.getElementById("finoBlue").textContent = scoreFino.finoBlue;
+            document.getElementById("finoBlueId").textContent = scoreFino.finoBlue;
         }
     }
 
     if (e.key === "m") {
         if (tileYellowCaida.y <= windowHeight - altTile - 10) {
             scoreGafo.gafoYellow += 1;
-            document.getElementById("gafoYellow").textContent = scoreGafo.gafoYellow;
+            document.getElementById("gafoYellowId").textContent = scoreGafo.gafoYellow;
         } else if (tileYellowCaida.y >= windowHeight - altTile) {
             scoreFino.finoYellow += 1;
-            document.getElementById("finoYellow").textContent = scoreFino.finoYellow;
+            document.getElementById("finoYellowId").textContent = scoreFino.finoYellow;
         }
     }
 });
@@ -229,7 +232,8 @@ function draw() {
 
     // initiTiles();
 
-    tileGreenCaida.active = true;
+    // tileBlueCaida.active = true;
+    // tileYellowCaida.active = true;
 
     requestAnimationFrame(draw);
 }

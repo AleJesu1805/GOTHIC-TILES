@@ -25,6 +25,7 @@ canvas {
     padding: 0px;
     margin: 0px;
     display: block;
+    touch-action: none;
 }
 
 span {
