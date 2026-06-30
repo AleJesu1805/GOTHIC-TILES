@@ -1,10 +1,11 @@
-html, body {
+html,
+body {
     padding: 0;
     margin: 0;
     width: 100dvw;
     height: 100dvh;
-    background: black;
-    font-family: monospace;
+    color: #6f0808;
+    font-family: Gothic;
 }
 
 * {
@@ -21,13 +22,17 @@ html, body {
 }
 
 canvas {
-    background: #823;
+    background: #060115;
     padding: 0px;
     margin: 0px;
     display: block;
     width: 100%;
     height: 100%;
     /* touch-action: none; */
+}
+
+ul p {
+    font-size: 30px;
 }
 
 span {
@@ -37,41 +42,29 @@ span {
     transform: translateX(-50%);
     user-select: none;
     font-size: 40px;
-    font-weight: 800;
 }
 
 ul {
     position: fixed;
     display: block;
-    top: 0;
-    z-index: 100;
+    top: 10px;
+    z-index: 10;
+    letter-spacing: 4px;
+    font-weight: 100;
 }
 
 li {
     text-decoration: none;
     padding: 10px;
-    font-size: 35px;
-    list-style-type: square;
+    font-size: 40px;
 }
 
-li::marker {
-    font-size: 45px;
+.gafuras li::marker {
+    content: url("Pentagrama.svg");
 }
 
-li:nth-child(2)::marker {
-    color: green;
-}
-
-li:nth-child(3)::marker {
-    color: pink;
-}
-
-li:nth-child(4)::marker {
-    color: blue;
-}
-
-li:nth-child(5)::marker {
-    color: yellow;
+.finuras li::marker {
+    content: url("CruzInvert.svg");
 }
 
 .gafuras {

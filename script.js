@@ -150,6 +150,10 @@ class Tile {
             };
         });
     }
+
+    pintarIcons() {
+        // let pentagrama = document.querySelector('object[data="Pentagrama.svg"]');
+    }
 }
 
 const tileGreen = new Tile(windowWidth / 2 - anchTile * 2, windowHeight - 10, "green", "gafoGreenId", "gafoGreen");
@@ -206,9 +210,11 @@ function draw() {
     tilesCayendo.forEach(tileCae => {
         tileCae.drawTile();
         tileCae.gravedad();
+        tileCae.pintarIcons();
     });
 
     // initiTiles();
+    // document.getElementById("pentacruz").setAttribute("fill", "blue");
 
     requestAnimationFrame(draw);
 }

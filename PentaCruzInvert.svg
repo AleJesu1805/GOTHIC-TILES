@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 226 346" preserveAspectRatio="xMidYMid meet">
+	<path d="M103,103 Q103,53 83,53 Q113,43 113,3 Q113,43 143,53 Q123,53 123,103 ZM103,103 Q113,283 83,283 Q113,295 113,343 Q113,295 143,283 Q113,283 123,103 ZM113,214 Q33,223 33,193 Q33,213 3,223 Q33,233 33,283 Q33,223 113,233 ZM113,214 Q193,223 193,193 Q193,213 223,223 Q193,233 193,283 Q193,223 113,233 Z" fill-rule="nonzero" style="fill:#000000;stroke:none;" />
+	<path d="M100,210 L126,210 L126,237 L100,237 Z" style="fill:#000000;stroke:none;" />
+	<path d="M171,123 C171,155 145,181 113,181 C81,181 55,155 55,123 C55,91 81,65 113,65 C145,65 171,91 171,123 ZM113,203 L53,73 L183,153 L43,153 L173,73 L113,203 Z" fill-rule="evenodd" style="fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:6;" />
+</svg>
