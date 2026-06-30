@@ -59,32 +59,40 @@ const altTile = 100;
 
 // ----------------- LAS TILES ---------------------------------
 
-const tileGreen = {
-    x: windowWidth / 2 - anchTile * 2,
-    y: windowHeight - 10,
-    color: "green",
-    speed: 5,
-    active: false,
-    teclaPresionada: false,
-    min: 2,
-    max: 4,
-    drawTile: function () {
+class Tile {
+    constructor(x, y, color, idGafo, idFino, gafoScore, finoScore, teclaCorrespondiente) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.speed = 5;
+        this.active = false;
+        this.teclaStart = false;
+        this.min = 3;
+        this.max = 10;
+        this.idGafo = idGafo;
+        this.idFino = idFino;
+        this.gafoScore = gafoScore;
+        this.finoScore = finoScore;
+        this.teclaCorrespondiente = teclaCorrespondiente;
+    }
+
+    drawTile() {
         context.fillStyle = this.color;
         context.fillRect(this.x, this.y - altTile, anchTile, altTile);
-    },
-    gravedad: function () {
+    }
+
+    gravedad() {
         if (this.active === true) {
             this.y += this.speed;
-            if (this.y > windowHeight) {
+            if (this.y > windowHeight - 10) {
                 this.y = 0;
 
-                
-                if (!this.teclaPresionada) {
+                if (!this.teclaStart) {
                     scoreGafo[this.gafoScore] += 1;
-                    document.getElementById(this.id).textContent = scoreGafo[this.gafoScore];
+                    document.getElementById(this.idGafo).textContent = scoreGafo[this.gafoScore];
                 }
 
-                this.teclaPresionada = false;
+                this.teclaStart = false;
 
                 // piano.currentTime = 0;
                 // piano.play();
@@ -92,104 +100,57 @@ const tileGreen = {
                 this.speed = Math.floor(Math.random() * (this.max - this.min + 1) + this.min);
             }
         }
-    },
-};
+    }
 
-const tilePink = {
-    ...tileGreen,
-    color: "pink",
-    x: windowWidth / 2 - anchTile,
-};
+    asociarTeclasPc() {
+        document.addEventListener("keydown", (e) => {
+            e.preventDefault();
+            Tile.teclaStart = true;
+            if (!cronometer) {
+                cronometer = true;
+                initCronometer();
+                tilesCayendo.forEach(t => t.active = true);
+            };
 
-const tileBlue = {
-    ...tileGreen,
-    color: "blue",
-    x: windowWidth / 2,
-};
+            tilesCayendo.forEach(t => t.active = true);
+            if(e.key === this.teclaCorrespondiente) {
+                if (this.y <= windowHeight - altTile - 10) {
+                    scoreGafo[this.gafoScore] += 1;
+                    document.getElementById(this.idGafo).textContent = scoreGafo[this.gafoScore];
+                } else if (this.y >= windowHeight - altTile) {
+                    scoreFino[this.finoScore] += 1;
+                    document.getElementById(this.idFino).textContent = scoreFino[this.finoScore];
+                }
+            }
+        });
+    }
+}
 
-const tileYellow = {
-    ...tileGreen,
-    color: "yellow",
-    x: windowWidth / 2 + anchTile,
-};
+const tileGreen = new Tile(windowWidth / 2 - anchTile * 2, windowHeight - 10, "green", "gafoGreenId", "gafoGreen");
+const tilePink = new Tile(windowWidth / 2 - anchTile, windowHeight - 10, "pink", "gafoPinkId", "gafoPink");
+const tileBlue = new Tile(windowWidth / 2, windowHeight - 10, "blue", "gafoBlueId", "gafoBlue");
+const tileYellow = new Tile(windowWidth / 2 + anchTile, windowHeight - 10, "yellow", "gafoYellowId", "gafoYellow");
 
 // ------------------- TILES QUE CAEN -----------------------
 
+const tileGreenCaida = new Tile(windowWidth / 2 - anchTile * 2, windowHeight - 10, "green", "gafoGreenId", "finoGreenId", "gafoGreen", "finoGreen", "v");
+const tilePinkCaida = new Tile(windowWidth / 2 - anchTile, windowHeight - 10, "pink", "gafoPinkId", "finoPinkId", "gafoPink","finoPink", "b");
+const tileBlueCaida = new Tile(windowWidth / 2, windowHeight - 10, "blue", "gafoBlueId", "finoBlueId", "gafoBlue", "finoBlue", "n");
+const tileYellowCaida = new Tile(windowWidth / 2 + anchTile, windowHeight - 10, "yellow", "gafoYellowId", "finoYellowId", "gafoYellow","finoYellow", "m");
 
-var tileGreenCaida = {
-    ...tileGreen,
-    id: "gafoGreenId",
-    gafoScore: "gafoGreen",
-}
+const tilesForDraw = [
+    tileGreen,
+    tilePink,
+    tileBlue,
+    tileYellow,
+];
 
-var tilePinkCaida = {
-    ...tilePink,
-    id: "gafoPinkId",
-    gafoScore: "gafoPink",
-}
-
-var tileBlueCaida = {
-    ...tileBlue,
-    id: "gafoBlueId",
-    gafoScore: "gafoBlue",
-}
-
-var tileYellowCaida = {
-    ...tileYellow,
-    id: "gafoYellowId",
-    gafoScore: "gafoYellow",
-}
-
-// -------------- DETECCIÓN DE TECLAS PRESIONADAS ----------
-
-document.addEventListener("keydown", (e) => {
-    e.preventDefault();
-    if (!cronometer) {
-        cronometer = true;
-        initCronometer();
-        tilesCayendo.forEach(t => t.active = true);
-    }
-    if (e.key === "v") {
-        tileGreenCaida.teclaPresionada = true;
-        if (tileGreenCaida.y <= windowHeight - altTile - 10) {
-            scoreGafo.gafoGreen += 1;
-            document.getElementById("gafoGreenId").textContent = scoreGafo.gafoGreen;
-        } else if (tileGreenCaida.y >= windowHeight- altTile) {
-            scoreFino.finoGreen += 1;
-            document.getElementById("finoGreenId").textContent = scoreFino.finoGreen;
-        }
-    }
-
-    if (e.key === "b") {
-        if (tilePinkCaida.y <= windowHeight - altTile - 10) {
-            scoreGafo.gafoPink += 1;
-            document.getElementById("gafoPinkId").textContent = scoreGafo.gafoPink;
-        } else if (tilePinkCaida.y >= windowHeight - altTile) {
-            scoreFino.finoPink += 1;
-            document.getElementById("finoPinkId").textContent = scoreFino.finoPink;
-        }
-    }
-
-    if (e.key === "n") {
-        if (tileBlueCaida.y <= windowHeight - altTile - 10) {
-            scoreGafo.gafoBlue += 1;
-            document.getElementById("gafoBlueId").textContent = scoreGafo.gafoBlue;
-        } else if (tileBlueCaida.y >= windowHeight - altTile) {
-            scoreFino.finoBlue += 1;
-            document.getElementById("finoBlueId").textContent = scoreFino.finoBlue;
-        }
-    }
-
-    if (e.key === "m") {
-        if (tileYellowCaida.y <= windowHeight - altTile - 10) {
-            scoreGafo.gafoYellow += 1;
-            document.getElementById("gafoYellowId").textContent = scoreGafo.gafoYellow;
-        } else if (tileYellowCaida.y >= windowHeight - altTile) {
-            scoreFino.finoYellow += 1;
-            document.getElementById("finoYellowId").textContent = scoreFino.finoYellow;
-        }
-    }
-});
+const tilesCayendo = [
+    tileGreenCaida,
+    tilePinkCaida,
+    tileBlueCaida,
+    tileYellowCaida,
+];
 
 // ---------------- SOPORTE PARA MOVILES ----------------------
 
@@ -209,7 +170,7 @@ canvas.addEventListener("touchstart", (e) => {
         if (tileGreenCaida.y <= windowHeight - altTile - 10) {
             scoreGafo.gafoGreen += 1;
             document.getElementById("gafoGreenId").textContent = scoreGafo.gafoGreen;
-        } else if (tileGreenCaida.y >= windowHeight- altTile) {
+        } else if (tileGreenCaida.y >= windowHeight - altTile) {
             scoreFino.finoGreen += 1;
             document.getElementById("finoGreenId").textContent = scoreFino.finoGreen;
         }
@@ -222,7 +183,7 @@ canvas.addEventListener("touchstart", (e) => {
         if (tilePinkCaida.y <= windowHeight - altTile - 10) {
             scoreGafo.gafoPink += 1;
             document.getElementById("gafoPinkId").textContent = scoreGafo.gafoPink;
-        } else if (tilePinkCaida.y >= windowHeight- altTile) {
+        } else if (tilePinkCaida.y >= windowHeight - altTile) {
             scoreFino.finoPink += 1;
             document.getElementById("finoPinkId").textContent = scoreFino.finoPink;
         }
@@ -255,8 +216,6 @@ canvas.addEventListener("touchstart", (e) => {
     }
 });
 
-// ----------------- BUCLE INFINITO ----------------------
-
 // let delay = 3;
 
 // function initiTiles() {
@@ -265,30 +224,22 @@ canvas.addEventListener("touchstart", (e) => {
 //         }
 // }
 
-const tilesComun = [
-    tileGreen,
-    tilePink,
-    tileBlue,
-    tileYellow,
-];
+// ----- BUCLE INFINITO Y LA INICIALIZACION DE LA DETECCION DE LOS EVENTOS ----------
 
-const tilesCayendo = [
-    tileGreenCaida,
-    tilePinkCaida,
-    tileBlueCaida,
-    tileYellowCaida,
-];
+tilesCayendo.forEach(tileCae => {
+        tileCae.asociarTeclasPc();
+});
 
 function draw() {
-    // DIBUJAR CANVAS -------------------------
+    // DIBUJAR CANVAS ----------------------------
     resizeCanvas();
 
     // DIBUJAR TILES -----------------------------
-    tilesComun.forEach(tile => {
+    tilesForDraw.forEach(tile => {
         tile.drawTile();
     });
 
-    // // DIBUJAR TILES CAYENDO ----------------------
+    // DIBUJAR TILES CAYENDO ---------------------
     tilesCayendo.forEach(tileCae => {
         tileCae.drawTile();
         tileCae.gravedad();
