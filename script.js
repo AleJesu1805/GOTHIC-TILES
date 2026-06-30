@@ -102,7 +102,7 @@ class Tile {
         }
     }
 
-    asociarTeclasPc() {
+    botonesPc() {
         document.addEventListener("keydown", (e) => {
             e.preventDefault();
             Tile.teclaStart = true;
@@ -122,6 +122,32 @@ class Tile {
                     document.getElementById(this.idFino).textContent = scoreFino[this.finoScore];
                 }
             }
+        });
+    }
+
+    botonesCel() {
+        document.addEventListener("touchstart", (e) => {
+            // e.preventDefault();
+            Tile.teclaStart = true;
+            if (!cronometer) {
+                cronometer = true;
+                initCronometer();
+                tilesCayendo.forEach(t => t.active = true);
+            };
+
+            if (e.changedTouches[0].clientY >= this.y - altTile &&
+                e.changedTouches[0].clientX >= this.x &&
+                e.changedTouches[0].clientX <= this.x + anchTile
+            ) {
+                this.teclaStart = true;
+                if (this.y <= windowHeight - altTile - 10) {
+                    scoreGafo[this.gafoScore] += 1;
+                    document.getElementById(this.idGafo).textContent = scoreGafo[this.gafoScore];
+                } else if (this.y >= windowHeight - altTile) {
+                    scoreFino[this.finoScore] += 1;
+                    document.getElementById(this.idFino).textContent = scoreFino[this.finoScore];
+                }
+            };
         });
     }
 }
@@ -152,70 +178,6 @@ const tilesCayendo = [
     tileYellowCaida,
 ];
 
-// ---------------- SOPORTE PARA MOVILES ----------------------
-
-canvas.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    if (!cronometer) {
-        cronometer = true;
-        initCronometer();
-        tilesCayendo.forEach(t => t.active = true);
-    };
-
-    if (e.changedTouches[0].clientY >= tileGreen.y - altTile &&
-        e.changedTouches[0].clientX >= tileGreen.x &&
-        e.changedTouches[0].clientX <= tileGreen.x + anchTile
-    ) {
-        tileGreenCaida.teclaPresionada = true;
-        if (tileGreenCaida.y <= windowHeight - altTile - 10) {
-            scoreGafo.gafoGreen += 1;
-            document.getElementById("gafoGreenId").textContent = scoreGafo.gafoGreen;
-        } else if (tileGreenCaida.y >= windowHeight - altTile) {
-            scoreFino.finoGreen += 1;
-            document.getElementById("finoGreenId").textContent = scoreFino.finoGreen;
-        }
-    };
-
-    if (e.changedTouches[0].clientY >= tilePink.y - altTile &&
-        e.changedTouches[0].clientX >= tilePink.x &&
-        e.changedTouches[0].clientX <= tilePink.x + anchTile
-    ) {
-        if (tilePinkCaida.y <= windowHeight - altTile - 10) {
-            scoreGafo.gafoPink += 1;
-            document.getElementById("gafoPinkId").textContent = scoreGafo.gafoPink;
-        } else if (tilePinkCaida.y >= windowHeight - altTile) {
-            scoreFino.finoPink += 1;
-            document.getElementById("finoPinkId").textContent = scoreFino.finoPink;
-        }
-    };
-
-    if (e.changedTouches[0].clientY >= tileBlue.y - altTile &&
-        e.changedTouches[0].clientX >= tileBlue.x &&
-        e.changedTouches[0].clientX <= tileBlue.x + anchTile
-    ) {
-        if (tileBlueCaida.y <= windowHeight - altTile - 10) {
-            scoreGafo.gafoBlue += 1;
-            document.getElementById("gafoBlueId").textContent = scoreGafo.gafoBlue;
-        } else if (tileBlueCaida.y >= windowHeight - altTile) {
-            scoreFino.finoBlue += 1;
-            document.getElementById("finoBlueId").textContent = scoreFino.finoBlue;
-        }
-    }
-
-    if (e.changedTouches[0].clientY >= tileYellow.y - altTile &&
-        e.changedTouches[0].clientX >= tileYellow.x &&
-        e.changedTouches[0].clientX <= tileYellow.x + anchTile
-    ) {
-        if (tileYellowCaida.y <= windowHeight - altTile - 10) {
-            scoreGafo.gafoYellow += 1;
-            document.getElementById("gafoYellowId").textContent = scoreGafo.gafoYellow;
-        } else if (tileYellowCaida.y >= windowHeight - altTile) {
-            scoreFino.finoYellow += 1;
-            document.getElementById("finoYellowId").textContent = scoreFino.finoYellow;
-        }
-    }
-});
-
 // let delay = 3;
 
 // function initiTiles() {
@@ -227,7 +189,8 @@ canvas.addEventListener("touchstart", (e) => {
 // ----- BUCLE INFINITO Y LA INICIALIZACION DE LA DETECCION DE LOS EVENTOS ----------
 
 tilesCayendo.forEach(tileCae => {
-        tileCae.asociarTeclasPc();
+        tileCae.botonesPc();
+        tileCae.botonesCel();
 });
 
 function draw() {
