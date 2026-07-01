@@ -3,7 +3,12 @@ const context = canvas.getContext("2d");
 
 const span = document.querySelector("span");
 
-const piano = new Audio('music/piano1.ogg');
+// ------- PIANO DE ACIERTOS -----------------
+
+const pianoFinoGreen = new Audio('music/piano1.ogg');
+const pianoFinoPink = new Audio('music/piano2.mp3');
+const pianoFinoBlue = new Audio('music/piano3.mp3');
+const pianoFinoYellow = new Audio('music/piano4.mp3');
 
 // ---------- PUNTAJES ---------------
 
@@ -60,7 +65,7 @@ const altTile = 100;
 // ----------------- LAS TILES ---------------------------------
 
 class Tile {
-    constructor(x, y, color, idGafo, idFino, gafoScore, finoScore, teclaCorrespondiente) {
+    constructor(x, y, color, idGafo, idFino, gafoScore, finoScore, teclaCorrespondiente, piano) {
         this.x = x;
         this.y = y;
         this.color = color;
@@ -74,9 +79,12 @@ class Tile {
         this.gafoScore = gafoScore;
         this.finoScore = finoScore;
         this.teclaCorrespondiente = teclaCorrespondiente;
+        this.piano = piano;
     }
 
     drawTile() {
+        let img = new Image();
+        img.src = "img/a852e4ea73641fccb3f2021486bc563f (1).jpg";
         context.fillStyle = this.color;
         context.fillRect(this.x, this.y - altTile, anchTile, altTile);
     }
@@ -93,9 +101,6 @@ class Tile {
                 }
 
                 this.teclaStart = false;
-
-                // piano.currentTime = 0;
-                // piano.play();
 
                 this.speed = Math.floor(Math.random() * (this.max - this.min + 1) + this.min);
             }
@@ -120,6 +125,8 @@ class Tile {
                 } else if (this.y >= windowHeight - altTile) {
                     scoreFino[this.finoScore] += 1;
                     document.getElementById(this.idFino).textContent = scoreFino[this.finoScore];
+                    this.piano.currentTime = 0;
+                    this.piano.play();
                 }
             }
         });
@@ -145,6 +152,8 @@ class Tile {
                 } else if (tileCae.y >= windowHeight - altTile) {
                     scoreFino[tileCae.finoScore] += 1;
                     document.getElementById(tileCae.idFino).textContent = scoreFino[tileCae.finoScore];
+                    this.piano.currentTime = 0;
+                    this.piano.play();
                 }
             };
         });
@@ -156,26 +165,40 @@ const tileGreen = new Tile(windowWidth / 2 - anchTile * 2,
     "green", 
     "gafoGreenId", 
     "finoGreenId", 
-    "gafoGreen");
+    "gafoGreen",
+    "finoGreen",      // finoScore correcto
+    null,             // teclaCorrespondiente (no aplica acá, pero hay que dejar el slot)
+    pianoFinoGreen);  // piano en la posición 9
+
 const tilePink = new Tile(windowWidth / 2 - anchTile,
     windowHeight - 10, 
     "pink", 
     "gafoPinkId", 
     "finoPinkId", 
-    "gafoPink");
+    "gafoPink",
+    "finoPink",
+    null,
+    pianoFinoPink);
+
 const tileBlue = new Tile(windowWidth / 2, 
     windowHeight - 10, 
     "blue", 
     "gafoBlueId", 
     "finoBlueId",
-    "gafoBlue");
+    "gafoBlue",
+    "finoBlue",
+    null,
+    pianoFinoBlue);
+
 const tileYellow = new Tile(windowWidth / 2 + anchTile, 
     windowHeight - 10, 
     "yellow", 
     "gafoYellowId",
     "finoYellowId", 
     "gafoYellow",
-    "finoYellow");
+    "finoYellow",
+    null,
+    pianoFinoYellow);
 
 // ------------------- TILES QUE CAEN -----------------------
 
@@ -186,7 +209,9 @@ const tileGreenCaida = new Tile(windowWidth / 2 - anchTile * 2,
     "finoGreenId", 
     "gafoGreen", 
     "finoGreen", 
-    "v");
+    "v",
+    pianoFinoGreen); // ✅
+
 const tilePinkCaida = new Tile(windowWidth / 2 - anchTile,
     windowHeight - 10, 
     "pink", 
@@ -194,7 +219,9 @@ const tilePinkCaida = new Tile(windowWidth / 2 - anchTile,
     "finoPinkId",
     "gafoPink",
     "finoPink", 
-    "b");
+    "b",
+    pianoFinoPink); // ✅
+
 const tileBlueCaida = new Tile(windowWidth / 2,
     windowHeight - 10, 
     "blue", 
@@ -202,7 +229,9 @@ const tileBlueCaida = new Tile(windowWidth / 2,
     "finoBlueId",
     "gafoBlue", 
     "finoBlue",
-    "n");
+    "n",
+    pianoFinoBlue); // ✅
+
 const tileYellowCaida = new Tile(windowWidth / 2 + anchTile,
     windowHeight - 10, 
     "yellow", 
@@ -210,7 +239,8 @@ const tileYellowCaida = new Tile(windowWidth / 2 + anchTile,
     "finoYellowId",
     "gafoYellow",
     "finoYellow",
-    "m");
+    "m",
+    pianoFinoYellow); // ✅
 
 
 const tilesForDraw = [
