@@ -105,7 +105,7 @@ class Tile {
     botonesPc() {
         document.addEventListener("keydown", (e) => {
             e.preventDefault();
-            Tile.teclaStart = true;
+            this.teclaStart = true;
             if (!cronometer) {
                 cronometer = true;
                 initCronometer();
@@ -127,8 +127,6 @@ class Tile {
 
     botonesCel() {
         document.addEventListener("touchstart", (e) => {
-            // e.preventDefault();
-            Tile.teclaStart = true;
             if (!cronometer) {
                 cronometer = true;
                 initCronometer();
@@ -139,34 +137,81 @@ class Tile {
                 e.changedTouches[0].clientX >= this.x &&
                 e.changedTouches[0].clientX <= this.x + anchTile
             ) {
-                this.teclaStart = true;
-                if (this.y <= windowHeight - altTile - 10) {
-                    scoreGafo[this.gafoScore] += 1;
-                    document.getElementById(this.idGafo).textContent = scoreGafo[this.gafoScore];
-                } else if (this.y >= windowHeight - altTile) {
-                    scoreFino[this.finoScore] += 1;
-                    document.getElementById(this.idFino).textContent = scoreFino[this.finoScore];
+                const tileCae = tilesCayendo.find(t => t.color === this.color);
+                tileCae.teclaStart = true;
+                if (tileCae.y <= windowHeight - altTile - 10) {
+                    scoreGafo[tileCae.gafoScore] += 1;
+                    document.getElementById(tileCae.idGafo).textContent = scoreGafo[tileCae.gafoScore];
+                } else if (tileCae.y >= windowHeight - altTile) {
+                    scoreFino[tileCae.finoScore] += 1;
+                    document.getElementById(tileCae.idFino).textContent = scoreFino[tileCae.finoScore];
                 }
             };
         });
     }
-
-    pintarIcons() {
-        // let pentagrama = document.querySelector('object[data="Pentagrama.svg"]');
-    }
 }
 
-const tileGreen = new Tile(windowWidth / 2 - anchTile * 2, windowHeight - 10, "green", "gafoGreenId", "gafoGreen");
-const tilePink = new Tile(windowWidth / 2 - anchTile, windowHeight - 10, "pink", "gafoPinkId", "gafoPink");
-const tileBlue = new Tile(windowWidth / 2, windowHeight - 10, "blue", "gafoBlueId", "gafoBlue");
-const tileYellow = new Tile(windowWidth / 2 + anchTile, windowHeight - 10, "yellow", "gafoYellowId", "gafoYellow");
+const tileGreen = new Tile(windowWidth / 2 - anchTile * 2, 
+    windowHeight - 10, 
+    "green", 
+    "gafoGreenId", 
+    "finoGreenId", 
+    "gafoGreen");
+const tilePink = new Tile(windowWidth / 2 - anchTile,
+    windowHeight - 10, 
+    "pink", 
+    "gafoPinkId", 
+    "finoPinkId", 
+    "gafoPink");
+const tileBlue = new Tile(windowWidth / 2, 
+    windowHeight - 10, 
+    "blue", 
+    "gafoBlueId", 
+    "finoBlueId",
+    "gafoBlue");
+const tileYellow = new Tile(windowWidth / 2 + anchTile, 
+    windowHeight - 10, 
+    "yellow", 
+    "gafoYellowId",
+    "finoYellowId", 
+    "gafoYellow",
+    "finoYellow");
 
 // ------------------- TILES QUE CAEN -----------------------
 
-const tileGreenCaida = new Tile(windowWidth / 2 - anchTile * 2, windowHeight - 10, "green", "gafoGreenId", "finoGreenId", "gafoGreen", "finoGreen", "v");
-const tilePinkCaida = new Tile(windowWidth / 2 - anchTile, windowHeight - 10, "pink", "gafoPinkId", "finoPinkId", "gafoPink","finoPink", "b");
-const tileBlueCaida = new Tile(windowWidth / 2, windowHeight - 10, "blue", "gafoBlueId", "finoBlueId", "gafoBlue", "finoBlue", "n");
-const tileYellowCaida = new Tile(windowWidth / 2 + anchTile, windowHeight - 10, "yellow", "gafoYellowId", "finoYellowId", "gafoYellow","finoYellow", "m");
+const tileGreenCaida = new Tile(windowWidth / 2 - anchTile * 2,
+    windowHeight - 10, 
+    "green", 
+    "gafoGreenId", 
+    "finoGreenId", 
+    "gafoGreen", 
+    "finoGreen", 
+    "v");
+const tilePinkCaida = new Tile(windowWidth / 2 - anchTile,
+    windowHeight - 10, 
+    "pink", 
+    "gafoPinkId",
+    "finoPinkId",
+    "gafoPink",
+    "finoPink", 
+    "b");
+const tileBlueCaida = new Tile(windowWidth / 2,
+    windowHeight - 10, 
+    "blue", 
+    "gafoBlueId",
+    "finoBlueId",
+    "gafoBlue", 
+    "finoBlue",
+    "n");
+const tileYellowCaida = new Tile(windowWidth / 2 + anchTile,
+    windowHeight - 10, 
+    "yellow", 
+    "gafoYellowId", 
+    "finoYellowId",
+    "gafoYellow",
+    "finoYellow",
+    "m");
+
 
 const tilesForDraw = [
     tileGreen,
@@ -194,7 +239,11 @@ const tilesCayendo = [
 
 tilesCayendo.forEach(tileCae => {
         tileCae.botonesPc();
-        tileCae.botonesCel();
+        
+});
+
+tilesForDraw.forEach(tile => {
+    tile.botonesCel();
 });
 
 function draw() {
@@ -210,7 +259,7 @@ function draw() {
     tilesCayendo.forEach(tileCae => {
         tileCae.drawTile();
         tileCae.gravedad();
-        tileCae.pintarIcons();
+        // tileCae.pintarIcons();
     });
 
     // initiTiles();
