@@ -3,10 +3,12 @@ const context = canvas.getContext("2d");
 
 const span = document.querySelector("span");
 
+const imgFondo = document.querySelector(".fondo");
+
 // ------- PIANO DE ACIERTOS -----------------
 
 const pianoFinoGreen = new Audio('music/piano1.ogg');
-const pianoFinoPink = new Audio('music/piano2.mp3');
+const pianoFinoPink = new Audio('music/piano5.mp3');
 const pianoFinoBlue = new Audio('music/piano3.mp3');
 const pianoFinoYellow = new Audio('music/piano4.mp3');
 
@@ -60,7 +62,7 @@ window.addEventListener("resize", resizeCanvas);
 // ------------------ TAMAÑO DE LAS TILES ------------------------
 
 const anchTile = 70;
-const altTile = 100;
+const altTile = 120;
 
 // ----------------- LAS TILES ---------------------------------
 
@@ -84,15 +86,16 @@ class Tile {
 
     drawTile() {
         let img = new Image();
-        img.src = "img/a852e4ea73641fccb3f2021486bc563f (1).jpg";
-        context.fillStyle = this.color;
+        img.src = "img/calaca.jpeg";
+        context.fillStyle = `${this.color}aa`;
+        // context.drawImage(img, this.x, this.y - altTile, anchTile, altTile);
         context.fillRect(this.x, this.y - altTile, anchTile, altTile);
     }
 
     gravedad() {
         if (this.active === true) {
             this.y += this.speed;
-            if (this.y > windowHeight - 10) {
+            if (this.y > windowHeight) {
                 this.y = 0;
 
                 if (!this.teclaStart) {
@@ -119,9 +122,13 @@ class Tile {
 
             tilesCayendo.forEach(t => t.active = true);
             if(e.key === this.teclaCorrespondiente) {
-                if (this.y <= windowHeight - altTile - 10) {
+                if (this.y <= windowHeight - altTile) {
                     scoreGafo[this.gafoScore] += 1;
                     document.getElementById(this.idGafo).textContent = scoreGafo[this.gafoScore];
+                    imgFondo.classList.add("fondoSaturado");
+                    setTimeout(() => {
+                        imgFondo.classList.remove("fondoSaturado");
+                    }, 500)
                 } else if (this.y >= windowHeight - altTile) {
                     scoreFino[this.finoScore] += 1;
                     document.getElementById(this.idFino).textContent = scoreFino[this.finoScore];
@@ -149,6 +156,10 @@ class Tile {
                 if (tileCae.y <= windowHeight - altTile - 10) {
                     scoreGafo[tileCae.gafoScore] += 1;
                     document.getElementById(tileCae.idGafo).textContent = scoreGafo[tileCae.gafoScore];
+                    imgFondo.classList.add("fondoSaturado");
+                    setTimeout(() => {
+                        imgFondo.classList.remove("fondoSaturado");
+                    }, 500);
                 } else if (tileCae.y >= windowHeight - altTile) {
                     scoreFino[tileCae.finoScore] += 1;
                     document.getElementById(tileCae.idFino).textContent = scoreFino[tileCae.finoScore];
@@ -162,17 +173,17 @@ class Tile {
 
 const tileGreen = new Tile(windowWidth / 2 - anchTile * 2, 
     windowHeight - 10, 
-    "green", 
+    "#024211", 
     "gafoGreenId", 
     "finoGreenId", 
     "gafoGreen",
-    "finoGreen",      // finoScore correcto
-    null,             // teclaCorrespondiente (no aplica acá, pero hay que dejar el slot)
-    pianoFinoGreen);  // piano en la posición 9
+    "finoGreen", 
+    null,           
+    pianoFinoGreen); 
 
 const tilePink = new Tile(windowWidth / 2 - anchTile,
     windowHeight - 10, 
-    "pink", 
+    "#8433a6",
     "gafoPinkId", 
     "finoPinkId", 
     "gafoPink",
@@ -182,7 +193,7 @@ const tilePink = new Tile(windowWidth / 2 - anchTile,
 
 const tileBlue = new Tile(windowWidth / 2, 
     windowHeight - 10, 
-    "blue", 
+    "#061944", 
     "gafoBlueId", 
     "finoBlueId",
     "gafoBlue",
@@ -192,7 +203,7 @@ const tileBlue = new Tile(windowWidth / 2,
 
 const tileYellow = new Tile(windowWidth / 2 + anchTile, 
     windowHeight - 10, 
-    "yellow", 
+    "#576204", 
     "gafoYellowId",
     "finoYellowId", 
     "gafoYellow",
@@ -204,7 +215,7 @@ const tileYellow = new Tile(windowWidth / 2 + anchTile,
 
 const tileGreenCaida = new Tile(windowWidth / 2 - anchTile * 2,
     windowHeight - 10, 
-    "green", 
+    "#024211", 
     "gafoGreenId", 
     "finoGreenId", 
     "gafoGreen", 
@@ -214,7 +225,7 @@ const tileGreenCaida = new Tile(windowWidth / 2 - anchTile * 2,
 
 const tilePinkCaida = new Tile(windowWidth / 2 - anchTile,
     windowHeight - 10, 
-    "pink", 
+    "#8433a6", 
     "gafoPinkId",
     "finoPinkId",
     "gafoPink",
@@ -224,7 +235,7 @@ const tilePinkCaida = new Tile(windowWidth / 2 - anchTile,
 
 const tileBlueCaida = new Tile(windowWidth / 2,
     windowHeight - 10, 
-    "blue", 
+    "#061944", 
     "gafoBlueId",
     "finoBlueId",
     "gafoBlue", 
@@ -234,7 +245,7 @@ const tileBlueCaida = new Tile(windowWidth / 2,
 
 const tileYellowCaida = new Tile(windowWidth / 2 + anchTile,
     windowHeight - 10, 
-    "yellow", 
+    "#576204", 
     "gafoYellowId", 
     "finoYellowId",
     "gafoYellow",
