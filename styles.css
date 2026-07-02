@@ -6,12 +6,12 @@ body {
     height: 100dvh;
     color: #6f0808;
     font-family: Gothic;
+    padding: 0;
+    margin: 0;
 }
 
 * {
     box-sizing: border-box;
-    padding: 0;
-    margin: 0;
     user-select: none;
 }
 
@@ -26,19 +26,20 @@ body {
     background-image: url(img/94890f50bb723a4f323fcd51fc8156b3.jpg);
     background-position: center;
     background-size: contain;
-    top: 50%;
-    left: 50%;
-    width: 200dvw;
-    height: 200dvh;
-    transform: translate(-50%, -50%) scale(.55);
-    filter: brightness(40%) contrast(130%) blur(1px)  saturate(0);
-    animation: move-slow 1s alternate infinite ease;
+    top: 0%;
+    left: 0%;
+    width: 100dvw;
+    height: 100dvh;
+    transform: scale(1.5);
+    filter: brightness(40%) contrast(130%) saturate(0);
+    animation: move-slow 1.5s alternate infinite ease;
     transition: filter .2s, height .2s;
 }
 
 .fondoSaturado {
-    filter: brightness(40%) contrast(130%) saturate(7) blur(0px);
-    height: 250dvh;
+    filter: brightness(40%) contrast(130%) saturate(7);
+    height: 120dvh;
+    width: 120dvw;
     transition: filter .2s, height .2s;
 }
 
@@ -59,12 +60,18 @@ ul p {
 
 span {
     position: fixed;
+    width: 100dvw;
+    text-align: center;
     top: 0%;
     margin: 10px 0px;
-    left: 50%;
-    transform: translateX(-50%);
     user-select: none;
     font-size: 60px;
+}
+
+.start {
+    backdrop-filter: brightness(60%);
+    height: 100dvh;
+    z-index: 100;
 }
 
 ul {
@@ -125,7 +132,10 @@ li {
 }
 
 @keyframes move-slow {
+    50% {
+        rotate: -5deg;
+    }
     100% {
-        rotate: -1deg;
+        rotate: 5deg;
     }
 }

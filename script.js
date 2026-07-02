@@ -5,6 +5,9 @@ const span = document.querySelector("span");
 
 const imgFondo = document.querySelector(".fondo");
 
+const img = new Image();
+img.src = "img/calaca.jpeg";
+
 // ------- PIANO DE ACIERTOS -----------------
 
 const pianoFinoGreen = new Audio('music/piano1.ogg');
@@ -57,12 +60,17 @@ function resizeCanvas() {
     canvas.width = windowWidth;
 }
 
-window.addEventListener("resize", resizeCanvas);
+// window.addEventListener("resize", resizeCanvas);
 
-// ------------------ TAMAÑO DE LAS TILES ------------------------
+// ------------------ TAMAÑO DE LAS TILES Y COLORES ------------------------
 
-const anchTile = 70;
-const altTile = 120;
+const colorGreen = "#012e11";
+const colorPink = "#2e0126";
+const colorBlue = "#010b2e";
+const colorYellow = "#2e2c01";
+
+const anchTile = 80;
+const altTile = 140;
 
 // ----------------- LAS TILES ---------------------------------
 
@@ -85,9 +93,7 @@ class Tile {
     }
 
     drawTile() {
-        let img = new Image();
-        img.src = "img/calaca.jpeg";
-        context.fillStyle = `${this.color}aa`;
+        context.fillStyle = this.color;
         // context.drawImage(img, this.x, this.y - altTile, anchTile, altTile);
         context.fillRect(this.x, this.y - altTile, anchTile, altTile);
     }
@@ -114,6 +120,8 @@ class Tile {
         document.addEventListener("keydown", (e) => {
             e.preventDefault();
             this.teclaStart = true;
+            span.textContent = 0;
+            span.classList.remove("start");
             if (!cronometer) {
                 cronometer = true;
                 initCronometer();
@@ -141,6 +149,8 @@ class Tile {
 
     botonesCel() {
         document.addEventListener("touchstart", (e) => {
+            span.textContent = 0;
+            span.classList.remove("start");
             if (!cronometer) {
                 cronometer = true;
                 initCronometer();
@@ -173,7 +183,7 @@ class Tile {
 
 const tileGreen = new Tile(windowWidth / 2 - anchTile * 2, 
     windowHeight - 10, 
-    "#024211", 
+    colorGreen, 
     "gafoGreenId", 
     "finoGreenId", 
     "gafoGreen",
@@ -183,7 +193,7 @@ const tileGreen = new Tile(windowWidth / 2 - anchTile * 2,
 
 const tilePink = new Tile(windowWidth / 2 - anchTile,
     windowHeight - 10, 
-    "#8433a6",
+    colorPink,
     "gafoPinkId", 
     "finoPinkId", 
     "gafoPink",
@@ -193,7 +203,7 @@ const tilePink = new Tile(windowWidth / 2 - anchTile,
 
 const tileBlue = new Tile(windowWidth / 2, 
     windowHeight - 10, 
-    "#061944", 
+    colorBlue, 
     "gafoBlueId", 
     "finoBlueId",
     "gafoBlue",
@@ -203,7 +213,7 @@ const tileBlue = new Tile(windowWidth / 2,
 
 const tileYellow = new Tile(windowWidth / 2 + anchTile, 
     windowHeight - 10, 
-    "#576204", 
+    colorYellow, 
     "gafoYellowId",
     "finoYellowId", 
     "gafoYellow",
@@ -215,43 +225,43 @@ const tileYellow = new Tile(windowWidth / 2 + anchTile,
 
 const tileGreenCaida = new Tile(windowWidth / 2 - anchTile * 2,
     windowHeight - 10, 
-    "#024211", 
+    colorGreen, 
     "gafoGreenId", 
     "finoGreenId", 
     "gafoGreen", 
     "finoGreen", 
     "v",
-    pianoFinoGreen); // ✅
+    pianoFinoGreen); 
 
 const tilePinkCaida = new Tile(windowWidth / 2 - anchTile,
     windowHeight - 10, 
-    "#8433a6", 
+    colorPink, 
     "gafoPinkId",
     "finoPinkId",
     "gafoPink",
     "finoPink", 
     "b",
-    pianoFinoPink); // ✅
+    pianoFinoPink); 
 
 const tileBlueCaida = new Tile(windowWidth / 2,
     windowHeight - 10, 
-    "#061944", 
+    colorBlue, 
     "gafoBlueId",
     "finoBlueId",
     "gafoBlue", 
     "finoBlue",
     "n",
-    pianoFinoBlue); // ✅
+    pianoFinoBlue); 
 
 const tileYellowCaida = new Tile(windowWidth / 2 + anchTile,
     windowHeight - 10, 
-    "#576204", 
+    colorYellow, 
     "gafoYellowId", 
     "finoYellowId",
     "gafoYellow",
     "finoYellow",
     "m",
-    pianoFinoYellow); // ✅
+    pianoFinoYellow); 
 
 
 const tilesForDraw = [
