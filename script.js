@@ -82,8 +82,8 @@ class Tile {
         this.speed = 5;
         this.active = false;
         this.teclaStart = false;
-        this.min = 3;
-        this.max = 10;
+        this.min = 5;
+        this.max = 12;
         this.idGafo = idGafo;
         this.idFino = idFino;
         this.gafoScore = gafoScore;
@@ -93,7 +93,7 @@ class Tile {
     }
 
     drawTile() {
-        context.fillStyle = this.color;
+        context.fillStyle = `${this.color}aa`;
         // context.drawImage(img, this.x, this.y - altTile, anchTile, altTile);
         context.fillRect(this.x, this.y - altTile, anchTile, altTile);
     }
@@ -120,12 +120,13 @@ class Tile {
         document.addEventListener("keydown", (e) => {
             e.preventDefault();
             this.teclaStart = true;
-            span.textContent = 0;
+            if (e.repeat) return;
             span.classList.remove("start");
             if (!cronometer) {
                 cronometer = true;
                 initCronometer();
                 tilesCayendo.forEach(t => t.active = true);
+                span.textContent = 0;
             };
 
             tilesCayendo.forEach(t => t.active = true);
@@ -278,14 +279,6 @@ const tilesCayendo = [
     tileYellowCaida,
 ];
 
-// let delay = 3;
-
-// function initiTiles() {
-//         if (seconds === 5 - delay) {
-//             tileBlueCaida.active = true;
-//         }
-// }
-
 // ----- BUCLE INFINITO Y LA INICIALIZACION DE LA DETECCION DE LOS EVENTOS ----------
 
 tilesCayendo.forEach(tileCae => {
@@ -306,15 +299,13 @@ function draw() {
         tile.drawTile();
     });
 
-    // DIBUJAR TILES CAYENDO ---------------------
+    // // DIBUJAR TILES CAYENDO ---------------------
     tilesCayendo.forEach(tileCae => {
         tileCae.drawTile();
         tileCae.gravedad();
-        // tileCae.pintarIcons();
     });
 
     // initiTiles();
-    // document.getElementById("pentacruz").setAttribute("fill", "blue");
 
     requestAnimationFrame(draw);
 }
