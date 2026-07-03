@@ -82,8 +82,8 @@ class Tile {
         this.speed = 5;
         this.active = false;
         this.teclaStart = false;
-        this.min = 5;
-        this.max = 12;
+        this.min = 3;
+        this.max = 9;
         this.idGafo = idGafo;
         this.idFino = idFino;
         this.gafoScore = gafoScore;
@@ -131,14 +131,14 @@ class Tile {
 
             tilesCayendo.forEach(t => t.active = true);
             if(e.key === this.teclaCorrespondiente) {
-                if (this.y <= windowHeight - altTile) {
+                if (this.y <= windowHeight - altTile - 40) {
                     scoreGafo[this.gafoScore] += 1;
                     document.getElementById(this.idGafo).textContent = scoreGafo[this.gafoScore];
                     imgFondo.classList.add("fondoSaturado");
                     setTimeout(() => {
                         imgFondo.classList.remove("fondoSaturado");
                     }, 500)
-                } else if (this.y >= windowHeight - altTile) {
+                } else if (this.y >= windowHeight - altTile - 40) {
                     scoreFino[this.finoScore] += 1;
                     document.getElementById(this.idFino).textContent = scoreFino[this.finoScore];
                     this.piano.currentTime = 0;
@@ -164,14 +164,14 @@ class Tile {
             ) {
                 const tileCae = tilesCayendo.find(t => t.color === this.color);
                 tileCae.teclaStart = true;
-                if (tileCae.y <= windowHeight - altTile - 10) {
+                if (tileCae.y <= windowHeight - altTile - 40) {
                     scoreGafo[tileCae.gafoScore] += 1;
                     document.getElementById(tileCae.idGafo).textContent = scoreGafo[tileCae.gafoScore];
                     imgFondo.classList.add("fondoSaturado");
                     setTimeout(() => {
                         imgFondo.classList.remove("fondoSaturado");
                     }, 500);
-                } else if (tileCae.y >= windowHeight - altTile) {
+                } else if (tileCae.y >= windowHeight - altTile - 40) {
                     scoreFino[tileCae.finoScore] += 1;
                     document.getElementById(tileCae.idFino).textContent = scoreFino[tileCae.finoScore];
                     this.piano.currentTime = 0;
