@@ -92,8 +92,15 @@ class Tile {
         this.piano = piano;
     }
 
+    actualizarPosicion(offsetTiles, esBoton) {
+        this.x = windowWidth / 2 + offsetTiles * anchTile;
+        if (esBoton) {
+            this.y = windowHeight - 10;
+        }
+    }
+
     drawTile() {
-        context.fillStyle = `${this.color}aa`;
+        context.fillStyle = this.color;
         // context.drawImage(img, this.x, this.y - altTile, anchTile, altTile);
         context.fillRect(this.x, this.y - altTile, anchTile, altTile);
     }
@@ -130,7 +137,7 @@ class Tile {
             };
 
             tilesCayendo.forEach(t => t.active = true);
-            if(e.key === this.teclaCorrespondiente) {
+            if (e.key === this.teclaCorrespondiente) {
                 if (this.y <= windowHeight - altTile - 40) {
                     scoreGafo[this.gafoScore] += 1;
                     document.getElementById(this.idGafo).textContent = scoreGafo[this.gafoScore];
@@ -182,41 +189,41 @@ class Tile {
     }
 }
 
-const tileGreen = new Tile(windowWidth / 2 - anchTile * 2, 
-    windowHeight - 10, 
-    colorGreen, 
-    "gafoGreenId", 
-    "finoGreenId", 
+const tileGreen = new Tile(windowWidth / 2 - anchTile * 2,
+    windowHeight - 10,
+    colorGreen,
+    "gafoGreenId",
+    "finoGreenId",
     "gafoGreen",
-    "finoGreen", 
-    null,           
-    pianoFinoGreen); 
+    "finoGreen",
+    null,
+    pianoFinoGreen);
 
 const tilePink = new Tile(windowWidth / 2 - anchTile,
-    windowHeight - 10, 
+    windowHeight - 10,
     colorPink,
-    "gafoPinkId", 
-    "finoPinkId", 
+    "gafoPinkId",
+    "finoPinkId",
     "gafoPink",
     "finoPink",
     null,
     pianoFinoPink);
 
-const tileBlue = new Tile(windowWidth / 2, 
-    windowHeight - 10, 
-    colorBlue, 
-    "gafoBlueId", 
+const tileBlue = new Tile(windowWidth / 2,
+    windowHeight - 10,
+    colorBlue,
+    "gafoBlueId",
     "finoBlueId",
     "gafoBlue",
     "finoBlue",
     null,
     pianoFinoBlue);
 
-const tileYellow = new Tile(windowWidth / 2 + anchTile, 
-    windowHeight - 10, 
-    colorYellow, 
+const tileYellow = new Tile(windowWidth / 2 + anchTile,
+    windowHeight - 10,
+    colorYellow,
     "gafoYellowId",
-    "finoYellowId", 
+    "finoYellowId",
     "gafoYellow",
     "finoYellow",
     null,
@@ -225,44 +232,44 @@ const tileYellow = new Tile(windowWidth / 2 + anchTile,
 // ------------------- TILES QUE CAEN -----------------------
 
 const tileGreenCaida = new Tile(windowWidth / 2 - anchTile * 2,
-    windowHeight - 10, 
-    colorGreen, 
-    "gafoGreenId", 
-    "finoGreenId", 
-    "gafoGreen", 
-    "finoGreen", 
+    windowHeight - 10,
+    colorGreen,
+    "gafoGreenId",
+    "finoGreenId",
+    "gafoGreen",
+    "finoGreen",
     "v",
-    pianoFinoGreen); 
+    pianoFinoGreen);
 
 const tilePinkCaida = new Tile(windowWidth / 2 - anchTile,
-    windowHeight - 10, 
-    colorPink, 
+    windowHeight - 10,
+    colorPink,
     "gafoPinkId",
     "finoPinkId",
     "gafoPink",
-    "finoPink", 
+    "finoPink",
     "b",
-    pianoFinoPink); 
+    pianoFinoPink);
 
 const tileBlueCaida = new Tile(windowWidth / 2,
-    windowHeight - 10, 
-    colorBlue, 
+    windowHeight - 10,
+    colorBlue,
     "gafoBlueId",
     "finoBlueId",
-    "gafoBlue", 
+    "gafoBlue",
     "finoBlue",
     "n",
-    pianoFinoBlue); 
+    pianoFinoBlue);
 
 const tileYellowCaida = new Tile(windowWidth / 2 + anchTile,
-    windowHeight - 10, 
-    colorYellow, 
-    "gafoYellowId", 
+    windowHeight - 10,
+    colorYellow,
+    "gafoYellowId",
     "finoYellowId",
     "gafoYellow",
     "finoYellow",
     "m",
-    pianoFinoYellow); 
+    pianoFinoYellow);
 
 
 const tilesForDraw = [
@@ -282,8 +289,8 @@ const tilesCayendo = [
 // ----- BUCLE INFINITO Y LA INICIALIZACION DE LA DETECCION DE LOS EVENTOS ----------
 
 tilesCayendo.forEach(tileCae => {
-        tileCae.botonesPc();
-        
+    tileCae.botonesPc();
+
 });
 
 tilesForDraw.forEach(tile => {
@@ -293,6 +300,19 @@ tilesForDraw.forEach(tile => {
 function draw() {
     // DIBUJAR CANVAS ----------------------------
     resizeCanvas();
+    window.visualViewport?.addEventListener("resize", () => {
+        windowHeight = window.visualViewport.height;
+        windowWidth = window.visualViewport.width;
+    });
+
+    tileGreen.actualizarPosicion(-2, true);
+    tilePink.actualizarPosicion(-1, true);
+    tileBlue.actualizarPosicion(0, true);
+    tileYellow.actualizarPosicion(1, true);
+    tileGreenCaida.actualizarPosicion(-2, false);
+    tilePinkCaida.actualizarPosicion(-1, false);
+    tileBlueCaida.actualizarPosicion(0, false);
+    tileYellowCaida.actualizarPosicion(1, false);
 
     // DIBUJAR TILES -----------------------------
     tilesForDraw.forEach(tile => {
