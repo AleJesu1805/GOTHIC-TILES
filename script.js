@@ -10,10 +10,23 @@ img.src = "img/calaca.jpeg";
 
 // ------- PIANO DE ACIERTOS -----------------
 
-const pianoFinoGreen = new Audio('music/piano1.ogg');
-const pianoFinoPink = new Audio('music/piano5.mp3');
-const pianoFinoBlue = new Audio('music/piano3.mp3');
-const pianoFinoYellow = new Audio('music/piano4.mp3');
+// ------- PIANO DE ACIERTOS -----------------
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const pianoBuffers = {};
+
+async function cargarPiano(nombre, ruta) {
+    const res = await fetch(ruta);
+    const arrayBuffer = await res.arrayBuffer();
+    pianoBuffers[nombre] = await audioCtx.decodeAudioData(arrayBuffer);
+}
+
+Promise.all([
+    cargarPiano('green', 'music/piano1.ogg'),
+    cargarPiano('pink', 'music/piano5.mp3'),
+    cargarPiano('blue', 'music/piano3.mp3'),
+    cargarPiano('yellow', 'music/piano4.mp3'),
+]);
 
 // ---------- PUNTAJES ---------------
 
@@ -101,6 +114,14 @@ class Tile {
         }
     }
 
+    reproducirPiano() {
+        if (!pianoBuffers[this.piano]) return;
+        const fuente = audioCtx.createBufferSource();
+        fuente.buffer = pianoBuffers[this.piano];
+        fuente.connect(audioCtx.destination);
+        fuente.start(0);
+    }
+
     drawTile() {
         context.fillStyle = `${this.color}ff`;
         // context.drawImage(img, this.x, this.y - altTile, anchTile, altTile);
@@ -148,8 +169,7 @@ class Tile {
                 } else if (this.y >= windowHeight - altTile - 40) {
                     scoreFino[this.finoScore] += 1;
                     document.getElementById(this.idFino).textContent = scoreFino[this.finoScore];
-                    this.piano.currentTime = 0;
-                    this.piano.play();
+                    this.reproducirPiano();
                 }
             }
         });
@@ -181,8 +201,7 @@ class Tile {
                 } else if (tileCae.y >= windowHeight - altTile - 40) {
                     scoreFino[tileCae.finoScore] += 1;
                     document.getElementById(tileCae.idFino).textContent = scoreFino[tileCae.finoScore];
-                    this.piano.currentTime = 0;
-                    this.piano.play();
+                    tileCae.reproducirPiano();
                 }
             };
         });
@@ -197,7 +216,7 @@ const tileGreen = new Tile(windowWidth / 2 - anchTile * 2,
     "gafoGreen",
     "finoGreen",
     null,
-    pianoFinoGreen);
+    'green');
 
 const tilePink = new Tile(windowWidth / 2 - anchTile,
     windowHeight - 10,
@@ -207,7 +226,7 @@ const tilePink = new Tile(windowWidth / 2 - anchTile,
     "gafoPink",
     "finoPink",
     null,
-    pianoFinoPink);
+    'pink');
 
 const tileBlue = new Tile(windowWidth / 2,
     windowHeight - 10,
@@ -217,7 +236,7 @@ const tileBlue = new Tile(windowWidth / 2,
     "gafoBlue",
     "finoBlue",
     null,
-    pianoFinoBlue);
+    'blue');
 
 const tileYellow = new Tile(windowWidth / 2 + anchTile,
     windowHeight - 10,
@@ -227,7 +246,7 @@ const tileYellow = new Tile(windowWidth / 2 + anchTile,
     "gafoYellow",
     "finoYellow",
     null,
-    pianoFinoYellow);
+    'yellow');
 
 // ------------------- TILES QUE CAEN -----------------------
 
@@ -239,7 +258,7 @@ const tileGreenCaida = new Tile(windowWidth / 2 - anchTile * 2,
     "gafoGreen",
     "finoGreen",
     "v",
-    pianoFinoGreen);
+    'green');
 
 const tilePinkCaida = new Tile(windowWidth / 2 - anchTile,
     windowHeight - 10,
@@ -249,7 +268,7 @@ const tilePinkCaida = new Tile(windowWidth / 2 - anchTile,
     "gafoPink",
     "finoPink",
     "b",
-    pianoFinoPink);
+    'pink');
 
 const tileBlueCaida = new Tile(windowWidth / 2,
     windowHeight - 10,
@@ -259,7 +278,7 @@ const tileBlueCaida = new Tile(windowWidth / 2,
     "gafoBlue",
     "finoBlue",
     "n",
-    pianoFinoBlue);
+    'blue');
 
 const tileYellowCaida = new Tile(windowWidth / 2 + anchTile,
     windowHeight - 10,
@@ -269,7 +288,7 @@ const tileYellowCaida = new Tile(windowWidth / 2 + anchTile,
     "gafoYellow",
     "finoYellow",
     "m",
-    pianoFinoYellow);
+    'yellow');
 
 
 const tilesForDraw = [
@@ -287,6 +306,10 @@ const tilesCayendo = [
 ];
 
 // ----- BUCLE INFINITO Y LA INICIALIZACION DE LA DETECCION DE LOS EVENTOS ----------
+
+document.addEventListener("touchstart", () => {
+    if (audioCtx.state === "suspended") audioCtx.resume();
+}, { once: true });
 
 tilesCayendo.forEach(tileCae => {
     tileCae.botonesPc();
