@@ -157,12 +157,12 @@ class Tile {
 
     botonesCel() {
         document.addEventListener("touchstart", (e) => {
-            span.textContent = 0;
             span.classList.remove("start");
             if (!cronometer) {
                 cronometer = true;
                 initCronometer();
                 tilesCayendo.forEach(t => t.active = true);
+                span.textContent = 0;
             };
 
             if (e.changedTouches[0].clientY >= this.y - altTile &&
