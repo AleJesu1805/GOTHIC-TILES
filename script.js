@@ -31,6 +31,8 @@ let scoreGafo = {
     gafoYellow: -1,
 };
 
+let pico = [3, 9, 14];
+
 // -------------- CRONÓMETRO -------------------------
 
 let seconds = 0;
@@ -79,7 +81,7 @@ class Tile {
         this.x = x;
         this.y = y;
         this.color = color;
-        this.speed = 5;
+        this.speed = 4;
         this.active = false;
         this.teclaStart = false;
         this.min = 3;
@@ -100,33 +102,30 @@ class Tile {
     }
 
     drawTile() {
-        context.fillStyle = this.color;
+        context.fillStyle = `${this.color}ff`;
         // context.drawImage(img, this.x, this.y - altTile, anchTile, altTile);
         context.fillRect(this.x, this.y - altTile, anchTile, altTile);
     }
 
     gravedad() {
-        if (this.active === true) {
-            this.y += this.speed;
-            if (this.y > windowHeight) {
-                this.y = 0;
+        this.y += this.speed;
+        if (this.y > windowHeight) {
+            this.y = 0;
 
-                if (!this.teclaStart) {
-                    scoreGafo[this.gafoScore] += 1;
-                    document.getElementById(this.idGafo).textContent = scoreGafo[this.gafoScore];
-                }
-
-                this.teclaStart = false;
-
-                this.speed = Math.floor(Math.random() * (this.max - this.min + 1) + this.min);
+            if (!this.teclaStart) {
+                scoreGafo[this.gafoScore] += 1;
+                document.getElementById(this.idGafo).textContent = scoreGafo[this.gafoScore];
             }
+
+            this.teclaStart = false;
+            this.speed = Math.floor(Math.random() * (this.max - this.min + 1) + this.min);
         }
     }
 
     botonesPc() {
         document.addEventListener("keydown", (e) => {
             e.preventDefault();
-            this.teclaStart = true;
+            // this.teclaStart = true;
             if (e.repeat) return;
             span.classList.remove("start");
             if (!cronometer) {
@@ -138,6 +137,7 @@ class Tile {
 
             tilesCayendo.forEach(t => t.active = true);
             if (e.key === this.teclaCorrespondiente) {
+                this.teclaStart = true;
                 if (this.y <= windowHeight - altTile - 40) {
                     scoreGafo[this.gafoScore] += 1;
                     document.getElementById(this.idGafo).textContent = scoreGafo[this.gafoScore];
@@ -290,7 +290,6 @@ const tilesCayendo = [
 
 tilesCayendo.forEach(tileCae => {
     tileCae.botonesPc();
-
 });
 
 tilesForDraw.forEach(tile => {
@@ -322,9 +321,10 @@ function draw() {
     // // DIBUJAR TILES CAYENDO ---------------------
     tilesCayendo.forEach(tileCae => {
         tileCae.drawTile();
-        tileCae.gravedad();
+        if (tileCae.active === true) {
+            tileCae.gravedad();
+        }
     });
-
     // initiTiles();
 
     requestAnimationFrame(draw);
