@@ -4,6 +4,7 @@ const context = canvas.getContext("2d");
 const span = document.querySelector("span");
 
 const imgFondo = document.querySelector(".fondo");
+const icono = document.getElementById("PentaCruzInvert");
 
 const img = new Image();
 img.src = "img/calaca.jpeg";
@@ -79,10 +80,10 @@ function resizeCanvas() {
 
 // ------------------ TAMAÑO DE LAS TILES Y COLORES ------------------------
 
-const colorGreen = "#012e11";
-const colorPink = "#2e0126";
-const colorBlue = "#010b2e";
-const colorYellow = "#2e2c01";
+const colorGreen = "#004518";
+const colorPink = "#500041";
+const colorBlue = "#001561";
+const colorYellow = "#686200";
 
 const anchTile = 80;
 const altTile = 140;
@@ -149,6 +150,7 @@ class Tile {
             // this.teclaStart = true;
             if (e.repeat) return;
             span.classList.remove("start");
+            icono.style.display = "none";
             if (!cronometer) {
                 cronometer = true;
                 initCronometer();
@@ -178,6 +180,7 @@ class Tile {
     botonesCel() {
         document.addEventListener("touchstart", (e) => {
             span.classList.remove("start");
+            icono.style.display = "none";
             if (!cronometer) {
                 cronometer = true;
                 initCronometer();

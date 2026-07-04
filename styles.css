@@ -32,7 +32,7 @@ body {
     width: 100dvw;
     height: 100dvh;
     transform: scale(1.5);
-    filter: brightness(40%) contrast(130%) saturate(0);
+    filter: brightness(50%) contrast(130%) saturate(0);
     animation: move-slow 1.5s alternate infinite ease;
     transition: filter .2s, height .2s;
 }
@@ -55,6 +55,16 @@ canvas {
     touch-action: none;
 }
 
+#PentaCruzInvert {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+    z-index: 1000;
+}
+
 ul p {
     margin: 0 -60px;
 }
@@ -70,8 +80,16 @@ span {
     color: #757575;
 }
 
+span p {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(65px, 10vw, 120px);
+}
+
 .start {
-    backdrop-filter: brightness(60%);
+    backdrop-filter: brightness(40%);
     height: 100dvh;
     z-index: 100;
 }
