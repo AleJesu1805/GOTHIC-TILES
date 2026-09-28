@@ -1,0 +1,13 @@
+html,
+body {
+  margin: 0%;
+  padding: 0%;
+  background-color: black;
+}
+
+canvas {
+  background-color: #2a2626;
+  display: block;
+  width: 100dvw;
+  height: 100dvh;
+}
