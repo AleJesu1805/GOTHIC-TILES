@@ -6,8 +6,28 @@ body {
 }
 
 canvas {
-  background-color: #2a2626;
+  background-color: #110101;
   display: block;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 0%);
   width: 100dvw;
-  height: 100dvh;
+  aspect-ratio: calc((100dvw) / (100dvh));
+  /* height: 100dvh; */
+}
+
+#containerCronometro {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, 0%);
+  padding: 50px;
+  z-index: 1;
+}
+
+#cronometro {
+  font-size: 50px;
+  font-weight: 900;
+  color: #e9ede9;
 }
