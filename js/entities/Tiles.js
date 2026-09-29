@@ -1,17 +1,11 @@
 import { ctx, CANVAS_WIDTH, CANVAS_HEIGHT } from "../core/canvas.js";
 import { cronometroElement } from "./cronometro.js";
 
-const tiempos = {
-  0: ["00:07:01"],
-  1: ["00:03:05", "00:02:05", "00:03:09"],
-  2: ["00:03:05"],
-  3: ["00:05:03"],
-};
-
 export class Tile {
   static height = 200;
+  static width = 100;
   constructor(y, color, offsetTiles) {
-    this.width = 100;
+    this.width = Tile.width;
     this.height = Tile.height;
     this.x = CANVAS_WIDTH / 2 + offsetTiles * this.width;
     this.y = y;
@@ -28,19 +22,14 @@ export class Tile {
 }
 
 const colors = ["#c02121", "#1c749f", "#b7245a", "#8eb209"];
+const offSets = [-2, -1, 0, 1];
 export const tilesStaticas = [];
 
 export function crearTilesStaticas() {
-  let offSet = -2;
   for (let i = 0; i < 4; i++) {
-    const tile = new Tile(
-      CANVAS_HEIGHT - (Tile.height + 10),
-      colors[i],
-      offSet,
-    );
+    const tile = new Tile(CANVAS_HEIGHT - Tile.height, colors[i], offSets[i]);
     tile.draw();
     tilesStaticas.push(tile);
-    offSet++;
   }
 }
 
@@ -50,19 +39,58 @@ const tilesCayendo = [];
 
 // OPTIMIZAR LOGICA DE CONSULTAR TIEMPOS
 
-export function crearTileCayendo() {
-  let offSet = -2;
-  for (let [tile, tempo] of Object.entries(tiempos)) {
-    for (let i = 0; i < tempo.length; i++) {
-      if (cronometroElement.innerHTML == tempo[i]) {
-        const tileCayendo = new Tile(0, colors[tile], offSet);
-        tilesCayendo.push(tileCayendo);
+// const tiemposTiles = {
+//   0: ["00:07:01"],
+//   1: ["00:03:05", "00:02:05", "00:03:09"],
+//   2: ["00:03:05"],
+//   3: ["00:05:03"],
+// };
+
+const tiemposGenerales = [];
+
+async function rellenarTiemposGenerales() {
+  try {
+    const respuesta = await fetch(
+      new URL("../core/tiempos.json", import.meta.url),
+    );
+    if (!respuesta.ok) {
+      throw new Error(`No se pudo cargar tiempos.json: ${respuesta.status}`);
+    }
+
+    const tiemposTiles = await respuesta.json();
+    for (const [tile, tiempos] of Object.entries(tiemposTiles)) {
+      for (const tiempo of tiempos) {
+        tiemposGenerales.push([tile, tiempo]);
       }
     }
-    offSet++;
+
+    tiemposGenerales.sort((a, b) => a[1].localeCompare(b[1]));
+  } catch (error) {
+    console.error("Error al cargar los tiempos de las tiles:", error);
   }
-  tilesCayendo.forEach((tile) => {
+}
+
+rellenarTiemposGenerales();
+
+export function crearTileCayendo() {
+  for (let i = 0; i < tiemposGenerales.length; i++) {
+    if (cronometroElement.innerHTML == tiemposGenerales[i][1]) {
+      const tileCayendo = new Tile(
+        0,
+        colors[tiemposGenerales[i][0]],
+        offSets[tiemposGenerales[i][0]],
+      );
+      tilesCayendo.push(tileCayendo);
+    }
+  }
+}
+
+export function renderizarTileCayendo() {
+  tilesCayendo.forEach((tile, i) => {
     tile.draw();
     tile.down();
+    if (tile.y > CANVAS_HEIGHT) {
+      tilesCayendo.splice(i, 1);
+    }
   });
 }

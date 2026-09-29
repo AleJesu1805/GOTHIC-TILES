@@ -1,6 +1,6 @@
 const sonidos = {
   0: "./assets/audio/piano5.mp3",
-  1: "./assets/audio/piano2.mp3",
+  1: "./assets/audio/piano6.mp3",
   2: "./assets/audio/piano3.mp3",
   3: "./assets/audio/piano4.mp3",
 };

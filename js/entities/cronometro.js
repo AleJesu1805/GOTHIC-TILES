@@ -1,3 +1,4 @@
+import { crearTileCayendo } from "./Tiles.js";
 export const cronometroElement = document.querySelector("#cronometro");
 
 let centesimas = 0;
@@ -43,6 +44,7 @@ export function initCronometer() {
     }
 
     renderCronometro();
+    crearTileCayendo();
   }, 10);
 }
 

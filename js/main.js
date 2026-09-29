@@ -2,12 +2,19 @@ import {
   Tile,
   crearTileCayendo,
   crearTilesStaticas,
+  renderizarTileCayendo,
 } from "./entities/Tiles.js";
 import { initCronometer } from "./entities/cronometro.js";
 import { cleanCanvas } from "./core/canvas.js";
 import { reproducirSonido } from "./core/audio.js";
+import "./UI/interaction.js";
 
-// initCronometer();
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+
+initCronometer();
+
 const fps = 30;
 const frameDuration = 1000 / fps;
 
@@ -24,12 +31,8 @@ function gameLoop(tiempoActual) {
   ultimoTiempo = tiempoActual - (delta % frameDuration);
   cleanCanvas();
   crearTilesStaticas();
-  crearTileCayendo();
+  renderizarTileCayendo();
   frameCount++;
 }
 
-// document.addEventListener("click", () => {
-//   reproducirSonido("2");
-// });
-
-// gameLoop();
+gameLoop();

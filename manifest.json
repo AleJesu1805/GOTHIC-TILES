@@ -1,0 +1,21 @@
+{
+  "short_name": "GothTile",
+  "name": "GOTHIC TILES",
+  "description": "una copia gotica del piano tiles",
+  "dir": "auto",
+  "lang": "es",
+  "background_color": "#060316",
+  "theme_color": "#060316",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "scope": ".",
+  "start_url": "index.html",
+  "icons": [
+    {
+      "src": "assets/img/PentaCruzInvert.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
