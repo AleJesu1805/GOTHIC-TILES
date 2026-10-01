@@ -3,19 +3,18 @@ import {
   crearTileCayendo,
   crearTilesStaticas,
   renderizarTileCayendo,
+  tiemposGenerales,
 } from "./entities/Tiles.js";
 import { initCronometer } from "./entities/cronometro.js";
 import { cleanCanvas } from "./core/canvas.js";
-import { reproducirSonido } from "./core/audio.js";
 import "./UI/interaction.js";
+import { audioCtx } from "./core/audio.js";
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
 
-initCronometer();
-
-const fps = 30;
+const fps = 60;
 const frameDuration = 1000 / fps;
 
 let ultimoTiempo = 0;
@@ -35,4 +34,22 @@ function gameLoop(tiempoActual) {
   frameCount++;
 }
 
-gameLoop();
+document.addEventListener(
+  "pointerdown",
+  () => {
+    let ultimoMomento =
+      tiemposGenerales[tiemposGenerales.length - 1][1].split(":");
+    let ultimoSegundo =
+      Number(ultimoMomento[0]) * 60 +
+      Number(ultimoMomento[1]) +
+      Number(ultimoMomento[2]) / 100;
+    console.log(ultimoMomento, ultimoSegundo);
+
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    document.getElementById("timelapsed").style.animation =
+      `width ${ultimoSegundo}s linear`;
+    initCronometer();
+    requestAnimationFrame(gameLoop);
+  },
+  { once: true },
+);

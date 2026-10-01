@@ -1,23 +1,33 @@
 import { ctx, CANVAS_WIDTH, CANVAS_HEIGHT } from "../core/canvas.js";
-import { cronometroElement } from "./cronometro.js";
+import { cronometroElement, getTiempoTranscurrido } from "./cronometro.js";
 
 export class Tile {
   static height = 200;
   static width = 100;
-  constructor(y, color, offsetTiles) {
+  constructor(y, color, offsetTiles, tiempoObjetivo = null, index = null) {
     this.width = Tile.width;
     this.height = Tile.height;
     this.x = CANVAS_WIDTH / 2 + offsetTiles * this.width;
     this.y = y;
     this.color = color;
-    this.speed = 10;
+    this.offsetTiles = offsetTiles;
+    this.tiempoObjetivo = tiempoObjetivo;
+    this.index = index;
+    this.speed = 1000;
   }
   draw() {
+    // ctx.strokeStyle = "#010101";
+    // ctx.lineWidth = 7;
+    // ctx.strokeRect(this.x, this.y, this.width, this.height);
+
     ctx.fillStyle = this.color;
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
-  down() {
-    this.y += this.speed;
+  down(tiempoActual) {
+    const duracionCaida = (CANVAS_HEIGHT / this.speed) * 1000;
+    const tiempoInicio = this.tiempoObjetivo - duracionCaida;
+    const tiempoCayendo = Math.max(0, tiempoActual - tiempoInicio);
+    this.y = -this.height + (this.speed * tiempoCayendo) / 1000;
   }
 }
 
@@ -27,7 +37,12 @@ export const tilesStaticas = [];
 
 export function crearTilesStaticas() {
   for (let i = 0; i < 4; i++) {
-    const tile = new Tile(CANVAS_HEIGHT - Tile.height, colors[i], offSets[i]);
+    const tile = new Tile(
+      CANVAS_HEIGHT - Tile.height,
+      `${colors[i]}aa`,
+      offSets[i],
+      i,
+    );
     tile.draw();
     tilesStaticas.push(tile);
   }
@@ -35,23 +50,14 @@ export function crearTilesStaticas() {
 
 crearTilesStaticas();
 
-const tilesCayendo = [];
+export const tilesCayendo = [];
 
-// OPTIMIZAR LOGICA DE CONSULTAR TIEMPOS
-
-// const tiemposTiles = {
-//   0: ["00:07:01"],
-//   1: ["00:03:05", "00:02:05", "00:03:09"],
-//   2: ["00:03:05"],
-//   3: ["00:05:03"],
-// };
-
-const tiemposGenerales = [];
+export const tiemposGenerales = [];
 
 async function rellenarTiemposGenerales() {
   try {
     const respuesta = await fetch(
-      new URL("../core/tiempos.json", import.meta.url),
+      new URL("../tiempos/tiempos2.json", import.meta.url),
     );
     if (!respuesta.ok) {
       throw new Error(`No se pudo cargar tiempos.json: ${respuesta.status}`);
@@ -64,7 +70,16 @@ async function rellenarTiemposGenerales() {
       }
     }
 
-    tiemposGenerales.sort((a, b) => a[1].localeCompare(b[1]));
+    for (const [tile, tiempo] of tiemposGenerales) {
+      const [minutos, segundos, centesimas] = tiempo.split(":").map(Number);
+      const tiempoObjetivo =
+        ((minutos * 60 + segundos) * 100 + centesimas) * 10;
+      const duracionCaida = (CANVAS_HEIGHT / 1000) * 1000;
+      const tiempoInicio = tiempoObjetivo - duracionCaida;
+      const demora = Math.max(0, tiempoInicio - getTiempoTranscurrido());
+
+      setTimeout(() => crearTileCayendo(Number(tile), tiempoObjetivo), demora);
+    }
   } catch (error) {
     console.error("Error al cargar los tiempos de las tiles:", error);
   }
@@ -72,24 +87,23 @@ async function rellenarTiemposGenerales() {
 
 rellenarTiemposGenerales();
 
-export function crearTileCayendo() {
-  for (let i = 0; i < tiemposGenerales.length; i++) {
-    if (cronometroElement.innerHTML == tiemposGenerales[i][1]) {
-      const tileCayendo = new Tile(
-        0,
-        colors[tiemposGenerales[i][0]],
-        offSets[tiemposGenerales[i][0]],
-      );
-      tilesCayendo.push(tileCayendo);
-    }
-  }
+export function crearTileCayendo(tile, tiempoObjetivo) {
+  const tileCayendo = new Tile(
+    -Tile.height,
+    `${colors[tile]}aa`,
+    offSets[tile],
+    tiempoObjetivo,
+    tile,
+  );
+  tilesCayendo.push(tileCayendo);
 }
 
 export function renderizarTileCayendo() {
   tilesCayendo.forEach((tile, i) => {
+    tile.down(getTiempoTranscurrido());
     tile.draw();
-    tile.down();
     if (tile.y > CANVAS_HEIGHT) {
+      // console.log(getTiempoTranscurrido() / 1000);
       tilesCayendo.splice(i, 1);
     }
   });

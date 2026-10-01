@@ -1,4 +1,3 @@
-import { crearTileCayendo } from "./Tiles.js";
 export const cronometroElement = document.querySelector("#cronometro");
 
 let centesimas = 0;
@@ -6,20 +5,28 @@ let segundos = 0;
 let minutos = 0;
 let cronometroActivo = false;
 let intervaloId = null;
+let tiempoInicio = null;
+
+export function getTiempoTranscurrido() {
+  return tiempoInicio === null ? 0 : performance.now() - tiempoInicio;
+}
 
 function formatearNumero(valor) {
   return String(valor).padStart(2, "0");
 }
 
+export let time = `${formatearNumero(minutos)}:${formatearNumero(segundos)}:${formatearNumero(centesimas)}`;
+
 function renderCronometro() {
   if (!cronometroElement) return;
-
-  cronometroElement.textContent = `${formatearNumero(minutos)}:${formatearNumero(segundos)}:${formatearNumero(centesimas)}`;
+  time = `${formatearNumero(minutos)}:${formatearNumero(segundos)}:${formatearNumero(centesimas)}`;
+  cronometroElement.textContent = time;
 }
 
 export function resetCronometro() {
   clearInterval(intervaloId);
   cronometroActivo = false;
+  tiempoInicio = null;
   centesimas = 0;
   segundos = 0;
   minutos = 0;
@@ -30,21 +37,14 @@ export function initCronometer() {
   if (cronometroActivo) return;
 
   cronometroActivo = true;
+  tiempoInicio = performance.now();
   intervaloId = setInterval(() => {
-    centesimas += 1;
-
-    if (centesimas >= 100) {
-      centesimas = 0;
-      segundos += 1;
-    }
-
-    if (segundos >= 60) {
-      segundos = 0;
-      minutos += 1;
-    }
+    const totalCentesimas = Math.floor(getTiempoTranscurrido() / 10);
+    centesimas = totalCentesimas % 100;
+    segundos = Math.floor(totalCentesimas / 100) % 60;
+    minutos = Math.floor(totalCentesimas / 6000);
 
     renderCronometro();
-    crearTileCayendo();
   }, 10);
 }
 

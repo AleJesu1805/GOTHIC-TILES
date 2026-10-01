@@ -1,7 +1,7 @@
 import { canvas, CANVAS_HEIGHT, CANVAS_WIDTH } from "../core/canvas.js";
-import { Tile } from "../entities/Tiles.js";
+import { Tile, tilesCayendo } from "../entities/Tiles.js";
 import { reproducirSonido } from "../core/audio.js";
-import { cronometroElement } from "../entities/cronometro.js";
+import { time } from "../entities/cronometro.js";
 
 canvas.addEventListener("pointerdown", (e) => {
   const leftEdge = CANVAS_WIDTH / 2 - 2 * Tile.width;
@@ -17,7 +17,11 @@ canvas.addEventListener("pointerdown", (e) => {
     0,
     Math.ceil((e.clientX - CANVAS_WIDTH / 2) / Tile.width) + 1,
   );
-  reproducirSonido(tileIndex);
+  tilesCayendo.forEach((tile) => {
+    if (tile.index == tileIndex && tile.y > CANVAS_HEIGHT - Tile.height * 2.2) {
+      reproducirSonido(tileIndex);
+    }
+  });
 });
 
 const teclas = ["a", "s", "d", "f"];
@@ -29,10 +33,17 @@ const listaDeTiempos = {
 };
 document.addEventListener("keydown", (e) => {
   teclas.forEach((tecla, i) => {
-    if (e.key === tecla || e.key === tecla.toUpperCase) {
-      reproducirSonido(i);
-      listaDeTiempos[i].push(cronometroElement.textContent);
+    if (e.key === tecla || e.key === tecla.toUpperCase()) {
+      // reproducirSonido(i);
+      tilesCayendo.forEach((tile) => {
+        if (tile.index == i && tile.y > CANVAS_HEIGHT - Tile.height * 2.2) {
+          reproducirSonido(i);
+        }
+      });
+      listaDeTiempos[i].push(time);
     }
   });
-  //   console.log(JSON.stringify(listaDeTiempos, null, 2));
+  if (e.key == "e") {
+    console.log(JSON.stringify(listaDeTiempos, null, 2));
+  }
 });

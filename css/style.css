@@ -17,17 +17,44 @@ canvas {
   /* height: 100dvh; */
 }
 
-#containerCronometro {
+.interface {
   position: absolute;
   left: 50%;
   top: 0;
   transform: translate(-50%, 0%);
   padding: 50px;
   z-index: 1;
+  text-align: center;
+  display: grid;
+  /* background-color: #880c0c41; */
 }
 
 #cronometro {
   font-size: 50px;
   font-weight: 900;
-  color: #e9ede9;
+  color: #0c680c;
+}
+
+#mensajeFallo {
+  color: #770505;
+  opacity: 0.1;
+  font-weight: 900;
+  font-size: 70px;
+  transition: opacity 0.3s;
+}
+
+#timelapsed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #0c680c;
+  height: 1dvh;
+  width: 0dvw;
+  z-index: 1;
+}
+
+@keyframes width {
+  to {
+    width: 100%;
+  }
 }

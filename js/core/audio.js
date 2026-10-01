@@ -3,9 +3,12 @@ const sonidos = {
   1: "./assets/audio/piano6.mp3",
   2: "./assets/audio/piano3.mp3",
   3: "./assets/audio/piano4.mp3",
+  error: "./assets/audio/piano2.mp3",
 };
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+export const audioCtx = new (
+  window.AudioContext || window.webkitAudioContext
+)();
 const buffers = {};
 
 const worker = new Worker(new URL("../workers/worker.js", import.meta.url));
@@ -46,11 +49,3 @@ export function reproducirSonido(nombre, volumen = 0.5) {
 for (let [number, sound] of Object.entries(sonidos)) {
   cargarSonido(String(number), sound);
 }
-
-document.addEventListener(
-  "touchstart",
-  () => {
-    if (audioCtx.state === "suspended") audioCtx.resume();
-  },
-  { once: true },
-);
