@@ -2,6 +2,44 @@ import { canvas, CANVAS_HEIGHT, CANVAS_WIDTH } from "../core/canvas.js";
 import { Tile, tilesCayendo } from "../entities/Tiles.js";
 import { reproducirSonido } from "../core/audio.js";
 import { time } from "../entities/cronometro.js";
+import { TILE_KEYS, restartButton, startButton } from "../config.js";
+import { mostrarFeedback } from "./feedback.js";
+
+function emitGameStart() {
+  document.dispatchEvent(new CustomEvent("game:start"));
+}
+
+startButton?.addEventListener("click", emitGameStart);
+restartButton?.addEventListener("click", emitGameStart);
+
+function procesarEntrada(indice) {
+  if (document.body.dataset.gameActive !== "true") return;
+
+  const tileIndex = tilesCayendo.findIndex(
+    (tile) =>
+      tile.index === indice &&
+      tile.y > CANVAS_HEIGHT - Tile.height * 2.2 &&
+      tile.y <= CANVAS_HEIGHT,
+  );
+
+  if (tileIndex === -1) {
+    mostrarFeedback("¡Muy mal!", "poor");
+    return;
+  }
+
+  const [tile] = tilesCayendo.splice(tileIndex, 1);
+  const distancia = Math.abs(tile.y - (CANVAS_HEIGHT - Tile.height));
+  if (distancia <= 35) {
+    mostrarFeedback("¡Excelente!", "excellent");
+  } else if (distancia <= 100) {
+    mostrarFeedback("¡Muy bien!", "good");
+  } else if (distancia <= 180) {
+    mostrarFeedback("¡Bien!", "good");
+  } else {
+    mostrarFeedback("¡Tarde!", "poor");
+  }
+  reproducirSonido(indice);
+}
 
 canvas.addEventListener("pointerdown", (e) => {
   const leftEdge = CANVAS_WIDTH / 2 - 2 * Tile.width;
@@ -17,14 +55,9 @@ canvas.addEventListener("pointerdown", (e) => {
     0,
     Math.ceil((e.clientX - CANVAS_WIDTH / 2) / Tile.width) + 1,
   );
-  tilesCayendo.forEach((tile) => {
-    if (tile.index == tileIndex && tile.y > CANVAS_HEIGHT - Tile.height * 2.2) {
-      reproducirSonido(tileIndex);
-    }
-  });
+  procesarEntrada(tileIndex);
 });
 
-const teclas = ["a", "s", "d", "f"];
 const listaDeTiempos = {
   0: [],
   1: [],
@@ -32,14 +65,9 @@ const listaDeTiempos = {
   3: [],
 };
 document.addEventListener("keydown", (e) => {
-  teclas.forEach((tecla, i) => {
+  TILE_KEYS.forEach((tecla, i) => {
     if (e.key === tecla || e.key === tecla.toUpperCase()) {
-      // reproducirSonido(i);
-      tilesCayendo.forEach((tile) => {
-        if (tile.index == i && tile.y > CANVAS_HEIGHT - Tile.height * 2.2) {
-          reproducirSonido(i);
-        }
-      });
+      procesarEntrada(i);
       listaDeTiempos[i].push(time);
     }
   });

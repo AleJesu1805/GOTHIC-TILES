@@ -1,4 +1,6 @@
-export const cronometroElement = document.querySelector("#cronometro");
+import { cronometroElement } from "../config.js";
+
+export { cronometroElement };
 
 let centesimas = 0;
 let segundos = 0;
@@ -25,12 +27,19 @@ function renderCronometro() {
 
 export function resetCronometro() {
   clearInterval(intervaloId);
+  intervaloId = null;
   cronometroActivo = false;
   tiempoInicio = null;
   centesimas = 0;
   segundos = 0;
   minutos = 0;
   renderCronometro();
+}
+
+export function detenerCronometro() {
+  clearInterval(intervaloId);
+  intervaloId = null;
+  cronometroActivo = false;
 }
 
 export function initCronometer() {

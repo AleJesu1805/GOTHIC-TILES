@@ -7,6 +7,7 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     />
     <title>GOTHIC-TILES</title>
+    <script src="https://www.youtube.com/game_api/v1"></script>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="manifest" href="manifest.json" />
     <link
@@ -17,12 +18,38 @@
   </head>
   <body>
     <div id="timelapsed"></div>
-    <div class="interface">
-      <!-- <span id="cronometro">00:00:00</span> -->
-      <!-- <span id="mensajeFallo">MAL!</span> -->
+    <div class="hud">
+      <span class="hud-label">Tiempo</span>
+      <span id="cronometro">00:00:00</span>
+      <span
+        id="mensaje-feedback"
+        class="hud-feedback"
+        aria-live="polite"
+      ></span>
     </div>
+
+    <div id="welcome-screen" class="screen active" aria-live="polite">
+      <div class="screen-card">
+        <p class="eyebrow">GOTHIC TILES</p>
+        <h1>Bienvenido a la prueba</h1>
+        <p>
+          Pulsa el botón para iniciar la secuencia y mantener la cadencia de las
+          baldosas.
+        </p>
+        <button id="start-button" type="button">Iniciar partida</button>
+      </div>
+    </div>
+
+    <div id="final-screen" class="screen hidden" aria-live="polite">
+      <div class="screen-card">
+        <p class="eyebrow">Completado</p>
+        <h2>¡Nivel superado!</h2>
+        <p>Tiempo final: <span id="final-time">00:00:00</span></p>
+        <button id="restart-button" type="button">Jugar otra vez</button>
+      </div>
+    </div>
+
     <canvas></canvas>
-    <script src="https://www.youtube.com/game_api/v1"></script>
     <script type="module" src="js/main.js"></script>
   </body>
 </html>
