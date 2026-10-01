@@ -2,7 +2,9 @@ import { crearTilesStaticas, renderizarTileCayendo } from "./entities/Tiles.js";
 import {
   cargarTiemposGenerales,
   limpiarProgramacionTiles,
+  pausarProgramacionTiles,
   programarTiles,
+  reanudarProgramacionTiles,
   convertirTiempoATiempoObjetivo,
   tiemposGenerales,
 } from "./data/tiempos.js";
@@ -22,7 +24,7 @@ import {
   progressBar,
   welcomeScreen,
 } from "./config.js";
-import { audioCtx } from "./core/audio.js";
+import { audioCtx, detenerSonido, reproducirSonido } from "./core/audio.js";
 import { ocultarFeedback } from "./UI/feedback.js";
 
 if ("serviceWorker" in navigator) {
@@ -32,7 +34,10 @@ if ("serviceWorker" in navigator) {
 let ultimoTiempo = 0;
 let animationFrameId = null;
 let juegoActivo = false;
+let juegoPausado = false;
+let reanudarPartidaAlDespausar = false;
 let juegoCompletado = false;
+let inicioEnCurso = false;
 let frameCount = 0;
 
 function calcularDuracionTotal() {
@@ -46,11 +51,13 @@ function calcularDuracionTotal() {
 export function resetProgressBar() {
   if (!progressBar) return;
   progressBar.style.animation = "none";
+  progressBar.style.animationPlayState = "running";
   progressBar.style.width = "0%";
   void progressBar.offsetWidth;
 }
 
 export function iniciarJuego() {
+  if (juegoPausado) return;
   document.body.dataset.gameActive = "true";
   ocultarFeedback();
   welcomeScreen?.classList.add("hidden");
@@ -74,6 +81,7 @@ export function finalizarJuego() {
   if (juegoCompletado) return;
   juegoCompletado = true;
   juegoActivo = false;
+  reanudarPartidaAlDespausar = false;
   document.body.dataset.gameActive = "false";
   ocultarFeedback();
   limpiarProgramacionTiles();
@@ -83,6 +91,40 @@ export function finalizarJuego() {
   const tiempoActual = cronometroElement?.textContent ?? "00:00:00";
   finalTime.textContent = tiempoActual;
   finalScreen?.classList.remove("hidden");
+}
+
+function pausarJuego() {
+  if (juegoPausado) return;
+  juegoPausado = true;
+  reanudarPartidaAlDespausar = juegoActivo;
+  document.body.dataset.gamePaused = "true";
+  document.body.dataset.gameActive = "false";
+  if (progressBar) progressBar.style.animationPlayState = "paused";
+  void audioCtx.suspend();
+  if (!juegoActivo) return;
+
+  juegoActivo = false;
+  if (animationFrameId) cancelAnimationFrame(animationFrameId);
+  animationFrameId = null;
+  detenerCronometro();
+  pausarProgramacionTiles();
+}
+
+function reanudarJuego() {
+  if (!juegoPausado) return;
+  juegoPausado = false;
+  delete document.body.dataset.gamePaused;
+  if (progressBar) progressBar.style.animationPlayState = "running";
+  void audioCtx.resume();
+
+  if (!reanudarPartidaAlDespausar || juegoCompletado) return;
+  reanudarPartidaAlDespausar = false;
+  document.body.dataset.gameActive = "true";
+  juegoActivo = true;
+  ultimoTiempo = 0;
+  initCronometer();
+  reanudarProgramacionTiles();
+  animationFrameId = requestAnimationFrame(gameLoop);
 }
 
 export function gameLoop(tiempoActual) {
@@ -106,13 +148,35 @@ export function gameLoop(tiempoActual) {
 }
 
 const tiemposListos = cargarTiemposGenerales();
+const sdkGame = globalThis.ytgame?.game;
+const sdkSystem = globalThis.ytgame?.system;
+
+sdkSystem?.onPause?.(pausarJuego);
+sdkSystem?.onResume?.(reanudarJuego);
+
+if (sdkGame) {
+  requestAnimationFrame(() => {
+    sdkGame.firstFrameReady();
+    void tiemposListos.then(() => sdkGame.gameReady());
+  });
+}
 
 document.addEventListener("game:start", async () => {
-  await tiemposListos;
-  if (audioCtx.state === "suspended") audioCtx.resume();
-  resetCronometro();
-  programarTiles();
-  iniciarJuego();
+  if (inicioEnCurso || juegoActivo) return;
+  inicioEnCurso = true;
+
+  try {
+    await audioCtx.resume();
+    await tiemposListos;
+    if (juegoPausado) return;
+    resetCronometro();
+    programarTiles();
+    iniciarJuego();
+    // detenerSonido("sweetDreams_MarylinManson");
+    // reproducirSonido("sweetDreams_MarylinManson", 1, 0);
+  } finally {
+    inicioEnCurso = false;
+  }
 });
 
 if (welcomeScreen && !welcomeScreen.classList.contains("hidden")) {

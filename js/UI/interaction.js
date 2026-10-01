@@ -1,6 +1,6 @@
 import { canvas, CANVAS_HEIGHT, CANVAS_WIDTH } from "../core/canvas.js";
 import { Tile, tilesCayendo } from "../entities/Tiles.js";
-import { reproducirSonido } from "../core/audio.js";
+import { reproducirSonido, reproducirSonidoJson } from "../core/audio.js";
 import { time } from "../entities/cronometro.js";
 import { TILE_KEYS, restartButton, startButton } from "../config.js";
 import { mostrarFeedback } from "./feedback.js";
@@ -38,7 +38,8 @@ function procesarEntrada(indice) {
   } else {
     mostrarFeedback("¡Tarde!", "poor");
   }
-  reproducirSonido(indice);
+  reproducirSonidoJson(String(indice));
+  // reproducirSonido(indice);
 }
 
 canvas.addEventListener("pointerdown", (e) => {

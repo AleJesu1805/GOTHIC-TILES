@@ -8,9 +8,13 @@ let minutos = 0;
 let cronometroActivo = false;
 let intervaloId = null;
 let tiempoInicio = null;
+let tiempoAcumulado = 0;
 
 export function getTiempoTranscurrido() {
-  return tiempoInicio === null ? 0 : performance.now() - tiempoInicio;
+  return (
+    tiempoAcumulado +
+    (tiempoInicio === null ? 0 : performance.now() - tiempoInicio)
+  );
 }
 
 function formatearNumero(valor) {
@@ -30,6 +34,7 @@ export function resetCronometro() {
   intervaloId = null;
   cronometroActivo = false;
   tiempoInicio = null;
+  tiempoAcumulado = 0;
   centesimas = 0;
   segundos = 0;
   minutos = 0;
@@ -39,6 +44,10 @@ export function resetCronometro() {
 export function detenerCronometro() {
   clearInterval(intervaloId);
   intervaloId = null;
+  if (tiempoInicio !== null) {
+    tiempoAcumulado = getTiempoTranscurrido();
+    tiempoInicio = null;
+  }
   cronometroActivo = false;
 }
 
