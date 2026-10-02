@@ -147,7 +147,7 @@ export function gameLoop(tiempoActual) {
   frameCount++;
 }
 
-const tiemposListos = cargarTiemposGenerales();
+const tiemposListos = cargarTiemposGenerales(4);
 const sdkGame = globalThis.ytgame?.game;
 const sdkSystem = globalThis.ytgame?.system;
 
@@ -172,8 +172,8 @@ document.addEventListener("game:start", async () => {
     resetCronometro();
     programarTiles();
     iniciarJuego();
-    // detenerSonido("sweetDreams_MarylinManson");
-    // reproducirSonido("sweetDreams_MarylinManson", 1, 0);
+    detenerSonido("sweetDreams_MarylinManson");
+    reproducirSonido("sweetDreams_MarylinManson", 1, 0);
   } finally {
     inicioEnCurso = false;
   }

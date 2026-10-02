@@ -38,7 +38,7 @@ function procesarEntrada(indice) {
   } else {
     mostrarFeedback("¡Tarde!", "poor");
   }
-  reproducirSonidoJson(String(indice));
+  // reproducirSonidoJson(String(indice));
   // reproducirSonido(indice);
 }
 

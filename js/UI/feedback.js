@@ -1,6 +1,7 @@
 import { feedbackElement } from "../config.js";
 
 let hideTimeout;
+export let historial = [];
 
 export function mostrarFeedback(mensaje, rendimiento) {
   if (!feedbackElement) return;
@@ -12,6 +13,7 @@ export function mostrarFeedback(mensaje, rendimiento) {
   hideTimeout = setTimeout(() => {
     feedbackElement.classList.remove("is-visible");
   }, 900);
+  historial.push([mensaje, rendimiento]);
 }
 
 export function ocultarFeedback() {
