@@ -4,6 +4,7 @@ import { reproducirSonido, reproducirSonidoJson } from "../core/audio.js";
 import { time } from "../entities/cronometro.js";
 import { TILE_KEYS, restartButton, startButton } from "../config.js";
 import { mostrarFeedback } from "./feedback.js";
+import { tiemposGenerales } from "../data/tiempos.js";
 
 function emitGameStart() {
   document.dispatchEvent(new CustomEvent("game:start"));
@@ -74,5 +75,6 @@ document.addEventListener("keydown", (e) => {
   });
   if (e.key == "e") {
     console.log(JSON.stringify(listaDeTiempos, null, 2));
+    console.log(tiemposGenerales);
   }
 });

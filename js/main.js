@@ -147,7 +147,7 @@ export function gameLoop(tiempoActual) {
   frameCount++;
 }
 
-const tiemposListos = cargarTiemposGenerales(4);
+const tiemposListos = cargarTiemposGenerales(0);
 const sdkGame = globalThis.ytgame?.game;
 const sdkSystem = globalThis.ytgame?.system;
 
