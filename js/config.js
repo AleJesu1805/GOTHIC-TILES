@@ -10,6 +10,7 @@ export const cronometroElement = document.querySelector("#cronometro");
 export const feedbackElement = document.querySelector("#mensaje-feedback");
 export const startButton = document.getElementById("start-button");
 export const restartButton = document.getElementById("restart-button");
+export const pauseButton = document.getElementById("pause-button");
 export const welcomeScreen = document.getElementById("welcome-screen");
 export const finalScreen = document.getElementById("final-screen");
 export const progressBar = document.getElementById("timelapsed");

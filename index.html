@@ -15,6 +15,14 @@
   </head>
   <body>
     <div id="timelapsed"></div>
+    <button
+      id="pause-button"
+      class="pause-button"
+      type="button"
+      aria-label="Pausar juego"
+    >
+      Pausar
+    </button>
     <div class="hud">
       <span class="hud-label">Tiempo</span>
       <span id="cronometro">00:00:00</span>
@@ -29,10 +37,10 @@
       <div class="screen-card">
         <!-- <p class="eyebrow">GOTHIC TILES</p> -->
         <h1>GOTHIC-TILES</h1>
-        <p>
+        <!-- <p>
           Pulsa el botón para iniciar la secuencia y mantener la cadencia de las
           baldosas.
-        </p>
+        </p> -->
         <button id="start-button" type="button">Iniciar partida</button>
       </div>
     </div>
@@ -40,8 +48,8 @@
     <div id="final-screen" class="screen hidden" aria-live="polite">
       <div class="screen-card">
         <p class="eyebrow">Completado</p>
-        <h2>¡Nivel superado!</h2>
-        <p>Tiempo final: <span id="final-time">00:00:00</span></p>
+        <!-- <h2>¡Nivel superado!</h2> -->
+        <p>Tiempo: <span id="final-time">00:00:00</span></p>
         <button id="restart-button" type="button">Jugar otra vez</button>
       </div>
     </div>

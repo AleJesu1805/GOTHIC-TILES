@@ -1,6 +1,12 @@
 @font-face {
-  font-family: "Gothic";
+  font-family: "Savage";
   src: url("../assets/fonts/Savage.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sanguine Frost";
+  src: url("../assets/fonts/Sanguine\ Frost.ttf") format("truetype");
   font-display: swap;
 }
 
@@ -35,7 +41,7 @@ body {
   overflow: hidden;
   background: var(--bg-1);
   color: #f4f0ee;
-  font-family: "Gothic", Impact, sans-serif;
+  font-family: "Savage", Impact, sans-serif;
 }
 
 body {
@@ -145,7 +151,7 @@ canvas {
 
 .hud-label,
 .eyebrow {
-  font-size: 0.72rem;
+  font-size: 2rem;
   color: var(--steel-soft);
   letter-spacing: 0.26rem;
   text-transform: uppercase;
@@ -224,6 +230,10 @@ canvas {
 
 .screen-card {
   position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 20px;
   width: min(88vw, 38rem);
   padding: clamp(2rem, 6vw, 4rem) clamp(1.5rem, 5vw, 3.5rem);
   overflow: hidden;
@@ -272,6 +282,7 @@ canvas {
 
 .eyebrow {
   margin: 0 0 0.8rem;
+  letter-spacing: 5px;
   color: var(--red-glow);
 }
 
@@ -281,7 +292,7 @@ canvas {
   color: #fbf5f3;
   font-size: clamp(2.2rem, 7vw, 4.8rem);
   line-height: 1.02;
-  letter-spacing: 0.08em;
+  letter-spacing: 5px;
   text-transform: uppercase;
   text-shadow:
     3px 3px 0 rgba(83, 10, 16, 0.9),
@@ -289,10 +300,14 @@ canvas {
 }
 
 .screen-card p:not(.eyebrow) {
-  margin: 0 0 1.75rem;
-  color: #d0cbca;
-  font-family: Arial, sans-serif;
-  line-height: 1.7;
+  /* margin: 0 auto 1.75rem; */
+  padding: 1rem 1.25rem;
+  border-block: 1px solid rgba(216, 44, 61, 0.48);
+  letter-spacing: 6px;
+  color: var(--steel);
+  font-family: "Sanguine Frost";
+  font-size: 1rem;
+  font-weight: 900;
 }
 
 button {
@@ -308,7 +323,7 @@ button {
     inset 0 1px rgba(255, 255, 255, 0.38),
     inset 0 -4px rgba(0, 0, 0, 0.13);
   cursor: pointer;
-  font-family: "Gothic", Impact, sans-serif;
+  font-family: "Savage", Impact, sans-serif;
   font-size: 1.1rem;
   letter-spacing: 0.11em;
   text-transform: uppercase;
@@ -347,6 +362,22 @@ button:active {
 button:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 4px;
+}
+
+.pause-button {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  right: 0;
+  display: none;
+  margin: 10px;
+  /* padding: 0.7rem 1rem; */
+  font-size: 0.9rem;
+}
+
+body[data-game-active="true"] .pause-button,
+body[data-game-paused="true"] .pause-button {
+  display: block;
 }
 
 #final-time {

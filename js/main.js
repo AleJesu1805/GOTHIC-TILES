@@ -21,6 +21,7 @@ import {
   cronometroElement,
   finalScreen,
   finalTime,
+  pauseButton,
   progressBar,
   welcomeScreen,
 } from "./config.js";
@@ -104,8 +105,13 @@ function pausarJuego() {
   reanudarPartidaAlDespausar = juegoActivo;
   document.body.dataset.gamePaused = "true";
   document.body.dataset.gameActive = "false";
+  if (pauseButton) {
+    pauseButton.textContent = "Continuar";
+    pauseButton.setAttribute("aria-label", "Continuar juego");
+  }
   if (progressBar) progressBar.style.animationPlayState = "paused";
   void audioCtx.suspend();
+  canciones.pausarCancion();
   if (!juegoActivo) return;
 
   juegoActivo = false;
@@ -119,8 +125,13 @@ function reanudarJuego() {
   if (!juegoPausado) return;
   juegoPausado = false;
   delete document.body.dataset.gamePaused;
+  if (pauseButton) {
+    pauseButton.textContent = "Pausar";
+    pauseButton.setAttribute("aria-label", "Pausar juego");
+  }
   if (progressBar) progressBar.style.animationPlayState = "running";
   void audioCtx.resume();
+  canciones.reanudarCancion();
 
   if (!reanudarPartidaAlDespausar || juegoCompletado) return;
   reanudarPartidaAlDespausar = false;
@@ -131,6 +142,15 @@ function reanudarJuego() {
   reanudarProgramacionTiles();
   animationFrameId = requestAnimationFrame(gameLoop);
 }
+
+pauseButton?.addEventListener("click", () => {
+  if (juegoPausado) {
+    reanudarJuego();
+    return;
+  }
+
+  pausarJuego();
+});
 
 export function gameLoop(tiempoActual) {
   if (!juegoActivo) return;
@@ -177,7 +197,7 @@ document.addEventListener("game:start", async () => {
     resetCronometro();
     programarTiles();
     iniciarJuego();
-    canciones.reproducirCancion(canciones.NoRemorse_Slayer);
+    canciones.reproducirCancion(canciones.NoRemorse_Slayer, 1, 0);
   } finally {
     inicioEnCurso = false;
   }

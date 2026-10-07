@@ -12,6 +12,8 @@ const sonidosJson = {
   3: "./assets/audio/teclas/archivos-json/random.json",
 };
 
+let musicaActual = null;
+
 export const canciones = {
   Boom_BEP: "./assets/audio/canciones/Boom Boom Pow.mp3",
   Hump_BEP: "./assets/audio/canciones/My Humps.mp3",
@@ -19,10 +21,18 @@ export const canciones = {
     "./assets/audio/canciones/No Remorse (I Wanna Die)(MP3_160K).mp3",
   sweetDreams_MarylinManson:
     "./assets/audio/canciones/MarilynMansonVEVO - Marilyn Manson - Sweet Dreams (Are Made Of This) (Alt. Version).mp3",
-  reproducirCancion(ruta) {
-    const music = new Audio();
-    music.src = ruta;
-    music.play();
+  reproducirCancion(ruta, volumen = 1, segundoInicio = 0) {
+    musicaActual?.pause();
+    musicaActual = new Audio(ruta);
+    musicaActual.volume = Math.min(1, Math.max(0, volumen));
+    musicaActual.currentTime = Math.max(0, segundoInicio);
+    void musicaActual.play();
+  },
+  pausarCancion() {
+    musicaActual?.pause();
+  },
+  reanudarCancion() {
+    if (musicaActual?.paused) void musicaActual.play();
   },
 };
 
