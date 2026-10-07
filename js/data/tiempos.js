@@ -28,7 +28,7 @@ export function convertirTiempoATiempoObjetivo(tiempo) {
 export async function cargarTiemposGenerales(segundosExtra = 0) {
   try {
     const respuesta = await fetch(
-      new URL("../tiempos/testing2.json", import.meta.url),
+      new URL("../tiempos/sweetDreams/testing.json", import.meta.url),
     );
     if (!respuesta.ok) {
       throw new Error(`No se pudo cargar tiempos.json: ${respuesta.status}`);

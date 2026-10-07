@@ -14,7 +14,7 @@ import {
   initCronometer,
   resetCronometro,
 } from "./entities/cronometro.js";
-import { cleanCanvas } from "./core/canvas.js";
+import { cleanCanvas, resizeCanvas } from "./core/canvas.js";
 import "./UI/interaction.js";
 import {
   FRAME_DURATION,
@@ -197,11 +197,16 @@ document.addEventListener("game:start", async () => {
     resetCronometro();
     programarTiles();
     iniciarJuego();
-    canciones.reproducirCancion(canciones.NoRemorse_Slayer, 1, 0);
+    canciones.reproducirCancion(canciones.sweetDreams_MarylinManson, 1, 0);
   } finally {
     inicioEnCurso = false;
   }
 });
+
+// window.addEventListener("resize", () => {
+//   resizeCanvas();
+//   crearTilesStaticas();
+// });
 
 if (welcomeScreen && !welcomeScreen.classList.contains("hidden")) {
   welcomeScreen.classList.remove("hidden");
