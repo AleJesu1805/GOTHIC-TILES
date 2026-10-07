@@ -24,7 +24,12 @@ import {
   progressBar,
   welcomeScreen,
 } from "./config.js";
-import { audioCtx, detenerSonido, reproducirSonido } from "./core/audio.js";
+import {
+  audioCtx,
+  canciones,
+  detenerSonido,
+  reproducirSonido,
+} from "./core/audio.js";
 import { ocultarFeedback } from "./UI/feedback.js";
 
 if ("serviceWorker" in navigator) {
@@ -172,8 +177,7 @@ document.addEventListener("game:start", async () => {
     resetCronometro();
     programarTiles();
     iniciarJuego();
-    detenerSonido("sweetDreams_MarylinManson");
-    reproducirSonido("sweetDreams_MarylinManson", 1, 0);
+    canciones.reproducirCancion(canciones.NoRemorse_Slayer);
   } finally {
     inicioEnCurso = false;
   }

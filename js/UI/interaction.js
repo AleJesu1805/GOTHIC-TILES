@@ -75,6 +75,6 @@ document.addEventListener("keydown", (e) => {
   });
   if (e.key == "e") {
     console.log(JSON.stringify(listaDeTiempos, null, 2));
-    console.log(tiemposGenerales);
+    // console.log(tiemposGenerales);
   }
 });
