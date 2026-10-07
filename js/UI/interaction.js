@@ -24,20 +24,20 @@ function procesarEntrada(indice) {
   );
 
   if (tileIndex === -1) {
-    mostrarFeedback("¡Muy mal!", "poor");
+    mostrarFeedback("MUY MAL", "poor");
     return;
   }
 
   const [tile] = tilesCayendo.splice(tileIndex, 1);
   const distancia = Math.abs(tile.y - (CANVAS_HEIGHT - Tile.height));
   if (distancia <= 35) {
-    mostrarFeedback("¡Excelente!", "excellent");
+    mostrarFeedback("EXCELENTE", "excellent");
   } else if (distancia <= 100) {
-    mostrarFeedback("¡Muy bien!", "good");
+    mostrarFeedback("MUY BIEN", "good");
   } else if (distancia <= 180) {
-    mostrarFeedback("¡Bien!", "good");
+    mostrarFeedback("BIEN", "good");
   } else {
-    mostrarFeedback("¡Tarde!", "poor");
+    mostrarFeedback("TARDE", "poor");
   }
   // reproducirSonidoJson(String(indice));
   // reproducirSonido(indice);

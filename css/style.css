@@ -91,14 +91,13 @@ body::after {
 canvas {
   position: absolute;
   z-index: 0;
-  top: 0;
+  bottom: 0;
   left: 50%;
   display: block;
-  width: 99%;
-  height: 99%;
+  width: 360px;
+  height: 720px;
+  /* background-color: #dc9404; */
   transform: translateX(-50%);
-  background: transparent;
-  filter: drop-shadow(0 18px 35px rgba(0, 0, 0, 0.48));
 }
 
 .hud {
@@ -109,9 +108,9 @@ canvas {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.2rem;
+  gap: 0.8rem;
   min-width: 10rem;
-  padding: 0.7rem 1.5rem 0.9rem;
+  padding: 1.5rem 1.4rem;
   transform: translateX(-50%);
   border: 1px solid rgba(185, 62, 73, 0.8);
   background: linear-gradient(
@@ -160,18 +159,19 @@ canvas {
 #cronometro {
   color: #f6efef;
   font-size: clamp(1.7rem, 2vw, 3rem);
-  font-weight: 900;
+  font-weight: 100;
+  font-family: "Sanguine Frost";
   letter-spacing: 0.08em;
-  text-shadow: 0 0 18px rgba(190, 31, 46, 0.82);
+  /* text-shadow: 0 0 18px rgba(190, 31, 46, 0.82); */
 }
 
 .hud-feedback {
-  min-height: 1.5em;
+  /* min-height: 1.5em; */
   visibility: hidden;
   opacity: 0;
-  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-size: clamp(1rem, 3vw, 2rem);
   font-weight: 900;
-  letter-spacing: 0.04em;
+  letter-spacing: 5px;
   transition: opacity 0.15s ease;
 }
 

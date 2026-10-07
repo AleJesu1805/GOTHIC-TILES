@@ -1,8 +1,8 @@
 import { canvas } from "../config.js";
 
 export { canvas };
-export let CANVAS_WIDTH = 800;
-export let CANVAS_HEIGHT = 800;
+export let CANVAS_WIDTH = 480;
+export let CANVAS_HEIGHT = 854;
 export const ctx = canvas.getContext("2d");
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;

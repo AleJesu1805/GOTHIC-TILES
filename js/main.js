@@ -197,16 +197,16 @@ document.addEventListener("game:start", async () => {
     resetCronometro();
     programarTiles();
     iniciarJuego();
-    canciones.reproducirCancion(canciones.sweetDreams_MarylinManson, 1, 0);
+    canciones.reproducirCancion(canciones.NoRemorse_Slayer, 1, 0);
   } finally {
     inicioEnCurso = false;
   }
 });
 
-// window.addEventListener("resize", () => {
-//   resizeCanvas();
-//   crearTilesStaticas();
-// });
+window.addEventListener("resize", () => {
+  resizeCanvas();
+  crearTilesStaticas();
+});
 
 if (welcomeScreen && !welcomeScreen.classList.contains("hidden")) {
   welcomeScreen.classList.remove("hidden");
