@@ -35,12 +35,37 @@
 
     <div id="welcome-screen" class="screen active" aria-live="polite">
       <div class="screen-card">
-        <!-- <p class="eyebrow">GOTHIC TILES</p> -->
         <h1>GOTHIC-TILES</h1>
-        <!-- <p>
-          Pulsa el botón para iniciar la secuencia y mantener la cadencia de las
-          baldosas.
-        </p> -->
+        <fieldset class="level-selector">
+          <legend>Selecciona un nivel</legend>
+          <div class="level-list">
+            <label class="level-option">
+              <input
+                type="radio"
+                name="level"
+                value="NoRemorse_Slayer"
+                checked
+              />
+              <span>No Remorse -- Slayer</span>
+            </label>
+            <label class="level-option">
+              <input type="radio" name="level" value="Boom_BEP" />
+              <span>Boom Boom Pow -- Black Eyed Peas</span>
+            </label>
+            <label class="level-option">
+              <input type="radio" name="level" value="Hump_BEP" />
+              <span>My Humps -- Black Eyed Peas</span>
+            </label>
+            <label class="level-option">
+              <input
+                type="radio"
+                name="level"
+                value="sweetDreams_MarylinManson"
+              />
+              <span>Sweet Dreams -- Marilyn Manson</span>
+            </label>
+          </div>
+        </fieldset>
         <button id="start-button" type="button">Iniciar partida</button>
       </div>
     </div>

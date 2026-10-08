@@ -32,7 +32,7 @@ export const level = {
     ).href,
   },
   NoRemorse_Slayer: {
-    tiemposUrl: new URL("./tiempos/noRemorse/testing.json", import.meta.url)
+    tiemposUrl: new URL("./tiempos/noRemorse/tiempos2.json", import.meta.url)
       .href,
     cancionUrl: new URL(
       "../assets/audio/canciones/No Remorse (I Wanna Die)(MP3_160K).mp3",
@@ -40,10 +40,8 @@ export const level = {
     ).href,
   },
   sweetDreams_MarylinManson: {
-    tiemposUrl: new URL(
-      "./tiempos/sweetDreams/sweetDreams.json",
-      import.meta.url,
-    ).href,
+    tiemposUrl: new URL("./tiempos/sweetDreams/testing.json", import.meta.url)
+      .href,
     cancionUrl: new URL(
       "../assets/audio/canciones/MarilynMansonVEVO - Marilyn Manson - Sweet Dreams (Are Made Of This) (Alt. Version).mp3",
       import.meta.url,

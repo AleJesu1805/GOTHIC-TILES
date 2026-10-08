@@ -46,7 +46,7 @@ let reanudarPartidaAlDespausar = false;
 let juegoCompletado = false;
 let inicioEnCurso = false;
 let frameCount = 0;
-const nivelActual = level.NoRemorse_Slayer;
+let nivelActual = level.NoRemorse_Slayer;
 
 function calcularDuracionTotal() {
   return tiemposGenerales.reduce(
@@ -195,6 +195,11 @@ document.addEventListener("game:start", async () => {
   try {
     await audioCtx.resume();
     await tiemposListos;
+    const nivelSeleccionado = document.querySelector(
+      'input[name="level"]:checked',
+    )?.value;
+    nivelActual = level[nivelSeleccionado] ?? nivelActual;
+    await cargarTiemposGenerales(nivelActual.tiemposUrl, 0);
     if (juegoPausado) return;
     resetCronometro();
     programarTiles();
