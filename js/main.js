@@ -21,6 +21,7 @@ import {
   cronometroElement,
   finalScreen,
   finalTime,
+  level,
   pauseButton,
   progressBar,
   welcomeScreen,
@@ -45,6 +46,7 @@ let reanudarPartidaAlDespausar = false;
 let juegoCompletado = false;
 let inicioEnCurso = false;
 let frameCount = 0;
+const nivelActual = level.NoRemorse_Slayer;
 
 function calcularDuracionTotal() {
   return tiemposGenerales.reduce(
@@ -172,7 +174,7 @@ export function gameLoop(tiempoActual) {
   frameCount++;
 }
 
-const tiemposListos = cargarTiemposGenerales(0);
+const tiemposListos = cargarTiemposGenerales(nivelActual.tiemposUrl, 0);
 const sdkGame = globalThis.ytgame?.game;
 const sdkSystem = globalThis.ytgame?.system;
 
@@ -197,7 +199,7 @@ document.addEventListener("game:start", async () => {
     resetCronometro();
     programarTiles();
     iniciarJuego();
-    canciones.reproducirCancion(canciones.NoRemorse_Slayer, 1, 0);
+    canciones.reproducirCancion(nivelActual.cancionUrl, 1, 0);
   } finally {
     inicioEnCurso = false;
   }

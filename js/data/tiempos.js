@@ -25,11 +25,9 @@ export function convertirTiempoATiempoObjetivo(tiempo) {
   return ((minutos * 60 + segundos) * 100 + centesimas) * 10;
 }
 
-export async function cargarTiemposGenerales(segundosExtra = 0) {
+export async function cargarTiemposGenerales(tiemposUrl, segundosExtra = 0) {
   try {
-    const respuesta = await fetch(
-      new URL("../tiempos/noRemorse/testing2.json", import.meta.url),
-    );
+    const respuesta = await fetch(tiemposUrl);
     if (!respuesta.ok) {
       throw new Error(`No se pudo cargar tiempos.json: ${respuesta.status}`);
     }

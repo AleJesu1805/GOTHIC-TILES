@@ -64,6 +64,7 @@ export function crearTileCayendo(tile, tiempoObjetivo) {
     tiempoObjetivo,
     tile,
   );
+  // tilesCayendo.height = 50;
   tilesCayendo.push(tileCayendo);
 }
 
