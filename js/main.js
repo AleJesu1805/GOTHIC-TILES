@@ -23,7 +23,9 @@ import {
   finalTime,
   level,
   pauseButton,
+  pauseScreen,
   progressBar,
+  resumeButton,
   welcomeScreen,
 } from "./config.js";
 import {
@@ -45,6 +47,7 @@ let juegoPausado = false;
 let reanudarPartidaAlDespausar = false;
 let juegoCompletado = false;
 let inicioEnCurso = false;
+let solicitudInicio = 0;
 let frameCount = 0;
 let nivelActual = level.NoRemorse_Slayer;
 
@@ -125,6 +128,7 @@ function pausarJuego() {
   reanudarPartidaAlDespausar = juegoActivo;
   document.body.dataset.gamePaused = "true";
   document.body.dataset.gameActive = "false";
+  pauseScreen?.classList.remove("hidden");
   if (pauseButton) {
     pauseButton.textContent = "Continuar";
     pauseButton.setAttribute("aria-label", "Continuar juego");
@@ -145,6 +149,7 @@ function reanudarJuego() {
   if (!juegoPausado) return;
   juegoPausado = false;
   delete document.body.dataset.gamePaused;
+  pauseScreen?.classList.add("hidden");
   if (pauseButton) {
     pauseButton.textContent = "Pausar";
     pauseButton.setAttribute("aria-label", "Pausar juego");
@@ -162,6 +167,36 @@ function reanudarJuego() {
   reanudarProgramacionTiles();
   animationFrameId = requestAnimationFrame(gameLoop);
 }
+
+function volverAlMenu() {
+  solicitudInicio++;
+  inicioEnCurso = false;
+  juegoActivo = false;
+  juegoPausado = false;
+  juegoCompletado = false;
+  reanudarPartidaAlDespausar = false;
+  document.body.dataset.gameActive = "false";
+  delete document.body.dataset.gamePaused;
+  if (animationFrameId) cancelAnimationFrame(animationFrameId);
+  animationFrameId = null;
+  detenerCronometro();
+  resetCronometro();
+  limpiarProgramacionTiles();
+  resetProgressBar();
+  canciones.pausarCancion();
+  void audioCtx.suspend();
+  pauseScreen?.classList.add("hidden");
+  finalScreen?.classList.add("hidden");
+  welcomeScreen?.classList.remove("hidden");
+  if (pauseButton) {
+    pauseButton.textContent = "Pausar";
+    pauseButton.setAttribute("aria-label", "Pausar juego");
+  }
+  cleanCanvas();
+}
+
+resumeButton?.addEventListener("click", reanudarJuego);
+document.addEventListener("game:home", volverAlMenu);
 
 pauseButton?.addEventListener("click", () => {
   if (juegoPausado) {
@@ -209,22 +244,24 @@ if (sdkGame) {
 document.addEventListener("game:start", async () => {
   if (inicioEnCurso || juegoActivo) return;
   inicioEnCurso = true;
+  const solicitudActual = ++solicitudInicio;
 
   try {
     await audioCtx.resume();
     await tiemposListos;
+    if (solicitudActual !== solicitudInicio) return;
     const nivelSeleccionado = document.querySelector(
       'input[name="level"]:checked',
     )?.value;
     nivelActual = level[nivelSeleccionado] ?? nivelActual;
     await cargarTiemposGenerales(nivelActual.tiemposUrl, 0);
-    if (juegoPausado) return;
+    if (solicitudActual !== solicitudInicio || juegoPausado) return;
     resetCronometro();
     programarTiles();
     iniciarJuego();
     canciones.reproducirCancion(nivelActual.cancionUrl, 1, 0);
   } finally {
-    inicioEnCurso = false;
+    if (solicitudActual === solicitudInicio) inicioEnCurso = false;
   }
 });
 

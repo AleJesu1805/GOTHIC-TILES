@@ -44,6 +44,55 @@
       </div>
     </div>
 
+    <div
+      id="pause-screen"
+      class="screen hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pause-title"
+    >
+      <div class="screen-card pause-card">
+        <p class="eyebrow">Partida en pausa</p>
+        <h2 id="pause-title">Configuracion</h2>
+        <section class="settings-group" aria-labelledby="audio-settings-title">
+          <h3 id="audio-settings-title">Audio</h3>
+          <div class="setting-row">
+            <label for="music-volume">Música</label>
+            <input
+              id="music-volume"
+              class="setting-range"
+              type="range"
+              min="0"
+              max="100"
+              value="75"
+            />
+            <output for="music-volume">75%</output>
+          </div>
+          <div class="setting-row">
+            <label for="effects-volume">Efectos</label>
+            <input
+              id="effects-volume"
+              class="setting-range"
+              type="range"
+              min="0"
+              max="100"
+              value="60"
+            />
+            <output for="effects-volume">60%</output>
+          </div>
+        </section>
+        <section class="settings-group" aria-labelledby="controls-title">
+          <h3 id="controls-title">Controles</h3>
+          <div class="control-row">
+            <span>Seleccionar carril</span>
+            <kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><kbd>F</kbd>
+          </div>
+        </section>
+        <button id="resume-button" type="button">Continuar partida</button>
+        <button class="home-button" type="button">Elegir otra cancion</button>
+      </div>
+    </div>
+
     <div id="final-screen" class="screen hidden" aria-live="polite">
       <div class="screen-card">
         <p class="eyebrow">Completado</p>
