@@ -47,7 +47,7 @@ export const level = {
   },
   sweetDreams_MarylinManson: {
     tittle: "Sweet Dreams -- Marilyn Manson",
-    tiemposUrl: new URL("./tiempos/sweetDreams/testing.json", import.meta.url)
+    tiemposUrl: new URL("./tiempos/sweetDreams/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
       "../assets/audio/canciones/MarilynMansonVEVO - Marilyn Manson - Sweet Dreams (Are Made Of This) (Alt. Version).mp3",
