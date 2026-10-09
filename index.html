@@ -38,33 +38,7 @@
         <h1>GOTHIC-TILES</h1>
         <fieldset class="level-selector">
           <legend>Selecciona un nivel</legend>
-          <div class="level-list">
-            <label class="level-option">
-              <input
-                type="radio"
-                name="level"
-                value="NoRemorse_Slayer"
-                checked
-              />
-              <span>No Remorse -- Slayer</span>
-            </label>
-            <label class="level-option">
-              <input type="radio" name="level" value="Boom_BEP" />
-              <span>Boom Boom Pow -- Black Eyed Peas</span>
-            </label>
-            <label class="level-option">
-              <input type="radio" name="level" value="Hump_BEP" />
-              <span>My Humps -- Black Eyed Peas</span>
-            </label>
-            <label class="level-option">
-              <input
-                type="radio"
-                name="level"
-                value="sweetDreams_MarylinManson"
-              />
-              <span>Sweet Dreams -- Marilyn Manson</span>
-            </label>
-          </div>
+          <div class="level-list"></div>
         </fieldset>
         <button id="start-button" type="button">Iniciar partida</button>
       </div>
@@ -73,9 +47,9 @@
     <div id="final-screen" class="screen hidden" aria-live="polite">
       <div class="screen-card">
         <p class="eyebrow">Completado</p>
-        <!-- <h2>¡Nivel superado!</h2> -->
         <p>Tiempo: <span id="final-time">00:00:00</span></p>
         <button id="restart-button" type="button">Jugar otra vez</button>
+        <button id="home-button" type="button">Elegir otra canción</button>
       </div>
     </div>
 

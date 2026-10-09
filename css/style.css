@@ -364,10 +364,19 @@ canvas {
   height: 1rem;
   margin: 0;
   accent-color: var(--metal-red);
+  &:focus {
+    outline: none;
+  }
+}
+
+.level-option span {
+  font-size: 1.2rem;
+  color: #9b9411;
+  letter-spacing: 3px;
 }
 
 .level-option:focus-within {
-  outline: 2px solid #fff;
+  outline: 0px solid #fff;
   outline-offset: 2px;
 }
 

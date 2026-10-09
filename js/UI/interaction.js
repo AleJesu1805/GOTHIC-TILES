@@ -2,7 +2,12 @@ import { canvas, CANVAS_HEIGHT, CANVAS_WIDTH } from "../core/canvas.js";
 import { Tile, tilesCayendo } from "../entities/Tiles.js";
 import { reproducirSonido, reproducirSonidoJson } from "../core/audio.js";
 import { time } from "../entities/cronometro.js";
-import { TILE_KEYS, restartButton, startButton } from "../config.js";
+import {
+  TILE_KEYS,
+  homeButton,
+  restartButton,
+  startButton,
+} from "../config.js";
 import { mostrarFeedback } from "./feedback.js";
 import { tiemposGenerales } from "../data/tiempos.js";
 
@@ -10,8 +15,13 @@ function emitGameStart() {
   document.dispatchEvent(new CustomEvent("game:start"));
 }
 
+function emitReturnToMenu() {
+  document.dispatchEvent(new CustomEvent("game:home"));
+}
+
 startButton?.addEventListener("click", emitGameStart);
 restartButton?.addEventListener("click", emitGameStart);
+homeButton?.addEventListener("click", emitReturnToMenu);
 
 function procesarEntrada(indice) {
   if (document.body.dataset.gameActive !== "true") return;

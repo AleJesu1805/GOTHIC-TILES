@@ -48,6 +48,24 @@ let inicioEnCurso = false;
 let frameCount = 0;
 let nivelActual = level.NoRemorse_Slayer;
 
+const levelList = document.querySelector(".level-list");
+for (const [levelId, levelData] of Object.entries(level)) {
+  const label = document.createElement("label");
+  label.className = "level-option";
+
+  const input = document.createElement("input");
+  input.type = "radio";
+  input.name = "level";
+  input.value = levelId;
+  input.checked = levelId === "NoRemorse_Slayer";
+
+  const title = document.createElement("span");
+  title.textContent = levelData.tittle;
+
+  label.append(input, title);
+  levelList?.append(label);
+}
+
 function calcularDuracionTotal() {
   return tiemposGenerales.reduce(
     (duracionMaxima, [, tiempo]) =>
@@ -201,13 +219,24 @@ document.addEventListener("game:start", async () => {
     nivelActual = level[nivelSeleccionado] ?? nivelActual;
     await cargarTiemposGenerales(nivelActual.tiemposUrl, 0);
     if (juegoPausado) return;
+    await canciones.reproducirCancion(nivelActual.cancionUrl, 1, 0);
+    if (juegoPausado) {
+      canciones.pausarCancion();
+      return;
+    }
     resetCronometro();
     programarTiles();
     iniciarJuego();
-    canciones.reproducirCancion(nivelActual.cancionUrl, 1, 0);
   } finally {
     inicioEnCurso = false;
   }
+});
+
+document.addEventListener("game:home", () => {
+  if (juegoActivo || inicioEnCurso) return;
+  canciones.pausarCancion();
+  finalScreen?.classList.add("hidden");
+  welcomeScreen?.classList.remove("hidden");
 });
 
 window.addEventListener("resize", () => {

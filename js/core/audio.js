@@ -21,12 +21,19 @@ export const canciones = {
     "./assets/audio/canciones/No Remorse (I Wanna Die)(MP3_160K).mp3",
   sweetDreams_MarylinManson:
     "./assets/audio/canciones/MarilynMansonVEVO - Marilyn Manson - Sweet Dreams (Are Made Of This) (Alt. Version).mp3",
-  reproducirCancion(ruta, volumen = 1, segundoInicio = 0) {
+  async reproducirCancion(ruta, volumen = 1, segundoInicio = 0) {
     musicaActual?.pause();
     musicaActual = new Audio(ruta);
+    musicaActual.preload = "auto";
     musicaActual.volume = Math.min(1, Math.max(0, volumen));
     musicaActual.currentTime = Math.max(0, segundoInicio);
-    void musicaActual.play();
+    try {
+      await musicaActual.play();
+      return true;
+    } catch (error) {
+      console.error("No se pudo iniciar la canción:", error);
+      return false;
+    }
   },
   pausarCancion() {
     musicaActual?.pause();
