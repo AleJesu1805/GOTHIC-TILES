@@ -4,7 +4,7 @@ import { reproducirSonido, reproducirSonidoJson } from "../core/audio.js";
 import { time } from "../entities/cronometro.js";
 import {
   TILE_KEYS,
-  homeButton,
+  homeButtons,
   restartButton,
   startButton,
 } from "../config.js";
@@ -21,7 +21,24 @@ function emitReturnToMenu() {
 
 startButton?.addEventListener("click", emitGameStart);
 restartButton?.addEventListener("click", emitGameStart);
-homeButton?.addEventListener("click", emitReturnToMenu);
+homeButtons.forEach((button) =>
+  button.addEventListener("click", emitReturnToMenu),
+);
+
+document.querySelectorAll(".setting-range").forEach((range) => {
+  const output = range.parentElement?.querySelector("output");
+  const updateDisplay = () => {
+    const min = Number(range.min);
+    const max = Number(range.max);
+    const value = Number(range.value);
+    const percentage = ((value - min) / (max - min)) * 100;
+    range.style.setProperty("--range-progress", `${percentage}%`);
+    if (output) output.value = `${value}%`;
+  };
+
+  range.addEventListener("input", updateDisplay);
+  updateDisplay();
+});
 
 function procesarEntrada(indice) {
   if (document.body.dataset.gameActive !== "true") return;

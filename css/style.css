@@ -1,4 +1,36 @@
 @font-face {
+  font-family: "Quantico Regular";
+  src: url("../assets/fonts/Quantico-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Quantico Italic";
+  src: url("../assets/fonts/Quantico-Italic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Quantico Bold";
+  src: url("../assets/fonts/Quantico-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Quantico Bold Italic";
+  src: url("../assets/fonts/Quantico-BoldItalic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Savage";
   src: url("../assets/fonts/Savage.ttf") format("truetype");
   font-display: swap;
@@ -7,6 +39,12 @@
 @font-face {
   font-family: "Sanguine Frost";
   src: url("../assets/fonts/Sanguine\ Frost.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Long Shot";
+  src: url("../assets/fonts/Long_Shot.ttf") format("truetype");
   font-display: swap;
 }
 
@@ -300,6 +338,148 @@ canvas {
   /* text-shadow:
     3px 3px 0 rgba(83, 10, 16, 0.9),
     0 0 22px rgba(172, 24, 36, 0.7); */
+}
+
+.pause-card {
+  gap: 1.25rem;
+  width: min(88vw, 34rem);
+  padding-block: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.pause-card .eyebrow {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.pause-card h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  letter-spacing: 4px;
+}
+
+.settings-group {
+  display: grid;
+  gap: 0.85rem;
+  width: 100%;
+  padding: 1rem 0;
+  border-block: 1px solid rgba(216, 44, 61, 0.38);
+  text-align: left;
+}
+
+.settings-group h3 {
+  margin: 0;
+  color: var(--red-glow);
+  font-size: 1.5rem;
+  /* letter-spacing: 0.1em; */
+  font-family: "Quantico bold";
+  font-weight: 900;
+  /* text-transform: uppercase; */
+}
+
+.setting-row {
+  display: grid;
+  grid-template-columns: 5rem minmax(4rem, 1fr) 3rem;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--steel);
+  font-family: "Sanguine Frost", serif;
+  font-size: 0.95rem;
+}
+
+.setting-row label {
+  /* cursor: pointer; */
+  font-size: 1rem;
+  font-family: "Quantico Bold";
+  /* letter-spacing: 0px; */
+}
+
+.setting-row output {
+  color: var(--steel-soft);
+  text-align: right;
+}
+
+.setting-range {
+  width: 100%;
+  min-width: 0;
+  height: 1.2rem;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.setting-range::-webkit-slider-runnable-track {
+  height: 0.45rem;
+  border: 1px solid rgba(217, 212, 208, 0.35);
+  background: linear-gradient(
+    90deg,
+    var(--red-glow) 0 var(--range-progress),
+    rgba(0, 0, 0, 0.7) var(--range-progress) 100%
+  );
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.75);
+}
+
+.setting-range::-moz-range-track {
+  height: 0.45rem;
+  border: 1px solid rgba(217, 212, 208, 0.35);
+  background: linear-gradient(
+    90deg,
+    var(--red-glow) 0 var(--range-progress),
+    rgba(0, 0, 0, 0.7) var(--range-progress) 100%
+  );
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.75);
+}
+
+.setting-range::-webkit-slider-thumb {
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.32rem;
+  appearance: none;
+  border: 1px solid #ffd0d3;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f66b76, #7d0d19);
+  box-shadow: 0 0 10px rgba(255, 88, 104, 0.65);
+}
+
+.setting-range::-moz-range-thumb {
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 1px solid #ffd0d3;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f66b76, #7d0d19);
+  box-shadow: 0 0 10px rgba(255, 88, 104, 0.65);
+}
+
+.setting-range:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  color: var(--steel);
+  font-family: "Sanguine Frost", serif;
+  font-size: 0.95rem;
+}
+
+.control-row span {
+  flex: 1 1 10rem;
+  font-size: 1rem;
+  font-family: "Quantico bold";
+}
+
+.control-row kbd {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  aspect-ratio: 1;
+  border: 1px solid rgba(248, 110, 122, 0.55);
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-family: "Savage", Impact, sans-serif;
 }
 
 .level-selector {
