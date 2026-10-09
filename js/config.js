@@ -22,21 +22,21 @@ export const finalTime = document.getElementById("final-time");
 export const level = {
   NoRemorse_Slayer: {
     tittle: "No Remorse -- Slayer",
-    tiemposUrl: new URL("./tiempos/noRemorse/tiempos2.json", import.meta.url)
+    tiemposUrl: new URL("./tiempos/noRemorse/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
       "../assets/audio/canciones/No Remorse (I Wanna Die)(MP3_160K).mp3",
       import.meta.url,
     ).href,
   },
-  Boom_BEP: {
-    tittle: "Boom Boom Pow -- Black Eyed Peas",
-    tiemposUrl: new URL("./tiempos/boomBEP/tiempos.json", import.meta.url).href,
-    cancionUrl: new URL(
-      "../assets/audio/canciones/Boom Boom Pow.mp3",
-      import.meta.url,
-    ).href,
-  },
+  // Boom_BEP: {
+  //   tittle: "Boom Boom Pow -- Black Eyed Peas",
+  //   tiemposUrl: new URL("./tiempos/boomBEP/tiempos.json", import.meta.url).href,
+  //   cancionUrl: new URL(
+  //     "../assets/audio/canciones/Boom Boom Pow.mp3",
+  //     import.meta.url,
+  //   ).href,
+  // },
   Hump_BEP: {
     tittle: "My Humps -- Black Eyed Peas",
     tiemposUrl: new URL("./tiempos/humpBEP/tiempos.json", import.meta.url).href,
@@ -65,8 +65,10 @@ export const level = {
   },
   WhatsUpPeople_MaximumTheHormone: {
     tittle: "What's up people?! -- Maximum The Hormone",
-    tiemposUrl: new URL("./tiempos/whatsUpPeople/tiempos.json", import.meta.url)
-      .href,
+    tiemposUrl: new URL(
+      "./tiempos/whatsUpPeople/tiempos2.json",
+      import.meta.url,
+    ).href,
     cancionUrl: new URL(
       "../assets/audio/canciones/MAXIMUM THE HORMONE - What's up, people？!.mp3",
       import.meta.url,

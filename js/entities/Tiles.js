@@ -5,7 +5,7 @@ import { mostrarFeedback } from "../UI/feedback.js";
 
 export class Tile {
   static height = 200;
-  static width = 100;
+  static width = CANVAS_WIDTH / 4;
   constructor(y, color, offsetTiles, tiempoObjetivo = null, index = null) {
     this.width = Tile.width;
     this.height = Tile.height;
