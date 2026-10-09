@@ -49,54 +49,7 @@
         <p class="eyebrow">Completado</p>
         <p>Tiempo: <span id="final-time">00:00:00</span></p>
         <button id="restart-button" type="button">Jugar otra vez</button>
-        <button class="home-button" type="button">Elegir otra canción</button>
       </div>
-    </div>
-
-    <div id="pause-screen" class="screen hidden" aria-labelledby="pause-title">
-      <section class="screen-card pause-card">
-        <!-- <p class="eyebrow">Partida en pausa</p> -->
-        <h2 id="pause-title">Configuracion</h2>
-
-        <div class="settings-group" aria-label="Audio">
-          <h3>Audio</h3>
-          <div class="setting-row">
-            <label for="music-volume">Música</label>
-            <input
-              id="music-volume"
-              class="setting-range"
-              type="range"
-              min="0"
-              max="100"
-              value="72"
-            />
-            <output for="music-volume">72%</output>
-          </div>
-          <div class="setting-row">
-            <label for="effects-volume">Efectos</label>
-            <input
-              id="effects-volume"
-              class="setting-range"
-              type="range"
-              min="0"
-              max="100"
-              value="58"
-            />
-            <output for="effects-volume">58%</output>
-          </div>
-        </div>
-
-        <div class="settings-group controls-group" aria-label="Controles">
-          <h3>Controles</h3>
-          <div class="control-row">
-            <span>Golpear las fichas</span><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd
-            ><kbd>F</kbd>
-          </div>
-        </div>
-
-        <button id="resume-button" type="button">Continuar partida</button>
-        <button class="home-button" type="button">Elegir otra canción</button>
-      </section>
     </div>
 
     <canvas></canvas>

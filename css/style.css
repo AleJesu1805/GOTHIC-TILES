@@ -632,8 +632,8 @@ button:focus-visible {
   right: 0;
   display: none;
   margin: 10px;
-  /* padding: 0.7rem 1rem; */
-  font-size: 0.9rem;
+  padding: 0.7rem 1rem;
+  font-size: 0.8rem;
 }
 
 body[data-game-active="true"] .pause-button,

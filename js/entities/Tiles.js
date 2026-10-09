@@ -34,8 +34,33 @@ export class Tile {
 }
 
 export const tilesStaticas = [];
+const laneFlashStartedAt = Array(4).fill(null);
+const laneFlashDuration = 200;
+
+export function iluminarCarril(indice) {
+  if (indice < 0 || indice >= laneFlashStartedAt.length) return;
+  laneFlashStartedAt[indice] = performance.now();
+}
+
+function dibujarBrilloCarril(tile, indice) {
+  const startedAt = laneFlashStartedAt[indice];
+  if (startedAt === null) return;
+
+  const progress = (performance.now() - startedAt) / laneFlashDuration;
+  if (progress >= 1) {
+    laneFlashStartedAt[indice] = null;
+    return;
+  }
+
+  ctx.save();
+  ctx.globalAlpha = Math.sin(progress * Math.PI) * 0.24;
+  ctx.fillStyle = `${tile.color}`.replace("aa", "ff");
+  ctx.fillRect(tile.x, 0, tile.width, CANVAS_HEIGHT);
+  ctx.restore();
+}
 
 export function crearTilesStaticas() {
+  tilesStaticas.length = 0;
   for (let i = 0; i < 4; i++) {
     const tile = new Tile(
       CANVAS_HEIGHT - Tile.height,
@@ -44,6 +69,7 @@ export function crearTilesStaticas() {
       i,
     );
     tile.draw();
+    dibujarBrilloCarril(tile, i);
     tilesStaticas.push(tile);
   }
 }

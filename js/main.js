@@ -23,9 +23,7 @@ import {
   finalTime,
   level,
   pauseButton,
-  pauseScreen,
   progressBar,
-  resumeButton,
   welcomeScreen,
 } from "./config.js";
 import {
@@ -47,7 +45,6 @@ let juegoPausado = false;
 let reanudarPartidaAlDespausar = false;
 let juegoCompletado = false;
 let inicioEnCurso = false;
-let solicitudInicio = 0;
 let frameCount = 0;
 let nivelActual = level.NoRemorse_Slayer;
 
@@ -126,7 +123,6 @@ function pausarJuego() {
   if (juegoPausado) return;
   juegoPausado = true;
   reanudarPartidaAlDespausar = juegoActivo;
-  pauseScreen?.classList.remove("hidden");
   document.body.dataset.gamePaused = "true";
   document.body.dataset.gameActive = "false";
   if (pauseButton) {
@@ -148,7 +144,6 @@ function pausarJuego() {
 function reanudarJuego() {
   if (!juegoPausado) return;
   juegoPausado = false;
-  pauseScreen?.classList.add("hidden");
   delete document.body.dataset.gamePaused;
   if (pauseButton) {
     pauseButton.textContent = "Pausar";
@@ -176,7 +171,6 @@ pauseButton?.addEventListener("click", () => {
 
   pausarJuego();
 });
-resumeButton?.addEventListener("click", reanudarJuego);
 
 export function gameLoop(tiempoActual) {
   if (!juegoActivo) return;
@@ -215,60 +209,23 @@ if (sdkGame) {
 document.addEventListener("game:start", async () => {
   if (inicioEnCurso || juegoActivo) return;
   inicioEnCurso = true;
-  const solicitudActual = ++solicitudInicio;
 
   try {
     await audioCtx.resume();
-    if (solicitudActual !== solicitudInicio) return;
     await tiemposListos;
-    if (solicitudActual !== solicitudInicio) return;
     const nivelSeleccionado = document.querySelector(
       'input[name="level"]:checked',
     )?.value;
     nivelActual = level[nivelSeleccionado] ?? nivelActual;
     await cargarTiemposGenerales(nivelActual.tiemposUrl, 0);
-    if (solicitudActual !== solicitudInicio) return;
     if (juegoPausado) return;
-    await canciones.reproducirCancion(nivelActual.cancionUrl, 1, 0);
-    if (solicitudActual !== solicitudInicio) {
-      canciones.pausarCancion();
-      return;
-    }
-    if (juegoPausado) {
-      canciones.pausarCancion();
-      return;
-    }
     resetCronometro();
     programarTiles();
     iniciarJuego();
+    canciones.reproducirCancion(nivelActual.cancionUrl, 1, 0);
   } finally {
     inicioEnCurso = false;
   }
-});
-
-document.addEventListener("game:home", () => {
-  solicitudInicio++;
-  juegoActivo = false;
-  juegoPausado = false;
-  reanudarPartidaAlDespausar = false;
-  juegoCompletado = false;
-  document.body.dataset.gameActive = "false";
-  delete document.body.dataset.gamePaused;
-  if (animationFrameId) cancelAnimationFrame(animationFrameId);
-  animationFrameId = null;
-  detenerCronometro();
-  resetCronometro();
-  limpiarProgramacionTiles();
-  ocultarFeedback();
-  canciones.pausarCancion();
-  pauseScreen?.classList.add("hidden");
-  finalScreen?.classList.add("hidden");
-  welcomeScreen?.classList.remove("hidden");
-  if (pauseButton) {
-    pauseButton.textContent = "Pausar";
-    pauseButton.setAttribute("aria-label", "Pausar juego");
-  }
-  resetProgressBar();
 });
 
 window.addEventListener("resize", () => {

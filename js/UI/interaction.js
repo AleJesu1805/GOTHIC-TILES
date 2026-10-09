@@ -1,5 +1,10 @@
 import { canvas, CANVAS_HEIGHT, CANVAS_WIDTH } from "../core/canvas.js";
-import { Tile, tilesCayendo } from "../entities/Tiles.js";
+import {
+  Tile,
+  iluminarCarril,
+  tilesCayendo,
+  tilesStaticas,
+} from "../entities/Tiles.js";
 import { reproducirSonido, reproducirSonidoJson } from "../core/audio.js";
 import { time } from "../entities/cronometro.js";
 import {
@@ -42,6 +47,7 @@ document.querySelectorAll(".setting-range").forEach((range) => {
 
 function procesarEntrada(indice) {
   if (document.body.dataset.gameActive !== "true") return;
+  iluminarCarril(indice);
 
   const tileIndex = tilesCayendo.findIndex(
     (tile) =>
@@ -71,19 +77,19 @@ function procesarEntrada(indice) {
 }
 
 canvas.addEventListener("pointerdown", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const canvasX = ((e.clientX - rect.left) / rect.width) * CANVAS_WIDTH;
+  const canvasY = ((e.clientY - rect.top) / rect.height) * CANVAS_HEIGHT;
   const leftEdge = CANVAS_WIDTH / 2 - 2 * Tile.width;
   const rightEdge = CANVAS_WIDTH / 2 + 2 * Tile.width;
   if (
-    e.clientX < leftEdge ||
-    e.clientX > rightEdge ||
-    e.clientY < CANVAS_HEIGHT - Tile.height
+    canvasX < leftEdge ||
+    canvasX >= rightEdge ||
+    canvasY < CANVAS_HEIGHT - Tile.height
   )
     return;
 
-  const tileIndex = Math.max(
-    0,
-    Math.ceil((e.clientX - CANVAS_WIDTH / 2) / Tile.width) + 1,
-  );
+  const tileIndex = Math.floor((canvasX - leftEdge) / Tile.width);
   procesarEntrada(tileIndex);
 });
 
