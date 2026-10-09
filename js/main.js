@@ -10,9 +10,11 @@ import {
 } from "./data/tiempos.js";
 import {
   detenerCronometro,
+  formatearTiempoTranscurrido,
   getTiempoTranscurrido,
   initCronometer,
   resetCronometro,
+  time,
 } from "./entities/cronometro.js";
 import { cleanCanvas, resizeCanvas } from "./core/canvas.js";
 import "./UI/interaction.js";
@@ -117,7 +119,8 @@ export function finalizarJuego() {
   if (animationFrameId) cancelAnimationFrame(animationFrameId);
   detenerCronometro();
 
-  const tiempoActual = cronometroElement?.textContent ?? "00:00:00";
+  const tiempoActual =
+    formatearTiempoTranscurrido(getTiempoTranscurrido()) ?? "00:00:00";
   finalTime.textContent = tiempoActual;
   finalScreen?.classList.remove("hidden");
 }

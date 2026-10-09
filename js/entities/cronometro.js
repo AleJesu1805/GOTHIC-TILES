@@ -21,6 +21,15 @@ function formatearNumero(valor) {
   return String(valor).padStart(2, "0");
 }
 
+export function formatearTiempoTranscurrido(milisegundos) {
+  const totalCentesimas = Math.floor(milisegundos / 10);
+  const centesimas = totalCentesimas % 100;
+  const segundos = Math.floor(totalCentesimas / 100) % 60;
+  const minutos = Math.floor(totalCentesimas / 6000);
+
+  return `${formatearNumero(minutos)}:${formatearNumero(segundos)}:${formatearNumero(centesimas)}`;
+}
+
 export let time = `${formatearNumero(minutos)}:${formatearNumero(segundos)}:${formatearNumero(centesimas)}`;
 
 function renderCronometro() {
