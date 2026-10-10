@@ -18,12 +18,21 @@ export const welcomeScreen = document.getElementById("welcome-screen");
 export const finalScreen = document.getElementById("final-screen");
 export const progressBar = document.getElementById("timelapsed");
 export const finalTime = document.getElementById("final-time");
+export const finalScore = document.getElementById("final-score");
 
 export const level = {
   NoRemorse_Slayer: {
     tittle: "No Remorse -- Slayer",
     tiemposUrl: new URL("./tiempos/noRemorse/tiempos.json", import.meta.url)
       .href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/No Remorse (I Wanna Die)(MP3_160K).mp3",
+      import.meta.url,
+    ).href,
+  },
+  Prueba: {
+    tittle: "Nivel de prueba",
+    tiemposUrl: new URL("./tiempos/prueba.json", import.meta.url).href,
     cancionUrl: new URL(
       "../assets/audio/canciones/No Remorse (I Wanna Die)(MP3_160K).mp3",
       import.meta.url,

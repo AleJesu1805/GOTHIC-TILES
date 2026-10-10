@@ -22,6 +22,7 @@ import {
   FRAME_DURATION,
   cronometroElement,
   finalScreen,
+  finalScore,
   finalTime,
   level,
   pauseButton,
@@ -37,6 +38,11 @@ import {
   reproducirSonido,
 } from "./core/audio.js";
 import { ocultarFeedback } from "./UI/feedback.js";
+import {
+  obtenerPuntaje,
+  reiniciarPuntaje,
+  VALORES_PUNTAJE,
+} from "./data/puntaje.js";
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
@@ -97,6 +103,7 @@ export function iniciarJuego() {
   ultimoTiempo = 0;
   juegoActivo = true;
   juegoCompletado = false;
+  reiniciarPuntaje();
 
   const duracionTotal = calcularDuracionTotal() / 1000;
   if (progressBar) {
@@ -122,6 +129,8 @@ export function finalizarJuego() {
   const tiempoActual =
     formatearTiempoTranscurrido(getTiempoTranscurrido()) ?? "00:00:00";
   finalTime.textContent = tiempoActual;
+  const puntajeMaximo = tiemposGenerales.length * VALORES_PUNTAJE[0];
+  finalScore.textContent = `${obtenerPuntaje()} / ${puntajeMaximo}`;
   finalScreen?.classList.remove("hidden");
 }
 

@@ -15,6 +15,7 @@ import {
 } from "../config.js";
 import { mostrarFeedback } from "./feedback.js";
 import { tiemposGenerales } from "../data/tiempos.js";
+import { registrarPuntos, VALORES_PUNTAJE } from "../data/puntaje.js";
 
 function emitGameStart() {
   document.dispatchEvent(new CustomEvent("game:start"));
@@ -64,12 +65,16 @@ function procesarEntrada(indice) {
   const [tile] = tilesCayendo.splice(tileIndex, 1);
   const distancia = Math.abs(tile.y - (CANVAS_HEIGHT - Tile.height));
   if (distancia <= 35) {
+    registrarPuntos(VALORES_PUNTAJE[0]);
     mostrarFeedback("EXCELENTE", "excellent");
   } else if (distancia <= 100) {
+    registrarPuntos(VALORES_PUNTAJE[1]);
     mostrarFeedback("MUY BIEN", "good");
   } else if (distancia <= 180) {
+    registrarPuntos(VALORES_PUNTAJE[2]);
     mostrarFeedback("BIEN", "good");
   } else {
+    registrarPuntos(VALORES_PUNTAJE[3]);
     mostrarFeedback("TARDE", "poor");
   }
   // reproducirSonidoJson(String(indice));

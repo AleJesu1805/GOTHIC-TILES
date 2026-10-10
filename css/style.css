@@ -86,14 +86,10 @@ body {
   position: relative;
   isolation: isolate;
   background:
-    radial-gradient(
-      ellipse at 50% 42%,
-      rgba(127, 16, 24, 0.28),
-      transparent 48%
-    ),
+    radial-gradient(ellipse at 50% 42%, rgba(72, 8, 18, 0.28), transparent 48%),
     radial-gradient(
       ellipse at 50% 100%,
-      rgba(197, 40, 55, 0.18),
+      rgba(160, 55, 65, 0.18),
       transparent 32%
     ),
     linear-gradient(180deg, #090909 0%, #121315 100%);
@@ -114,16 +110,6 @@ body::before {
   background-repeat: no-repeat;
   background-position: center 46%;
   background-size: min(60vw, 62vh);
-  filter: drop-shadow(0 0 24px rgba(206, 49, 63, 0.8));
-}
-
-body::after {
-  inset: 0;
-  border: 0px solid rgba(17, 17, 17, 0.96);
-  box-shadow:
-    inset 0 0 0 2px rgba(126, 22, 31, 0.75),
-    inset 0 0 55px rgba(0, 0, 0, 0.9),
-    0 0 0 1px rgba(255, 255, 255, 0.04);
 }
 
 canvas {
@@ -261,7 +247,7 @@ canvas {
   justify-content: center;
   padding: 1.25rem;
   background: rgba(5, 5, 5, 0.7);
-  backdrop-filter: blur(7px) saturate(0.9);
+  backdrop-filter: blur(2px);
 }
 
 .screen.hidden {
@@ -388,6 +374,7 @@ canvas {
 
 .setting-row label {
   /* cursor: pointer; */
+  -webkit-tap-highlight-color: transparent;
   font-size: 1rem;
   font-family: "Quantico Bold";
   /* letter-spacing: 0px; */
@@ -396,6 +383,7 @@ canvas {
 .setting-row output {
   color: var(--steel-soft);
   text-align: right;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .setting-range {
@@ -405,6 +393,7 @@ canvas {
   margin: 0;
   appearance: none;
   background: transparent;
+  -webkit-tap-highlight-color: transparent;
   cursor: pointer;
 }
 
@@ -527,12 +516,14 @@ canvas {
   font-size: 0.9rem;
   letter-spacing: 0.04em;
   text-align: left;
+  -webkit-tap-highlight-color: transparent;
   transition:
     border-color 0.16s ease,
     background-color 0.16s ease;
 }
 
 .level-option:has(input:checked) {
+  -webkit-tap-highlight-color: transparent;
   border-color: var(--red-glow);
   background: rgba(125, 13, 25, 0.4);
   color: #fff;
@@ -540,6 +531,7 @@ canvas {
 
 .level-option input {
   flex: 0 0 auto;
+  -webkit-tap-highlight-color: transparent;
   width: 1rem;
   height: 1rem;
   margin: 0;
@@ -591,7 +583,6 @@ button {
   text-transform: uppercase;
   transition:
     transform 0.16s ease,
-    filter 0.16s ease,
     box-shadow 0.16s ease;
 }
 
@@ -603,15 +594,6 @@ button::before {
   height: 1px;
   background: rgba(255, 255, 255, 0.42);
   content: "";
-}
-
-button:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.12) saturate(1.08);
-  box-shadow:
-    0 9px 0 rgba(49, 7, 12, 0.9),
-    0 18px 30px rgba(0, 0, 0, 0.5),
-    0 0 18px rgba(215, 44, 61, 0.22);
 }
 
 button:active {
@@ -644,7 +626,77 @@ body[data-game-paused="true"] .pause-button {
 
 #final-time {
   color: #f7b3b8;
+  font-family: "Quantico Bold", sans-serif;
+  font-size: clamp(1.3rem, 4vw, 2rem);
+  font-variant-numeric: tabular-nums;
   font-weight: 700;
+}
+
+#final-score {
+  color: var(--gold);
+  font-family: "Quantico Bold", sans-serif;
+  font-size: clamp(1.3rem, 4vw, 2rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.final-card {
+  gap: 1.25rem;
+  width: min(88vw, 34rem);
+  padding-block: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.final-card h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  letter-spacing: 4px;
+}
+
+.final-results {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  margin-block: 0.4rem 0.65rem;
+  border-block: 1px solid rgba(216, 44, 61, 0.38);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.final-stat {
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 1.2rem 0.5rem 1.35rem;
+}
+
+.final-stat + .final-stat {
+  border-left: 1px solid rgba(216, 44, 61, 0.35);
+}
+
+.final-stat-label {
+  color: var(--steel-soft);
+  font-family: "Quantico Bold", sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.final-stat strong {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  line-height: 1.2;
+}
+
+.final-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+  width: 100%;
+}
+
+.final-actions button {
+  width: 100%;
+  letter-spacing: 5px;
 }
 
 @keyframes width {

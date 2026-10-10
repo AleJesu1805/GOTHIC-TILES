@@ -47,7 +47,7 @@ export function resetCronometro() {
   centesimas = 0;
   segundos = 0;
   minutos = 0;
-  renderCronometro();
+  // renderCronometro();
 }
 
 export function detenerCronometro() {
@@ -71,10 +71,10 @@ export function initCronometer() {
     segundos = Math.floor(totalCentesimas / 100) % 60;
     minutos = Math.floor(totalCentesimas / 6000);
 
-    renderCronometro();
+    // renderCronometro();
   }, 10);
 }
 
-if (cronometroElement) {
-  renderCronometro();
-}
+// if (cronometroElement) {
+//   renderCronometro();
+// }
