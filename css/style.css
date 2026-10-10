@@ -191,31 +191,6 @@ canvas {
   /* text-shadow: 0 0 18px rgba(190, 31, 46, 0.82); */
 }
 
-.hud-feedback {
-  /* min-height: 1.5em; */
-  visibility: hidden;
-  opacity: 0;
-  font-size: clamp(1rem, 3vw, 2rem);
-  font-weight: 900;
-  letter-spacing: 5px;
-  transition: opacity 0.15s ease;
-}
-
-.hud-feedback.is-visible {
-  visibility: visible;
-  opacity: 1;
-}
-
-.hud-feedback.excellent {
-  color: #f0ebea;
-}
-.hud-feedback.good {
-  color: var(--gold);
-}
-.hud-feedback.poor {
-  color: #ff6a70;
-}
-
 #mensajeFallo {
   color: rgba(198, 28, 40, 0.6);
   opacity: 0.1;

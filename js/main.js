@@ -37,12 +37,12 @@ import {
   detenerSonido,
   reproducirSonido,
 } from "./core/audio.js";
-import { ocultarFeedback } from "./UI/feedback.js";
 import {
   obtenerPuntaje,
   reiniciarPuntaje,
   VALORES_PUNTAJE,
 } from "./data/puntaje.js";
+import { limpiarEfectos, renderizarEfectos } from "./entities/efectos.js";
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
@@ -97,7 +97,7 @@ export function resetProgressBar() {
 export function iniciarJuego() {
   if (juegoPausado) return;
   document.body.dataset.gameActive = "true";
-  ocultarFeedback();
+  limpiarEfectos();
   welcomeScreen?.classList.add("hidden");
   finalScreen?.classList.add("hidden");
   resetProgressBar();
@@ -123,7 +123,6 @@ export function finalizarJuego() {
   juegoActivo = false;
   reanudarPartidaAlDespausar = false;
   document.body.dataset.gameActive = "false";
-  ocultarFeedback();
   limpiarProgramacionTiles();
   if (animationFrameId) cancelAnimationFrame(animationFrameId);
   detenerCronometro();
@@ -244,6 +243,7 @@ export function gameLoop(tiempoActual) {
   cleanCanvas();
   crearTilesStaticas();
   renderizarTileCayendo();
+  renderizarEfectos();
   frameCount++;
 }
 

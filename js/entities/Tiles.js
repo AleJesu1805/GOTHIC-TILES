@@ -1,7 +1,7 @@
 import { ctx, CANVAS_WIDTH, CANVAS_HEIGHT } from "../core/canvas.js";
 import { TILE_COLORS, TILE_OFFSETS } from "../config.js";
 import { getTiempoTranscurrido } from "./cronometro.js";
-import { mostrarFeedback } from "../UI/feedback.js";
+import { crearJuicioVisual } from "./efectos.js";
 
 export class Tile {
   static height = 200;
@@ -106,7 +106,7 @@ export function renderizarTileCayendo() {
     tile.draw();
     if (tile.y > CANVAS_HEIGHT) {
       tilesCayendo.splice(i, 1);
-      mostrarFeedback("¡Muy mal!", "poor");
+      crearJuicioVisual(tilesStaticas[tile.index], "ESPANTOSO", "poor");
     }
   });
 }

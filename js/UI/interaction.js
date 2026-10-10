@@ -13,7 +13,7 @@ import {
   restartButton,
   startButton,
 } from "../config.js";
-import { mostrarFeedback } from "./feedback.js";
+import { crearJuicioVisual } from "../entities/efectos.js";
 import { tiemposGenerales } from "../data/tiempos.js";
 import { registrarPuntos, VALORES_PUNTAJE } from "../data/puntaje.js";
 
@@ -23,6 +23,10 @@ function emitGameStart() {
 
 function emitReturnToMenu() {
   document.dispatchEvent(new CustomEvent("game:home"));
+}
+
+function mostrarJuicioEnCarril(indice, mensaje, rendimiento) {
+  crearJuicioVisual(tilesStaticas[indice], mensaje, rendimiento);
 }
 
 startButton?.addEventListener("click", emitGameStart);
@@ -59,7 +63,7 @@ function procesarEntrada(indice) {
   );
 
   if (tileIndex === -1) {
-    mostrarFeedback("MUY MAL", "poor");
+    mostrarJuicioEnCarril(indice, "HORRIBLE", "poor");
     return;
   }
 
@@ -67,16 +71,16 @@ function procesarEntrada(indice) {
   const distancia = Math.abs(tile.y - (CANVAS_HEIGHT - Tile.height));
   if (distancia <= 35) {
     registrarPuntos(VALORES_PUNTAJE[0]);
-    mostrarFeedback("EXCELENTE", "excellent");
+    mostrarJuicioEnCarril(indice, "LETALLL!", "excellent");
   } else if (distancia <= 100) {
     registrarPuntos(VALORES_PUNTAJE[1]);
-    mostrarFeedback("MUY BIEN", "good");
+    mostrarJuicioEnCarril(indice, "BRUTAL", "good");
   } else if (distancia <= 180) {
     registrarPuntos(VALORES_PUNTAJE[2]);
-    mostrarFeedback("BIEN", "good");
+    mostrarJuicioEnCarril(indice, "OK", "good");
   } else {
     registrarPuntos(VALORES_PUNTAJE[3]);
-    mostrarFeedback("TARDE", "poor");
+    mostrarJuicioEnCarril(indice, "MALISIMO", "poor");
   }
   // console.log(tile);
 

@@ -7,7 +7,6 @@ export const TILE_KEYS = ["a", "s", "d", "f"];
 
 export const canvas = document.querySelector("canvas");
 export const cronometroElement = document.querySelector("#cronometro");
-export const feedbackElement = document.querySelector("#mensaje-feedback");
 export const startButton = document.getElementById("start-button");
 export const restartButton = document.getElementById("restart-button");
 export const homeButtons = document.querySelectorAll(".home-button");
@@ -98,6 +97,40 @@ export const level = {
       .href,
     cancionUrl: new URL(
       "../assets/audio/canciones/Firing-the-Love_M4A_128K_.mp3",
+      import.meta.url,
+    ).href,
+  },
+  BigSurprise: {
+    tittle: "Big Surprise",
+    tiemposUrl: new URL("./tiempos/bigSurprise/tiempos.json", import.meta.url)
+      .href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Big Surprise(MP3_160K).mp3",
+      import.meta.url,
+    ).href,
+  },
+  Silvera_Gojira: {
+    tittle: "Silvera -- Gojira",
+    tiemposUrl: new URL("./tiempos/silvera/tiempos.json", import.meta.url).href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Gojira - Silvera [OFFICIAL VIDEO].mp3",
+      import.meta.url,
+    ).href,
+  },
+  ItsOn_Korn: {
+    tittle: "It's On -- Korn",
+    tiemposUrl: new URL("./tiempos/itsOn/tiempos.json", import.meta.url).href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Korn-It_s-On_-_Official-Audio_-_fdi173iq-DQ_.mp3",
+      import.meta.url,
+    ).href,
+  },
+  Tablescrap: {
+    tittle: "Tablescrap -- Stolen Babies",
+    tiemposUrl: new URL("./tiempos/tablescrap/tiempos.json", import.meta.url)
+      .href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Tablescrap.mp3",
       import.meta.url,
     ).href,
   },
