@@ -47,6 +47,7 @@ document.querySelectorAll(".setting-range").forEach((range) => {
 });
 
 function procesarEntrada(indice) {
+  // reproducirSonidoJson(String(indice));
   if (document.body.dataset.gameActive !== "true") return;
   iluminarCarril(indice);
 
@@ -77,7 +78,8 @@ function procesarEntrada(indice) {
     registrarPuntos(VALORES_PUNTAJE[3]);
     mostrarFeedback("TARDE", "poor");
   }
-  // reproducirSonidoJson(String(indice));
+  // console.log(tile);
+
   // reproducirSonido(indice);
 }
 

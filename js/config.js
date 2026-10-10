@@ -21,18 +21,18 @@ export const finalTime = document.getElementById("final-time");
 export const finalScore = document.getElementById("final-score");
 
 export const level = {
+  Prueba: {
+    tittle: "Nivel de prueba",
+    tiemposUrl: new URL("./tiempos/prueba.json", import.meta.url).href,
+    // cancionUrl: new URL(
+    //   "../assets/audio/canciones/No Remorse (I Wanna Die)(MP3_160K).mp3",
+    //   import.meta.url,
+    // ).href,
+  },
   NoRemorse_Slayer: {
     tittle: "No Remorse -- Slayer",
     tiemposUrl: new URL("./tiempos/noRemorse/tiempos.json", import.meta.url)
       .href,
-    cancionUrl: new URL(
-      "../assets/audio/canciones/No Remorse (I Wanna Die)(MP3_160K).mp3",
-      import.meta.url,
-    ).href,
-  },
-  Prueba: {
-    tittle: "Nivel de prueba",
-    tiemposUrl: new URL("./tiempos/prueba.json", import.meta.url).href,
     cancionUrl: new URL(
       "../assets/audio/canciones/No Remorse (I Wanna Die)(MP3_160K).mp3",
       import.meta.url,
@@ -89,6 +89,15 @@ export const level = {
       .href,
     cancionUrl: new URL(
       "../assets/audio/canciones/Spawn (Again)(MP3_160K).mp3",
+      import.meta.url,
+    ).href,
+  },
+  FiringTheLove: {
+    tittle: "Firing the Love -- Skindred",
+    tiemposUrl: new URL("./tiempos/firingTheLove/tiempos.json", import.meta.url)
+      .href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Firing-the-Love_M4A_128K_.mp3",
       import.meta.url,
     ).href,
   },

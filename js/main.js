@@ -57,7 +57,7 @@ let juegoCompletado = false;
 let inicioEnCurso = false;
 let solicitudInicio = 0;
 let frameCount = 0;
-let nivelActual = level.NoRemorse_Slayer;
+let nivelActual = level.Prueba;
 
 const levelList = document.querySelector(".level-list");
 for (const [levelId, levelData] of Object.entries(level)) {
@@ -68,7 +68,7 @@ for (const [levelId, levelData] of Object.entries(level)) {
   input.type = "radio";
   input.name = "level";
   input.value = levelId;
-  input.checked = levelId === "NoRemorse_Slayer";
+  input.checked = levelId === "Prueba";
 
   const title = document.createElement("span");
   title.textContent = levelData.tittle;
@@ -130,7 +130,11 @@ export function finalizarJuego() {
     formatearTiempoTranscurrido(getTiempoTranscurrido()) ?? "00:00:00";
   finalTime.textContent = tiempoActual;
   const puntajeMaximo = tiemposGenerales.length * VALORES_PUNTAJE[0];
-  finalScore.textContent = `${obtenerPuntaje()} / ${puntajeMaximo}`;
+  const rendimiento =
+    puntajeMaximo === 0
+      ? 0
+      : Math.round((obtenerPuntaje() / puntajeMaximo) * 100);
+  finalScore.textContent = `${rendimiento}%`;
   finalScreen?.classList.remove("hidden");
 }
 
@@ -229,7 +233,9 @@ export function gameLoop(tiempoActual) {
   ultimoTiempo = tiempoActual - (delta % FRAME_DURATION);
 
   if (getTiempoTranscurrido() >= calcularDuracionTotal()) {
-    finalizarJuego();
+    setTimeout(() => {
+      finalizarJuego();
+    }, 100);
     return;
   }
 
@@ -271,7 +277,7 @@ document.addEventListener("game:start", async () => {
     resetCronometro();
     programarTiles();
     iniciarJuego();
-    canciones.reproducirCancion(nivelActual.cancionUrl, 1, 0);
+    canciones.reproducirCancion(nivelActual.cancionUrl, 0.4, 0);
   } finally {
     if (solicitudActual === solicitudInicio) inicioEnCurso = false;
   }
