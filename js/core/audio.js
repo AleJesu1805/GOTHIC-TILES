@@ -13,6 +13,7 @@ const sonidosJson = {
 };
 
 let musicaActual = null;
+let volumenMusica = 0.75;
 
 export const canciones = {
   Boom_BEP: "./assets/audio/canciones/Boom Boom Pow.mp3",
@@ -21,11 +22,11 @@ export const canciones = {
     "./assets/audio/canciones/No Remorse (I Wanna Die)(MP3_160K).mp3",
   sweetDreams_MarylinManson:
     "./assets/audio/canciones/MarilynMansonVEVO - Marilyn Manson - Sweet Dreams (Are Made Of This) (Alt. Version).mp3",
-  async reproducirCancion(ruta, volumen = 1, segundoInicio = 0) {
+  async reproducirCancion(ruta, volumen = volumenMusica, segundoInicio = 0) {
     musicaActual?.pause();
     musicaActual = new Audio(ruta);
     musicaActual.preload = "auto";
-    musicaActual.volume = Math.min(1, Math.max(0, volumen));
+    this.establecerVolumen(volumen);
     musicaActual.currentTime = Math.max(0, segundoInicio);
     try {
       await musicaActual.play();
@@ -34,6 +35,10 @@ export const canciones = {
       console.error("No se pudo iniciar la canción:", error);
       return false;
     }
+  },
+  establecerVolumen(volumen) {
+    volumenMusica = Math.min(1, Math.max(0, volumen));
+    if (musicaActual) musicaActual.volume = volumenMusica;
   },
   pausarCancion() {
     musicaActual?.pause();

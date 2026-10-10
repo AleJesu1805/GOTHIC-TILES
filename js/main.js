@@ -247,6 +247,37 @@ export function gameLoop(tiempoActual) {
   frameCount++;
 }
 
+const musicVolumeInput = document.getElementById("music-volume");
+const musicVolumeOutput = document.querySelector('output[for="music-volume"]');
+const musicVolumeStorageKey = "gothic-tiles-music-volume";
+
+try {
+  const savedVolume = localStorage.getItem(musicVolumeStorageKey);
+  const parsedVolume = Number(savedVolume);
+  if (savedVolume !== null && Number.isFinite(parsedVolume)) {
+    musicVolumeInput.value = String(Math.min(100, Math.max(0, parsedVolume)));
+  }
+} catch {}
+
+function actualizarVolumenMusica() {
+  if (!musicVolumeInput) return;
+  const min = Number(musicVolumeInput.min);
+  const max = Number(musicVolumeInput.max);
+  const value = Number(musicVolumeInput.value);
+  const percentage = ((value - min) / (max - min)) * 100;
+  musicVolumeInput.style.setProperty("--range-progress", `${percentage}%`);
+  canciones.establecerVolumen(value / 100);
+  if (musicVolumeOutput) {
+    musicVolumeOutput.textContent = `${value}%`;
+  }
+  try {
+    localStorage.setItem(musicVolumeStorageKey, musicVolumeInput.value);
+  } catch {}
+}
+
+musicVolumeInput?.addEventListener("input", actualizarVolumenMusica);
+actualizarVolumenMusica();
+
 const tiemposListos = cargarTiemposGenerales(nivelActual.tiemposUrl, 0);
 const sdkGame = globalThis.ytgame?.game;
 const sdkSystem = globalThis.ytgame?.system;
@@ -279,7 +310,7 @@ document.addEventListener("game:start", async () => {
     resetCronometro();
     programarTiles();
     iniciarJuego();
-    canciones.reproducirCancion(nivelActual.cancionUrl, 0.4, 0);
+    canciones.reproducirCancion(nivelActual.cancionUrl);
   } finally {
     if (solicitudActual === solicitudInicio) inicioEnCurso = false;
   }
