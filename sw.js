@@ -23,7 +23,7 @@ self.addEventListener("activate", (event) => {
 // Descarga (o reusa si ya esta en cache) la version COMPLETA del archivo,
 // sin encabezado Range, y la guarda en cache. Es la unica forma de que un
 // audio/video pedido por rangos termine cacheado entero.
-async function obtenerVersionCompleta(url) {
+async function obtenerVersionCompleta(url, evento) {
   const peticionCompleta = new Request(url, { method: "GET" });
 
   const enCache = await caches.match(peticionCompleta);
@@ -34,10 +34,15 @@ async function obtenerVersionCompleta(url) {
   }
 
   const promesa = fetch(peticionCompleta)
-    .then(async (respuesta) => {
+    .then((respuesta) => {
       if (respuesta && respuesta.ok) {
-        const cache = await caches.open(CACHE_NAME);
-        cache.put(peticionCompleta, respuesta.clone());
+        const guardado = caches
+          .open(CACHE_NAME)
+          .then((cache) => cache.put(peticionCompleta, respuesta.clone()))
+          .catch((error) =>
+            console.warn("[SW] no se pudo cachear", url, error),
+          );
+        evento.waitUntil(guardado);
       }
       return respuesta;
     })
@@ -51,8 +56,17 @@ async function obtenerVersionCompleta(url) {
 // Range original, recorta a mano los bytes pedidos y arma una respuesta
 // 206 igual a la que daria un servidor real.
 async function recortarPorRango(respuestaCompleta, encabezadoRange) {
-  const buffer = await respuestaCompleta.clone().arrayBuffer();
-  const total = buffer.byteLength;
+  const total = Number(respuestaCompleta.headers.get("content-length"));
+  if (!respuestaCompleta.body || !Number.isSafeInteger(total)) {
+    const buffer = await respuestaCompleta.arrayBuffer();
+    const totalBuffer = buffer.byteLength;
+    return crearRespuestaRangoBuffer(
+      buffer,
+      totalBuffer,
+      encabezadoRange,
+      respuestaCompleta.headers.get("Content-Type"),
+    );
+  }
 
   const coincidencia = /bytes=(\d*)-(\d*)/.exec(encabezadoRange || "");
   let inicio =
@@ -73,9 +87,41 @@ async function recortarPorRango(respuestaCompleta, encabezadoRange) {
     if (fin === null || fin > total - 1) fin = total - 1;
   }
 
-  const trozo = buffer.slice(inicio, fin + 1);
+  const lector = respuestaCompleta.body.getReader();
+  let posicion = 0;
+  const cuerpo = new ReadableStream({
+    async pull(controlador) {
+      while (posicion <= fin) {
+        const { value, done } = await lector.read();
+        if (done) {
+          controlador.close();
+          return;
+        }
 
-  return new Response(trozo, {
+        const inicioBloque = posicion;
+        posicion += value.byteLength;
+        const inicioTrozo = Math.max(inicio - inicioBloque, 0);
+        const finTrozo = Math.min(fin + 1 - inicioBloque, value.byteLength);
+
+        if (inicioTrozo < finTrozo) {
+          controlador.enqueue(value.subarray(inicioTrozo, finTrozo));
+        }
+
+        if (posicion > fin) {
+          await lector.cancel();
+          controlador.close();
+          return;
+        }
+      }
+
+      controlador.close();
+    },
+    cancel(motivo) {
+      return lector.cancel(motivo);
+    },
+  });
+
+  return new Response(cuerpo, {
     status: 206,
     statusText: "Partial Content",
     headers: {
@@ -83,17 +129,57 @@ async function recortarPorRango(respuestaCompleta, encabezadoRange) {
         respuestaCompleta.headers.get("Content-Type") ||
         "application/octet-stream",
       "Content-Range": `bytes ${inicio}-${fin}/${total}`,
+      "Content-Length": String(fin - inicio + 1),
+      "Accept-Ranges": "bytes",
+    },
+  });
+}
+
+function crearRespuestaRangoBuffer(
+  buffer,
+  total,
+  encabezadoRange,
+  contentType,
+) {
+  const coincidencia = /bytes=(\d*)-(\d*)/.exec(encabezadoRange || "");
+  let inicio =
+    coincidencia && coincidencia[1] !== ""
+      ? parseInt(coincidencia[1], 10)
+      : null;
+  let fin =
+    coincidencia && coincidencia[2] !== ""
+      ? parseInt(coincidencia[2], 10)
+      : null;
+
+  if (inicio === null && fin !== null) {
+    inicio = Math.max(total - fin, 0);
+    fin = total - 1;
+  } else {
+    if (inicio === null) inicio = 0;
+    if (fin === null || fin > total - 1) fin = total - 1;
+  }
+
+  const trozo = buffer.slice(inicio, fin + 1);
+  return new Response(trozo, {
+    status: 206,
+    statusText: "Partial Content",
+    headers: {
+      "Content-Type": contentType || "application/octet-stream",
+      "Content-Range": `bytes ${inicio}-${fin}/${total}`,
       "Content-Length": String(trozo.byteLength),
       "Accept-Ranges": "bytes",
     },
   });
 }
 
-async function servirPeticionPorRango(request) {
+async function servirPeticionPorRango(request, evento) {
   try {
-    const completa = await obtenerVersionCompleta(request.url);
+    const completa = await obtenerVersionCompleta(request.url, evento);
     if (!completa || !completa.ok) return completa;
-    return await recortarPorRango(completa, request.headers.get("range"));
+    return await recortarPorRango(
+      completa.clone(),
+      request.headers.get("range"),
+    );
   } catch (error) {
     console.warn("[SW] no se pudo servir por rango", request.url, error);
     return undefined;
@@ -118,7 +204,7 @@ self.addEventListener("fetch", (event) => {
   // el pedazo pedido a mano, porque la Cache API no admite guardar
   // respuestas 206 directamente.
   if (request.headers.has("range")) {
-    event.respondWith(servirPeticionPorRango(request));
+    event.respondWith(servirPeticionPorRango(request, event));
     return;
   }
 

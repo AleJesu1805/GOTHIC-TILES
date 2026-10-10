@@ -246,8 +246,8 @@ canvas {
   align-items: center;
   justify-content: center;
   padding: 1.25rem;
-  background: rgba(5, 5, 5, 0.7);
-  backdrop-filter: blur(2px);
+  background: rgba(5, 5, 5, 0.768);
+  /* backdrop-filter: blur(2px); */
 }
 
 .screen.hidden {

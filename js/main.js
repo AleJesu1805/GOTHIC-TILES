@@ -57,6 +57,7 @@ let juegoCompletado = false;
 let inicioEnCurso = false;
 let solicitudInicio = 0;
 let frameCount = 0;
+let duracionTotalPartida = 0;
 let nivelActual = level.Prueba;
 
 const levelList = document.querySelector(".level-list");
@@ -105,7 +106,8 @@ export function iniciarJuego() {
   juegoCompletado = false;
   reiniciarPuntaje();
 
-  const duracionTotal = calcularDuracionTotal() / 1000;
+  duracionTotalPartida = calcularDuracionTotal();
+  const duracionTotal = duracionTotalPartida / 1000;
   if (progressBar) {
     progressBar.style.animation = `width ${Math.max(duracionTotal, 0.1)}s linear forwards`;
   }
@@ -232,7 +234,7 @@ export function gameLoop(tiempoActual) {
 
   ultimoTiempo = tiempoActual - (delta % FRAME_DURATION);
 
-  if (getTiempoTranscurrido() >= calcularDuracionTotal()) {
+  if (getTiempoTranscurrido() >= duracionTotalPartida) {
     setTimeout(() => {
       finalizarJuego();
     }, 100);

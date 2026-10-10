@@ -60,17 +60,23 @@ function dibujarBrilloCarril(tile, indice) {
 }
 
 export function crearTilesStaticas() {
-  tilesStaticas.length = 0;
-  for (let i = 0; i < 4; i++) {
-    const tile = new Tile(
-      CANVAS_HEIGHT - Tile.height,
-      `${TILE_COLORS[i]}aa`,
-      TILE_OFFSETS[i],
-      i,
-    );
+  if (tilesStaticas.length === 0) {
+    for (let i = 0; i < 4; i++) {
+      tilesStaticas.push(
+        new Tile(
+          CANVAS_HEIGHT - Tile.height,
+          `${TILE_COLORS[i]}aa`,
+          TILE_OFFSETS[i],
+          i,
+        ),
+      );
+    }
+  }
+
+  for (let i = 0; i < tilesStaticas.length; i++) {
+    const tile = tilesStaticas[i];
     tile.draw();
     dibujarBrilloCarril(tile, i);
-    tilesStaticas.push(tile);
   }
 }
 
