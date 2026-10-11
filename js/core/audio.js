@@ -13,7 +13,45 @@ const sonidosJson = {
 };
 
 let musicaActual = null;
+let grafoMusicaActual = null;
 let volumenMusica = 0.75;
+
+const grafosMusica = new WeakMap();
+
+function conectarAnalizador(elemento) {
+  if (!audioCtx || !gananciaMaestra) return null;
+
+  const grafoExistente = grafosMusica.get(elemento);
+  if (grafoExistente) return grafoExistente.analizador;
+
+  let fuente;
+  try {
+    fuente = audioCtx.createMediaElementSource(elemento);
+    const analizador = audioCtx.createAnalyser();
+    analizador.fftSize = 2048;
+    analizador.minDecibels = -88;
+    analizador.maxDecibels = -10;
+    analizador.smoothingTimeConstant = 0.2;
+    fuente.connect(analizador);
+    analizador.connect(gananciaMaestra);
+    grafosMusica.set(elemento, { fuente, analizador });
+    return analizador;
+  } catch (error) {
+    if (fuente) {
+      try {
+        fuente.disconnect();
+        fuente.connect(gananciaMaestra);
+      } catch {
+        try {
+          fuente.connect(audioCtx.destination);
+        } catch {}
+      }
+      grafosMusica.set(elemento, { fuente, analizador: null });
+    }
+    console.warn("El visualizador de audio no está disponible:", error);
+    return null;
+  }
+}
 
 export const canciones = {
   Boom_BEP: "./assets/audio/canciones/Boom Boom Pow.mp3",
@@ -26,8 +64,10 @@ export const canciones = {
     musicaActual?.pause();
     musicaActual = new Audio(ruta);
     musicaActual.preload = "auto";
+    grafoMusicaActual = null;
     this.establecerVolumen(volumen);
     musicaActual.currentTime = Math.max(0, segundoInicio);
+    grafoMusicaActual = conectarAnalizador(musicaActual);
     try {
       await musicaActual.play();
       return true;
@@ -46,24 +86,39 @@ export const canciones = {
   reanudarCancion() {
     if (musicaActual?.paused) void musicaActual.play();
   },
+  obtenerAnalizadorMusica() {
+    return grafoMusicaActual;
+  },
+  estaReproduciendo() {
+    return Boolean(musicaActual && !musicaActual.paused && !musicaActual.ended);
+  },
 };
 
-export const audioCtx = new (
-  window.AudioContext || window.webkitAudioContext
-)();
+const AudioContextConstructor =
+  globalThis.AudioContext || globalThis.webkitAudioContext;
+export const audioCtx = AudioContextConstructor
+  ? new AudioContextConstructor()
+  : null;
 const buffers = {};
 const fuentesActivas = new Map();
 const buffersJson = new Map();
 const cargasJson = new Map();
 const audioSistema = globalThis.ytgame?.system;
 let audioHabilitado = audioSistema?.isAudioEnabled?.() ?? true;
-const gananciaMaestra = audioCtx.createGain();
-gananciaMaestra.gain.value = audioHabilitado ? 1 : 0;
-gananciaMaestra.connect(audioCtx.destination);
+const gananciaMaestra = audioCtx?.createGain() ?? null;
+if (gananciaMaestra) {
+  gananciaMaestra.gain.value = audioHabilitado ? 1 : 0;
+  gananciaMaestra.connect(audioCtx.destination);
+}
 
 function actualizarAudio(habilitado) {
   audioHabilitado = habilitado;
-  gananciaMaestra.gain.setValueAtTime(habilitado ? 1 : 0, audioCtx.currentTime);
+  if (gananciaMaestra && audioCtx) {
+    gananciaMaestra.gain.setValueAtTime(
+      habilitado ? 1 : 0,
+      audioCtx.currentTime,
+    );
+  }
 }
 
 audioSistema?.onAudioEnabledChange?.(actualizarAudio);
@@ -78,6 +133,8 @@ worker.onmessage = async (e) => {
     return;
   }
 
+  if (!audioCtx) return;
+
   try {
     buffers[nombre] = await audioCtx.decodeAudioData(arrayBuffer);
   } catch (error) {
@@ -91,7 +148,8 @@ function cargarSonido(nombre, url) {
 }
 
 export function reproducirSonido(nombre, volumen = 0.5, segundoInicio = 0) {
-  if (!audioHabilitado || !buffers[nombre]) return;
+  if (!audioCtx || !gananciaMaestra || !audioHabilitado || !buffers[nombre])
+    return;
 
   const source = audioCtx.createBufferSource();
   const gainNode = audioCtx.createGain();
@@ -182,6 +240,7 @@ export async function cargarSonidoJson(ruta, clave) {
   if (typeof ruta !== "string" || typeof clave !== "string") {
     throw new TypeError("La ruta y la clave deben ser cadenas de texto.");
   }
+  if (!audioCtx) return null;
 
   if (buffersJson.has(clave)) return buffersJson.get(clave);
 
@@ -213,7 +272,7 @@ export function reproducirSonidoJson(clave) {
   if (typeof clave !== "string") {
     throw new TypeError("La clave debe ser una cadena de texto.");
   }
-  if (!audioHabilitado) return false;
+  if (!audioCtx || !gananciaMaestra || !audioHabilitado) return false;
 
   const buffer = buffersJson.get(clave);
   if (!buffer) {

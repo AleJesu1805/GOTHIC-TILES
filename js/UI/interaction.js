@@ -114,11 +114,11 @@ document.addEventListener("keydown", (e) => {
   TILE_KEYS.forEach((tecla, i) => {
     if (e.key === tecla || e.key === tecla.toUpperCase()) {
       procesarEntrada(i);
-      listaDeTiempos[i].push(time);
+      // listaDeTiempos[i].push(time);
     }
   });
   if (e.key == "e") {
-    console.log(JSON.stringify(listaDeTiempos, null, 2));
+    // console.log(JSON.stringify(listaDeTiempos, null, 2));
     // console.log(tiemposGenerales);
   }
 });

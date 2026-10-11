@@ -5,7 +5,7 @@ export const TILE_COLORS = ["#d71920", "#8f1018", "#4f5c0b", "#a9a6a2"];
 export const TILE_OFFSETS = [-2, -1, 0, 1];
 export const TILE_KEYS = ["a", "s", "d", "f"];
 
-export const canvas = document.querySelector("canvas");
+export const canvas = document.getElementById("game-canvas");
 export const cronometroElement = document.querySelector("#cronometro");
 export const startButton = document.getElementById("start-button");
 export const restartButton = document.getElementById("restart-button");

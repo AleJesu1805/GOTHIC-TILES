@@ -43,6 +43,15 @@ import {
   VALORES_PUNTAJE,
 } from "./data/puntaje.js";
 import { limpiarEfectos, renderizarEfectos } from "./entities/efectos.js";
+import {
+  activarVisualizador,
+  inicializarVisualizador,
+  limpiarVisualizador,
+  pausarVisualizador,
+  renderizarVisualizador,
+} from "./entities/visualizador.js";
+
+inicializarVisualizador();
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
@@ -121,6 +130,7 @@ export function finalizarJuego() {
   if (juegoCompletado) return;
   juegoCompletado = true;
   juegoActivo = false;
+  pausarVisualizador();
   reanudarPartidaAlDespausar = false;
   document.body.dataset.gameActive = "false";
   limpiarProgramacionTiles();
@@ -151,7 +161,8 @@ function pausarJuego() {
     pauseButton.setAttribute("aria-label", "Continuar juego");
   }
   if (progressBar) progressBar.style.animationPlayState = "paused";
-  void audioCtx.suspend();
+  pausarVisualizador();
+  void audioCtx?.suspend();
   canciones.pausarCancion();
   if (!juegoActivo) return;
 
@@ -172,10 +183,11 @@ function reanudarJuego() {
     pauseButton.setAttribute("aria-label", "Pausar juego");
   }
   if (progressBar) progressBar.style.animationPlayState = "running";
-  void audioCtx.resume();
+  void audioCtx?.resume();
   canciones.reanudarCancion();
 
   if (!reanudarPartidaAlDespausar || juegoCompletado) return;
+  activarVisualizador(canciones.obtenerAnalizadorMusica());
   reanudarPartidaAlDespausar = false;
   document.body.dataset.gameActive = "true";
   juegoActivo = true;
@@ -201,7 +213,8 @@ function volverAlMenu() {
   limpiarProgramacionTiles();
   resetProgressBar();
   canciones.pausarCancion();
-  void audioCtx.suspend();
+  limpiarVisualizador();
+  void audioCtx?.suspend();
   pauseScreen?.classList.add("hidden");
   finalScreen?.classList.add("hidden");
   welcomeScreen?.classList.remove("hidden");
@@ -244,6 +257,7 @@ export function gameLoop(tiempoActual) {
   crearTilesStaticas();
   renderizarTileCayendo();
   renderizarEfectos();
+  renderizarVisualizador(canciones.estaReproduciendo());
   frameCount++;
 }
 
@@ -298,7 +312,7 @@ document.addEventListener("game:start", async () => {
   const solicitudActual = ++solicitudInicio;
 
   try {
-    await audioCtx.resume();
+    await audioCtx?.resume();
     await tiemposListos;
     if (solicitudActual !== solicitudInicio) return;
     const nivelSeleccionado = document.querySelector(
@@ -310,7 +324,12 @@ document.addEventListener("game:start", async () => {
     resetCronometro();
     programarTiles();
     iniciarJuego();
-    canciones.reproducirCancion(nivelActual.cancionUrl);
+    const musicaIniciada = await canciones.reproducirCancion(
+      nivelActual.cancionUrl,
+    );
+    if (musicaIniciada && juegoActivo && !juegoPausado) {
+      activarVisualizador(canciones.obtenerAnalizadorMusica());
+    }
   } finally {
     if (solicitudActual === solicitudInicio) inicioEnCurso = false;
   }
