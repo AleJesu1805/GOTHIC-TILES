@@ -59,7 +59,7 @@ function dibujarAnillo(energia, animado) {
   if (!context || !currentWidth || !currentHeight) return;
 
   const centerX = currentWidth / 2;
-  const centerY = currentHeight / 2;
+  const centerY = currentHeight / 3;
   const visualizerSize = Math.min(visualizerWidth, visualizerHeight);
   const radius = visualizerSize * 0.35;
   const baseLength = visualizerSize * 0.02 * (0.82 + energia * 0.55);

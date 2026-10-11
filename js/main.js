@@ -99,7 +99,7 @@ export function resetProgressBar() {
   if (!progressBar) return;
   progressBar.style.animation = "none";
   progressBar.style.animationPlayState = "running";
-  progressBar.style.width = "0%";
+  progressBar.style.removeProperty("--progress-scale");
   void progressBar.offsetWidth;
 }
 

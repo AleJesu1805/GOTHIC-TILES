@@ -1,7 +1,7 @@
-export const FPS = 60;
+export const FPS = 70;
 export const FRAME_DURATION = 1000 / FPS;
 
-export const TILE_COLORS = ["#d71920", "#8f1018", "#4f5c0b", "#a9a6a2"];
+export const TILE_COLORS = ["#78121D", "#1e441a", "#56524b", "#44103d"];
 export const TILE_OFFSETS = [-2, -1, 0, 1];
 export const TILE_KEYS = ["a", "s", "d", "f"];
 

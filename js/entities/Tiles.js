@@ -65,7 +65,7 @@ export function crearTilesStaticas() {
       tilesStaticas.push(
         new Tile(
           CANVAS_HEIGHT - Tile.height,
-          `${TILE_COLORS[i]}aa`,
+          `${TILE_COLORS[i]}`,
           TILE_OFFSETS[i],
           i,
         ),
@@ -91,7 +91,7 @@ export function limpiarTilesCayendo() {
 export function crearTileCayendo(tile, tiempoObjetivo) {
   const tileCayendo = new Tile(
     -Tile.height,
-    `${TILE_COLORS[tile]}aa`,
+    `${TILE_COLORS[tile]}77`,
     TILE_OFFSETS[tile],
     tiempoObjetivo,
     tile,
