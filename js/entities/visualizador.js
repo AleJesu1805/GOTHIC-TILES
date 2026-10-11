@@ -1,4 +1,5 @@
 const BAR_COUNT = 48;
+const BAR_LENGTH_FACTOR = 1;
 const MAX_PIXEL_RATIO = 1.5;
 const FREQUENCY_MIN = 45;
 const FREQUENCY_MAX = 11000;
@@ -16,21 +17,29 @@ let requestedActive = false;
 let reducedMotion = false;
 let currentWidth = 0;
 let currentHeight = 0;
+let visualizerWidth = 0;
+let visualizerHeight = 0;
 let pixelRatio = 1;
 let smoothedEnergy = 0;
 
 function ajustarCanvas() {
-  if (!canvas || !context) return;
+  if (!canvas || !context || !brand) return;
   const bounds = canvas.getBoundingClientRect();
+  const brandBounds = brand.getBoundingClientRect();
   const nextRatio = Math.min(MAX_PIXEL_RATIO, window.devicePixelRatio || 1);
   const width = Math.max(1, Math.round(bounds.width * nextRatio));
   const height = Math.max(1, Math.round(bounds.height * nextRatio));
-  if (width === canvas.width && height === canvas.height) return;
+  currentWidth = bounds.width;
+  currentHeight = bounds.height;
+  visualizerWidth = brandBounds.width;
+  visualizerHeight = brandBounds.height;
+  if (width === canvas.width && height === canvas.height) {
+    dibujarAnillo(0, false);
+    return;
+  }
 
   canvas.width = width;
   canvas.height = height;
-  currentWidth = bounds.width;
-  currentHeight = bounds.height;
   pixelRatio = nextRatio;
   context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
   dibujarAnillo(0, false);
@@ -51,18 +60,26 @@ function dibujarAnillo(energia, animado) {
 
   const centerX = currentWidth / 2;
   const centerY = currentHeight / 2;
-  const radius = Math.min(currentWidth, currentHeight) * 0.35;
-  const baseLength =
-    Math.min(currentWidth, currentHeight) * 0.018 * (0.82 + energia * 0.55);
+  const visualizerSize = Math.min(visualizerWidth, visualizerHeight);
+  const radius = visualizerSize * 0.35;
+  const baseLength = visualizerSize * 0.02 * (0.82 + energia * 0.55);
   const sensitivity = reducedMotion ? 0.58 : 1;
+  const lineWidth = Math.max(1, visualizerWidth * 0.012);
+  const maxLength = Math.max(
+    0,
+    Math.min(centerX, centerY) - radius - lineWidth / 2,
+  );
   context.clearRect(0, 0, currentWidth, currentHeight);
-  context.lineWidth = Math.max(1, currentWidth * 0.012);
+  context.lineWidth = lineWidth;
   context.lineCap = "round";
 
   for (let bar = 0; bar < BAR_COUNT; bar += 1) {
     const bin = frequencyBins[bar];
     const sample = animado ? frequencyData[bin] / 255 : 0;
-    const length = baseLength + sample * currentWidth * 0.17 * sensitivity;
+    const length = Math.min(
+      maxLength,
+      baseLength + sample * maxLength * BAR_LENGTH_FACTOR * sensitivity,
+    );
     const angle = (bar / BAR_COUNT) * Math.PI * 2 - Math.PI / 2;
     const innerRadius = radius;
     const outerRadius = radius + length;
@@ -115,6 +132,7 @@ export function inicializarVisualizador() {
 
   if ("ResizeObserver" in window) {
     observer = new ResizeObserver(ajustarCanvas);
+    observer.observe(canvas);
     observer.observe(brand);
   }
   window.addEventListener("resize", ajustarCanvas, { passive: true });

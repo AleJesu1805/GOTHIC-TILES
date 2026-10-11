@@ -14,6 +14,7 @@ const sonidosJson = {
 
 let musicaActual = null;
 let grafoMusicaActual = null;
+let gananciaMusicaActual = null;
 let volumenMusica = 0.75;
 
 const grafosMusica = new WeakMap();
@@ -22,21 +23,31 @@ function conectarAnalizador(elemento) {
   if (!audioCtx || !gananciaMaestra) return null;
 
   const grafoExistente = grafosMusica.get(elemento);
-  if (grafoExistente) return grafoExistente.analizador;
+  if (grafoExistente) {
+    gananciaMusicaActual = grafoExistente.gananciaMusica;
+    elemento.volume = 1;
+    return grafoExistente.analizador;
+  }
 
   let fuente;
   try {
     fuente = audioCtx.createMediaElementSource(elemento);
     const analizador = audioCtx.createAnalyser();
+    const gananciaMusica = audioCtx.createGain();
     analizador.fftSize = 2048;
     analizador.minDecibels = -88;
-    analizador.maxDecibels = -10;
+    analizador.maxDecibels = -2;
     analizador.smoothingTimeConstant = 0.2;
+    gananciaMusica.gain.value = volumenMusica;
     fuente.connect(analizador);
-    analizador.connect(gananciaMaestra);
-    grafosMusica.set(elemento, { fuente, analizador });
+    analizador.connect(gananciaMusica);
+    gananciaMusica.connect(gananciaMaestra);
+    gananciaMusicaActual = gananciaMusica;
+    elemento.volume = 1;
+    grafosMusica.set(elemento, { fuente, analizador, gananciaMusica });
     return analizador;
   } catch (error) {
+    gananciaMusicaActual = null;
     if (fuente) {
       try {
         fuente.disconnect();
@@ -54,17 +65,12 @@ function conectarAnalizador(elemento) {
 }
 
 export const canciones = {
-  Boom_BEP: "./assets/audio/canciones/Boom Boom Pow.mp3",
-  Hump_BEP: "./assets/audio/canciones/My Humps.mp3",
-  NoRemorse_Slayer:
-    "./assets/audio/canciones/No Remorse (I Wanna Die)(MP3_160K).mp3",
-  sweetDreams_MarylinManson:
-    "./assets/audio/canciones/MarilynMansonVEVO - Marilyn Manson - Sweet Dreams (Are Made Of This) (Alt. Version).mp3",
   async reproducirCancion(ruta, volumen = volumenMusica, segundoInicio = 0) {
     musicaActual?.pause();
     musicaActual = new Audio(ruta);
     musicaActual.preload = "auto";
     grafoMusicaActual = null;
+    gananciaMusicaActual = null;
     this.establecerVolumen(volumen);
     musicaActual.currentTime = Math.max(0, segundoInicio);
     grafoMusicaActual = conectarAnalizador(musicaActual);
@@ -78,7 +84,14 @@ export const canciones = {
   },
   establecerVolumen(volumen) {
     volumenMusica = Math.min(1, Math.max(0, volumen));
-    if (musicaActual) musicaActual.volume = volumenMusica;
+    if (gananciaMusicaActual && audioCtx) {
+      gananciaMusicaActual.gain.setValueAtTime(
+        volumenMusica,
+        audioCtx.currentTime,
+      );
+    } else if (musicaActual) {
+      musicaActual.volume = volumenMusica;
+    }
   },
   pausarCancion() {
     musicaActual?.pause();
