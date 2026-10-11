@@ -99,7 +99,7 @@ export const level = {
     ).href,
   },
   BigSurprise: {
-    tittle: "Big Surprise",
+    tittle: "Big Surprise -- Animal Alpha",
     tiemposUrl: new URL("./tiempos/bigSurprise/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -138,6 +138,17 @@ export const level = {
       .href,
     cancionUrl: new URL(
       "../assets/audio/canciones/aLee DJ - MORTAL KUMBIA ｜ Versión TIKTOK ｜ aLee DJ.mp3",
+      import.meta.url,
+    ).href,
+  },
+  FingerPaintingOfTheInsane_AcidBath: {
+    tittle: "Finger Painting of the Insane -- Acid Bath",
+    tiemposUrl: new URL(
+      "./tiempos/fingerPaintingOfTheInsane/tiempos.json",
+      import.meta.url,
+    ).href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Acid Bath - Finger Painting Of The Insane-2.mp3",
       import.meta.url,
     ).href,
   },

@@ -471,7 +471,7 @@ canvas {
   display: grid;
   gap: 0.55rem;
   width: 100%;
-  max-height: min(30vh, 10rem);
+  max-height: 40dvh;
   overflow-y: auto;
   padding: 0.15rem 0.55rem 0.4rem 0.15rem;
   scrollbar-color: var(--metal-red) rgba(255, 255, 255, 0.08);
