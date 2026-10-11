@@ -152,4 +152,34 @@ export const level = {
       import.meta.url,
     ).href,
   },
+  GivenUp_LinkinPark: {
+    tittle: "Given Up -- Linkin Park",
+    tiemposUrl: new URL("./tiempos/givenUp/tiempos.json", import.meta.url).href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Linkin-Park-Given-Up-128.mp3",
+      import.meta.url,
+    ).href,
+  },
+  CarelessWhisper_GeorgeMichael: {
+    tittle: "Careless Whisper -- George Michael",
+    tiemposUrl: new URL(
+      "./tiempos/carelessWhisper/tiempos.json",
+      import.meta.url,
+    ).href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Careless Whisper(MP3_160K).mp3",
+      import.meta.url,
+    ).href,
+  },
+  HandshakeWithHell_ArchEnemy: {
+    tittle: "Handshake With Hell -- Arch Enemy",
+    tiemposUrl: new URL(
+      "./tiempos/handshakeWithHell/tiempos.json",
+      import.meta.url,
+    ).href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/ARCH ENEMY – Handshake With Hell (OFFICIAL SUMMER 2023 RECAP)(MP3_160K) (1).mp3",
+      import.meta.url,
+    ).href,
+  },
 };
