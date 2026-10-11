@@ -1,13 +1,14 @@
 const BAR_COUNT = 48;
 const BAR_LENGTH_FACTOR = 1;
 const MAX_PIXEL_RATIO = 1.5;
+const MOBILE_MAX_PIXEL_RATIO = 1;
+const VISUALIZER_FRAME_DURATION = 1000 / 30;
 const FREQUENCY_MIN = 45;
 const FREQUENCY_MAX = 11000;
 const FREQUENCY_NYQUIST = 22050;
 
 let canvas = null;
 let context = null;
-let brand = null;
 let analyser = null;
 let frequencyData = null;
 let frequencyBins = null;
@@ -17,22 +18,21 @@ let requestedActive = false;
 let reducedMotion = false;
 let currentWidth = 0;
 let currentHeight = 0;
-let visualizerWidth = 0;
-let visualizerHeight = 0;
 let pixelRatio = 1;
 let smoothedEnergy = 0;
+let ultimoRender = 0;
 
 function ajustarCanvas() {
-  if (!canvas || !context || !brand) return;
-  const bounds = canvas.getBoundingClientRect();
-  const brandBounds = brand.getBoundingClientRect();
-  const nextRatio = Math.min(MAX_PIXEL_RATIO, window.devicePixelRatio || 1);
-  const width = Math.max(1, Math.round(bounds.width * nextRatio));
-  const height = Math.max(1, Math.round(bounds.height * nextRatio));
-  currentWidth = bounds.width;
-  currentHeight = bounds.height;
-  visualizerWidth = brandBounds.width;
-  visualizerHeight = brandBounds.height;
+  if (!canvas || !context) return;
+  const maxPixelRatio = window.matchMedia("(max-width: 600px) and (pointer: coarse)")
+    .matches
+    ? MOBILE_MAX_PIXEL_RATIO
+    : MAX_PIXEL_RATIO;
+  const nextRatio = Math.min(maxPixelRatio, window.devicePixelRatio || 1);
+  currentWidth = window.innerWidth;
+  currentHeight = window.innerHeight;
+  const width = Math.max(1, Math.round(currentWidth * nextRatio));
+  const height = Math.max(1, Math.round(currentHeight * nextRatio));
   if (width === canvas.width && height === canvas.height) {
     dibujarAnillo(0, false);
     return;
@@ -60,11 +60,11 @@ function dibujarAnillo(energia, animado) {
 
   const centerX = currentWidth / 2;
   const centerY = currentHeight / 3;
-  const visualizerSize = Math.min(visualizerWidth, visualizerHeight);
-  const radius = visualizerSize * 0.35;
+  const visualizerSize = Math.min(currentWidth, currentHeight);
+  const radius = visualizerSize * 0.2;
   const baseLength = visualizerSize * 0.02 * (0.82 + energia * 0.55);
   const sensitivity = reducedMotion ? 0.58 : 1;
-  const lineWidth = Math.max(1, visualizerWidth * 0.012);
+  const lineWidth = Math.max(1, visualizerSize * 0.012);
   const maxLength = Math.max(
     0,
     Math.min(centerX, centerY) - radius - lineWidth / 2,
@@ -102,8 +102,6 @@ function dibujarAnillo(energia, animado) {
 
 function cambiarVisibilidad() {
   active = requestedActive && !document.hidden;
-  brand?.classList.toggle("is-visible", requestedActive);
-  brand?.classList.toggle("is-active", active);
   if (!active) dibujarAnillo(0, false);
 }
 
@@ -111,8 +109,7 @@ export function inicializarVisualizador() {
   if (canvas) return Boolean(context);
 
   canvas = document.getElementById("audio-visualizer");
-  brand = document.getElementById("audio-brand");
-  if (!canvas || !brand) return false;
+  if (!canvas) return false;
 
   context = canvas.getContext("2d", { alpha: true });
   if (!context) return false;
@@ -133,7 +130,6 @@ export function inicializarVisualizador() {
   if ("ResizeObserver" in window) {
     observer = new ResizeObserver(ajustarCanvas);
     observer.observe(canvas);
-    observer.observe(brand);
   }
   window.addEventListener("resize", ajustarCanvas, { passive: true });
   document.addEventListener("visibilitychange", cambiarVisibilidad);
@@ -175,12 +171,16 @@ export function activarVisualizador(nuevoAnalyser) {
 }
 
 export function renderizarVisualizador(musicaActiva) {
-  if (!context || !brand) return;
+  if (!context) return;
   if (!musicaActiva || !analyser) {
     if (requestedActive) pausarVisualizador();
     return;
   }
   if (!active || document.hidden) return;
+
+  const ahora = performance.now();
+  if (ahora - ultimoRender < VISUALIZER_FRAME_DURATION) return;
+  ultimoRender = ahora;
 
   analyser.getByteFrequencyData(frequencyData);
   const bassEnd = Math.max(
@@ -209,11 +209,10 @@ export function pausarVisualizador() {
   active = false;
   analyser = null;
   smoothedEnergy = 0;
-  brand?.classList.remove("is-active");
+  ultimoRender = 0;
   dibujarAnillo(0, false);
 }
 
 export function limpiarVisualizador() {
   pausarVisualizador();
-  brand?.classList.remove("is-visible");
 }

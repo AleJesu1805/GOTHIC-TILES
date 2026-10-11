@@ -1,4 +1,4 @@
-export const FPS = 70;
+export const FPS = 60;
 export const FRAME_DURATION = 1000 / FPS;
 
 export const TILE_COLORS = ["#78121D", "#1e441a", "#56524b", "#44103d"];
@@ -23,10 +23,10 @@ export const level = {
   Prueba: {
     tittle: "Nivel de prueba",
     tiemposUrl: new URL("./tiempos/prueba.json", import.meta.url).href,
-    // cancionUrl: new URL(
-    //   "../assets/audio/canciones/No Remorse (I Wanna Die)(MP3_160K).mp3",
-    //   import.meta.url,
-    // ).href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/aLee DJ - MORTAL KUMBIA ｜ Versión TIKTOK ｜ aLee DJ.mp3",
+      import.meta.url,
+    ).href,
   },
   NoRemorse_Slayer: {
     tittle: "No Remorse -- Slayer",

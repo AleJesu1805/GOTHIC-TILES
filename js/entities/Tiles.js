@@ -35,7 +35,7 @@ export class Tile {
 
 export const tilesStaticas = [];
 const laneFlashStartedAt = Array(4).fill(null);
-const laneFlashDuration = 200;
+const laneFlashDuration = 250;
 
 export function iluminarCarril(indice) {
   if (indice < 0 || indice >= laneFlashStartedAt.length) return;
@@ -53,7 +53,7 @@ function dibujarBrilloCarril(tile, indice) {
   }
 
   ctx.save();
-  ctx.globalAlpha = Math.sin(progress * Math.PI) * 0.24;
+  ctx.globalAlpha = Math.sin(progress * Math.PI) * 0.5;
   ctx.fillStyle = `${tile.color}`.replace("aa", "ff");
   ctx.fillRect(tile.x, 0, tile.width, CANVAS_HEIGHT);
   ctx.restore();
@@ -65,7 +65,7 @@ export function crearTilesStaticas() {
       tilesStaticas.push(
         new Tile(
           CANVAS_HEIGHT - Tile.height,
-          `${TILE_COLORS[i]}`,
+          `${TILE_COLORS[i]}aa`,
           TILE_OFFSETS[i],
           i,
         ),
@@ -91,7 +91,7 @@ export function limpiarTilesCayendo() {
 export function crearTileCayendo(tile, tiempoObjetivo) {
   const tileCayendo = new Tile(
     -Tile.height,
-    `${TILE_COLORS[tile]}77`,
+    `${TILE_COLORS[tile]}bb`,
     TILE_OFFSETS[tile],
     tiempoObjetivo,
     tile,
