@@ -73,10 +73,8 @@ export const level = {
   },
   WhatsUpPeople_MaximumTheHormone: {
     tittle: "What's up people?! -- Maximum The Hormone",
-    tiemposUrl: new URL(
-      "./tiempos/whatsUpPeople/tiempos2.json",
-      import.meta.url,
-    ).href,
+    tiemposUrl: new URL("./tiempos/whatsUpPeople/tiempos.json", import.meta.url)
+      .href,
     cancionUrl: new URL(
       "../assets/audio/canciones/MAXIMUM THE HORMONE - What's up, people？!.mp3",
       import.meta.url,
@@ -130,7 +128,16 @@ export const level = {
     tiemposUrl: new URL("./tiempos/tablescrap/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
-      "../assets/audio/canciones/Tablescrap.mp3",
+      "../assets/audio/canciones/Stolen Babies - Tablescrap.mp3",
+      import.meta.url,
+    ).href,
+  },
+  MortalKumbia: {
+    tittle: "Mortal Kumbia -- aLee DJ",
+    tiemposUrl: new URL("./tiempos/mortalKumbia/tiempos.json", import.meta.url)
+      .href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/aLee DJ - MORTAL KUMBIA ｜ Versión TIKTOK ｜ aLee DJ.mp3",
       import.meta.url,
     ).href,
   },

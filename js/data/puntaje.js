@@ -1,4 +1,4 @@
-export const VALORES_PUNTAJE = [1000, 750, 500, 250];
+export const VALORES_PUNTAJE = [100, 90, 50, 20];
 
 let puntosAcumulados = 0;
 
