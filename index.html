@@ -26,6 +26,18 @@
   </head>
   <body>
     <div id="timelapsed"></div>
+    <!-- <div
+      id="cronometro"
+      style="
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1;
+      "
+    >
+      00:00:00
+    </div> -->
     <button
       id="pause-button"
       class="pause-button"
@@ -34,7 +46,7 @@
     >
       Pausar
     </button>
-    <div id="welcome-screen" class="screen" aria-live="polite">
+    <div id="welcome-screen" class="screen active" aria-live="polite">
       <div class="screen-card">
         <h1>GOTHIC-TILES</h1>
         <fieldset class="level-selector">

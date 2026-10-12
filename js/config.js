@@ -5,6 +5,14 @@ export const TILE_COLORS = ["#78121D", "#1e441a", "#56524b", "#44103d"];
 export const TILE_OFFSETS = [-2, -1, 0, 1];
 export const TILE_KEYS = ["a", "s", "d", "f"];
 
+const dificultades = [
+  "Principiante",
+  "Facil",
+  "Intermedio",
+  "Dificil",
+  "Experto",
+];
+
 export const canvas = document.getElementById("game-canvas");
 export const cronometroElement = document.querySelector("#cronometro");
 export const startButton = document.getElementById("start-button");
@@ -22,6 +30,7 @@ export const finalScore = document.getElementById("final-score");
 export const level = {
   Prueba: {
     tittle: "Nivel de prueba",
+    dificultad: dificultades[0],
     tiemposUrl: new URL("./tiempos/prueba.json", import.meta.url).href,
     cancionUrl: new URL(
       "../assets/audio/canciones/aLee DJ - MORTAL KUMBIA ｜ Versión TIKTOK ｜ aLee DJ.mp3",
@@ -30,6 +39,7 @@ export const level = {
   },
   NoRemorse_Slayer: {
     tittle: "No Remorse -- Slayer",
+    dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/noRemorse/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -47,6 +57,7 @@ export const level = {
   // },
   Hump_BEP: {
     tittle: "My Humps -- Black Eyed Peas",
+    dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/humpBEP/tiempos.json", import.meta.url).href,
     cancionUrl: new URL(
       "../assets/audio/canciones/My Humps.mp3",
@@ -55,6 +66,7 @@ export const level = {
   },
   sweetDreams_MarylinManson: {
     tittle: "Sweet Dreams -- Marilyn Manson",
+    dificultad: dificultades[1],
     tiemposUrl: new URL("./tiempos/sweetDreams/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -64,6 +76,7 @@ export const level = {
   },
   BreakStuff_LimpBizkit: {
     tittle: "Break Stuff -- Limp Bizkit",
+    dificultad: dificultades[3],
     tiemposUrl: new URL("./tiempos/breakStuff/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -73,6 +86,7 @@ export const level = {
   },
   WhatsUpPeople_MaximumTheHormone: {
     tittle: "What's up people?! -- Maximum The Hormone",
+    dificultad: dificultades[3],
     tiemposUrl: new URL("./tiempos/whatsUpPeople/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -82,6 +96,7 @@ export const level = {
   },
   SpawnAgain_Silverchair: {
     tittle: "Spawn (Again) -- Silverchair",
+    dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/spawnAgain/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -91,6 +106,7 @@ export const level = {
   },
   FiringTheLove: {
     tittle: "Firing the Love -- Skindred",
+    dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/firingTheLove/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -100,6 +116,7 @@ export const level = {
   },
   BigSurprise: {
     tittle: "Big Surprise -- Animal Alpha",
+    dificultad: dificultades[1],
     tiemposUrl: new URL("./tiempos/bigSurprise/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -109,6 +126,7 @@ export const level = {
   },
   Silvera_Gojira: {
     tittle: "Silvera -- Gojira",
+    dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/silvera/tiempos.json", import.meta.url).href,
     cancionUrl: new URL(
       "../assets/audio/canciones/Gojira - Silvera [OFFICIAL VIDEO].mp3",
@@ -117,6 +135,7 @@ export const level = {
   },
   ItsOn_Korn: {
     tittle: "It's On -- Korn",
+    dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/itsOn/tiempos.json", import.meta.url).href,
     cancionUrl: new URL(
       "../assets/audio/canciones/Korn-It_s-On_-_Official-Audio_-_fdi173iq-DQ_.mp3",
@@ -125,6 +144,7 @@ export const level = {
   },
   Tablescrap: {
     tittle: "Tablescrap -- Stolen Babies",
+    dificultad: dificultades[2],
     tiemposUrl: new URL("./tiempos/tablescrap/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -134,6 +154,7 @@ export const level = {
   },
   MortalKumbia: {
     tittle: "Mortal Kumbia -- aLee DJ",
+    dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/mortalKumbia/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -143,6 +164,7 @@ export const level = {
   },
   FingerPaintingOfTheInsane_AcidBath: {
     tittle: "Finger Painting of the Insane -- Acid Bath",
+    dificultad: dificultades[2],
     tiemposUrl: new URL(
       "./tiempos/fingerPaintingOfTheInsane/tiempos.json",
       import.meta.url,
@@ -152,27 +174,30 @@ export const level = {
       import.meta.url,
     ).href,
   },
-  GivenUp_LinkinPark: {
-    tittle: "Given Up -- Linkin Park",
-    tiemposUrl: new URL("./tiempos/givenUp/tiempos.json", import.meta.url).href,
-    cancionUrl: new URL(
-      "../assets/audio/canciones/Linkin-Park-Given-Up-128.mp3",
-      import.meta.url,
-    ).href,
-  },
-  CarelessWhisper_GeorgeMichael: {
-    tittle: "Careless Whisper -- George Michael",
-    tiemposUrl: new URL(
-      "./tiempos/carelessWhisper/tiempos.json",
-      import.meta.url,
-    ).href,
-    cancionUrl: new URL(
-      "../assets/audio/canciones/Careless Whisper(MP3_160K).mp3",
-      import.meta.url,
-    ).href,
-  },
+  // GivenUp_LinkinPark: {
+  //   tittle: "Given Up -- Linkin Park",
+  //   dificultad: dificultades[3],
+  //   tiemposUrl: new URL("./tiempos/givenUp/tiempos.json", import.meta.url).href,
+  //   cancionUrl: new URL(
+  //     "../assets/audio/canciones/Linkin-Park-Given-Up-128.mp3",
+  //     import.meta.url,
+  //   ).href,
+  // },
+  // CarelessWhisper_GeorgeMichael: {
+  //   tittle: "Careless Whisper -- George Michael",
+  //   dificultad: dificultades[1],
+  //   tiemposUrl: new URL(
+  //     "./tiempos/carelessWhisper/tiempos.json",
+  //     import.meta.url,
+  //   ).href,
+  //   cancionUrl: new URL(
+  //     "../assets/audio/canciones/Careless Whisper(MP3_160K).mp3",
+  //     import.meta.url,
+  //   ).href,
+  // },
   HandshakeWithHell_ArchEnemy: {
     tittle: "Handshake With Hell -- Arch Enemy",
+    dificultad: dificultades[3],
     tiemposUrl: new URL(
       "./tiempos/handshakeWithHell/tiempos.json",
       import.meta.url,

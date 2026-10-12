@@ -80,10 +80,20 @@ for (const [levelId, levelData] of Object.entries(level)) {
   input.value = levelId;
   input.checked = levelId === "Prueba";
 
+  const details = document.createElement("span");
+  details.className = "level-option__details";
+
   const title = document.createElement("span");
+  title.className = "level-option__title";
   title.textContent = levelData.tittle;
 
-  label.append(input, title);
+  const difficulty = document.createElement("span");
+  const difficultyClass = levelData.dificultad.toLowerCase();
+  difficulty.className = `level-option__difficulty level-option__difficulty--${difficultyClass}`;
+  difficulty.textContent = `${levelData.dificultad}`;
+
+  details.append(title, difficulty);
+  label.append(input, details);
   levelList?.append(label);
 }
 

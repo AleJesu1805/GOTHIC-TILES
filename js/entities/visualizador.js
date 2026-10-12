@@ -1,4 +1,4 @@
-const BAR_COUNT = 48;
+const BAR_COUNT = 40;
 const BAR_LENGTH_FACTOR = 1;
 const MAX_PIXEL_RATIO = 1.5;
 const MOBILE_MAX_PIXEL_RATIO = 1;
@@ -24,8 +24,9 @@ let ultimoRender = 0;
 
 function ajustarCanvas() {
   if (!canvas || !context) return;
-  const maxPixelRatio = window.matchMedia("(max-width: 600px) and (pointer: coarse)")
-    .matches
+  const maxPixelRatio = window.matchMedia(
+    "(max-width: 600px) and (pointer: coarse)",
+  ).matches
     ? MOBILE_MAX_PIXEL_RATIO
     : MAX_PIXEL_RATIO;
   const nextRatio = Math.min(maxPixelRatio, window.devicePixelRatio || 1);

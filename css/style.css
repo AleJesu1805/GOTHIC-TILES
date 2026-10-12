@@ -91,7 +91,7 @@ body {
 body {
   position: relative;
   isolation: isolate;
-  background: radial-gradient(circle at center, #1e1e22 0%, #00020b 75%);
+  background: radial-gradient(circle at 50% 35%, #1e1e22 0%, #00020b 75%);
 }
 
 body::after {
@@ -474,9 +474,9 @@ body::after {
 
 .level-selector legend {
   width: 100%;
-  margin-bottom: 0.65rem;
+  margin-bottom: 2rem;
   color: var(--steel-soft);
-  font-size: 0.9rem;
+  font-size: 1rem;
   letter-spacing: 0.14em;
   text-align: center;
   text-transform: uppercase;
@@ -498,7 +498,7 @@ body::after {
   align-items: center;
   gap: 0.8rem;
   min-height: 3rem;
-  padding: 0.65rem 0.8rem;
+  padding: 2rem 1rem;
   border: 1px solid rgba(217, 212, 208, 0.2);
   background: rgba(0, 0, 0, 0.32);
   color: var(--steel);
@@ -531,10 +531,46 @@ body::after {
   }
 }
 
-.level-option span {
-  font-size: 1.2rem;
+.level-option__details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex: 1;
+  text-transform: uppercase;
+  min-width: 0;
+}
+
+.level-option__title {
+  min-width: 0;
+  font-size: 1rem;
   color: #9b9411;
   letter-spacing: 3px;
+}
+
+.level-option__difficulty {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.level-option__difficulty--principiante,
+.level-option__difficulty--facil {
+  color: #265a85;
+}
+
+.level-option__difficulty--intermedio {
+  color: #3b751e;
+}
+
+.level-option__difficulty--dificil {
+  color: #b54c1c;
+}
+
+.level-option__difficulty--experto {
+  color: #840d17;
 }
 
 .level-option:focus-within {
