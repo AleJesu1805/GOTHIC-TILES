@@ -144,8 +144,10 @@ export function finalizarJuego() {
   reanudarPartidaAlDespausar = false;
   document.body.dataset.gameActive = "false";
   limpiarProgramacionTiles();
-  if (animationFrameId) cancelAnimationFrame(animationFrameId);
   detenerCronometro();
+  setTimeout(() => {
+    if (animationFrameId) cancelAnimationFrame(animationFrameId);
+  }, 1000);
 
   const tiempoActual =
     formatearTiempoTranscurrido(getTiempoTranscurrido()) ?? "00:00:00";
@@ -257,9 +259,7 @@ export function gameLoop(tiempoActual) {
   ultimoTiempo = tiempoActual - (delta % FRAME_DURATION);
 
   if (getTiempoTranscurrido() >= duracionTotalPartida) {
-    setTimeout(() => {
-      finalizarJuego();
-    }, 100);
+    finalizarJuego();
     return;
   }
 

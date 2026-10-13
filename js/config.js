@@ -207,4 +207,14 @@ export const level = {
       import.meta.url,
     ).href,
   },
+  ZodiacVirtues: {
+    tittle: "Zodiac Virtues -- Diablo Swing Orchestra",
+    dificultad: dificultades[2],
+    tiemposUrl: new URL("./tiempos/zodiacVirtues/tiempos.json", import.meta.url)
+      .href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Zodiac Virtues.mp3",
+      import.meta.url,
+    ).href,
+  },
 };
