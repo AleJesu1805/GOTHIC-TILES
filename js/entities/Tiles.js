@@ -1,5 +1,5 @@
 import { ctx, CANVAS_WIDTH, CANVAS_HEIGHT } from "../core/canvas.js";
-import { TILE_COLORS, TILE_OFFSETS } from "../config.js";
+import { TILE_COLORS, TILE_FALL_DURATION, TILE_OFFSETS } from "../config.js";
 import { getTiempoTranscurrido } from "./cronometro.js";
 import { crearJuicioVisual } from "./efectos.js";
 
@@ -15,7 +15,7 @@ export class Tile {
     this.offsetTiles = offsetTiles;
     this.tiempoObjetivo = tiempoObjetivo;
     this.index = index;
-    this.speed = 1000;
+    this.speed = CANVAS_HEIGHT / (TILE_FALL_DURATION / 1000);
   }
   draw() {
     // ctx.strokeStyle = "#010101";

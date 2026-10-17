@@ -1,12 +1,12 @@
 import { getTiempoTranscurrido } from "../entities/cronometro.js";
-import { CANVAS_HEIGHT } from "../core/canvas.js";
+import { TILE_FALL_DURATION } from "../config.js";
 import { crearTileCayendo, limpiarTilesCayendo } from "../entities/Tiles.js";
 
 export const tiemposGenerales = [];
 const temporizadoresTiles = [];
 
 function programarTilePendiente(programacion) {
-  const duracionCaida = (CANVAS_HEIGHT / 1000) * 1000;
+  const duracionCaida = TILE_FALL_DURATION;
   const tiempoInicio = programacion.tiempoObjetivo - duracionCaida;
   const demora = Math.max(0, tiempoInicio - getTiempoTranscurrido());
 

@@ -16,7 +16,11 @@ import {
   resetCronometro,
   time,
 } from "./entities/cronometro.js";
-import { cleanCanvas, resizeCanvas } from "./core/canvas.js";
+import {
+  cleanCanvas,
+  renderizarBarraProgreso,
+  resizeCanvas,
+} from "./core/canvas.js";
 import "./UI/interaction.js";
 import {
   FRAME_DURATION,
@@ -24,11 +28,13 @@ import {
   finalScreen,
   finalScore,
   finalTime,
+  dificultades,
+  difficultyColors,
   level,
   pauseButton,
   pauseScreen,
-  progressBar,
   resumeButton,
+  TILE_FALL_DURATION,
   welcomeScreen,
 } from "./config.js";
 import {
@@ -70,6 +76,15 @@ let duracionTotalPartida = 0;
 let nivelActual = level.Prueba;
 
 const levelList = document.querySelector(".level-list");
+const difficultyStyle = document.createElement("style");
+difficultyStyle.textContent = difficultyColors
+  .map(
+    (color, index) =>
+      `.level-option__difficulty--${index}, .level-option__title--${index} { color: ${color}; }`,
+  )
+  .join("\n");
+document.head.append(difficultyStyle);
+
 for (const [levelId, levelData] of Object.entries(level)) {
   const label = document.createElement("label");
   label.className = "level-option";
@@ -83,12 +98,12 @@ for (const [levelId, levelData] of Object.entries(level)) {
   const details = document.createElement("span");
   details.className = "level-option__details";
 
+  const difficultyClass = dificultades.indexOf(levelData.dificultad);
   const title = document.createElement("span");
-  title.className = "level-option__title";
+  title.className = `level-option__title level-option__title--${difficultyClass}`;
   title.textContent = levelData.tittle;
 
   const difficulty = document.createElement("span");
-  const difficultyClass = levelData.dificultad.toLowerCase();
   difficulty.className = `level-option__difficulty level-option__difficulty--${difficultyClass}`;
   difficulty.textContent = `${levelData.dificultad}`;
 
@@ -105,31 +120,18 @@ function calcularDuracionTotal() {
   );
 }
 
-export function resetProgressBar() {
-  if (!progressBar) return;
-  progressBar.style.animation = "none";
-  progressBar.style.animationPlayState = "running";
-  progressBar.style.removeProperty("--progress-scale");
-  void progressBar.offsetWidth;
-}
-
 export function iniciarJuego() {
   if (juegoPausado) return;
   document.body.dataset.gameActive = "true";
   limpiarEfectos();
   welcomeScreen?.classList.add("hidden");
   finalScreen?.classList.add("hidden");
-  resetProgressBar();
   ultimoTiempo = 0;
   juegoActivo = true;
   juegoCompletado = false;
   reiniciarPuntaje();
 
   duracionTotalPartida = calcularDuracionTotal();
-  const duracionTotal = duracionTotalPartida / 1000;
-  if (progressBar) {
-    progressBar.style.animation = `width ${Math.max(duracionTotal, 0.1)}s linear forwards`;
-  }
 
   if (animationFrameId) cancelAnimationFrame(animationFrameId);
   initCronometer();
@@ -172,7 +174,6 @@ function pausarJuego() {
     pauseButton.textContent = "Continuar";
     pauseButton.setAttribute("aria-label", "Continuar juego");
   }
-  if (progressBar) progressBar.style.animationPlayState = "paused";
   pausarVisualizador();
   void audioCtx?.suspend();
   canciones.pausarCancion();
@@ -194,7 +195,6 @@ function reanudarJuego() {
     pauseButton.textContent = "Pausar";
     pauseButton.setAttribute("aria-label", "Pausar juego");
   }
-  if (progressBar) progressBar.style.animationPlayState = "running";
   void audioCtx?.resume();
   canciones.reanudarCancion();
 
@@ -223,7 +223,6 @@ function volverAlMenu() {
   detenerCronometro();
   resetCronometro();
   limpiarProgramacionTiles();
-  resetProgressBar();
   canciones.pausarCancion();
   limpiarVisualizador();
   void audioCtx?.suspend();
@@ -268,6 +267,7 @@ export function gameLoop(tiempoActual) {
   renderizarTileCayendo();
   renderizarEfectos();
   renderizarVisualizador(canciones.estaReproduciendo());
+  renderizarBarraProgreso(getTiempoTranscurrido() / duracionTotalPartida);
   frameCount++;
 }
 
@@ -329,17 +329,37 @@ document.addEventListener("game:start", async () => {
       'input[name="level"]:checked',
     )?.value;
     nivelActual = level[nivelSeleccionado] ?? nivelActual;
+    const retrasoInicio = nivelActual.timeout ?? 0;
     await cargarTiemposGenerales(nivelActual.tiemposUrl, 0);
     if (solicitudActual !== solicitudInicio || juegoPausado) return;
+    const primerTiempo = tiemposGenerales.length
+      ? Math.min(...tiemposGenerales.map(([, tiempo]) => tiempo))
+      : 0;
+    const anticipacionCaida = Math.max(0, TILE_FALL_DURATION - primerTiempo);
+    for (const programacion of tiemposGenerales) {
+      programacion[1] += retrasoInicio + anticipacionCaida;
+    }
     resetCronometro();
-    programarTiles();
     iniciarJuego();
+    programarTiles();
+    const inicioMusica = retrasoInicio + anticipacionCaida;
+    while (
+      solicitudActual === solicitudInicio &&
+      getTiempoTranscurrido() < inicioMusica
+    ) {
+      await new Promise((resolve) => setTimeout(resolve, 25));
+    }
+    if (solicitudActual !== solicitudInicio) return;
     const musicaIniciada = await canciones.reproducirCancion(
       nivelActual.cancionUrl,
     );
-    if (musicaIniciada && juegoActivo && !juegoPausado) {
-      activarVisualizador(canciones.obtenerAnalizadorMusica());
+    if (solicitudActual !== solicitudInicio) {
+      canciones.pausarCancion();
+      return;
     }
+    if (!musicaIniciada || juegoPausado) return;
+
+    activarVisualizador(canciones.obtenerAnalizadorMusica());
   } finally {
     if (solicitudActual === solicitudInicio) inicioEnCurso = false;
   }

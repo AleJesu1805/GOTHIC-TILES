@@ -1,16 +1,24 @@
 export const FPS = 60;
 export const FRAME_DURATION = 1000 / FPS;
+export const TILE_FALL_DURATION = 1000;
 
-export const TILE_COLORS = ["#78121D", "#1e441a", "#56524b", "#44103d"];
+export const TILE_COLORS = ["#78121D", "#9bb5bb", "#78121D", "#9bb5bb"];
 export const TILE_OFFSETS = [-2, -1, 0, 1];
 export const TILE_KEYS = ["a", "s", "d", "f"];
 
-const dificultades = [
-  "Principiante",
-  "Facil",
-  "Intermedio",
-  "Dificil",
-  "Experto",
+export const dificultades = [
+  "Preescolar",
+  "Sencillito",
+  "Mas o menos",
+  "Arrecho",
+  "VERGATARIO",
+];
+export const difficultyColors = [
+  "#098d2e",
+  "#1c5c98",
+  "#947900",
+  "#ed5a00",
+  "#f0002d",
 ];
 
 export const canvas = document.getElementById("game-canvas");
@@ -23,13 +31,13 @@ export const pauseScreen = document.getElementById("pause-screen");
 export const resumeButton = document.getElementById("resume-button");
 export const welcomeScreen = document.getElementById("welcome-screen");
 export const finalScreen = document.getElementById("final-screen");
-export const progressBar = document.getElementById("timelapsed");
 export const finalTime = document.getElementById("final-time");
 export const finalScore = document.getElementById("final-score");
 
 export const level = {
   Prueba: {
     tittle: "Nivel de prueba",
+    timeout: 0,
     dificultad: dificultades[0],
     tiemposUrl: new URL("./tiempos/prueba.json", import.meta.url).href,
     cancionUrl: new URL(
@@ -39,6 +47,7 @@ export const level = {
   },
   NoRemorse_Slayer: {
     tittle: "No Remorse -- Slayer",
+    timeout: 1000,
     dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/noRemorse/tiempos.json", import.meta.url)
       .href,
@@ -57,6 +66,7 @@ export const level = {
   // },
   Hump_BEP: {
     tittle: "My Humps -- Black Eyed Peas",
+    timeout: 0,
     dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/humpBEP/tiempos.json", import.meta.url).href,
     cancionUrl: new URL(
@@ -66,6 +76,7 @@ export const level = {
   },
   sweetDreams_MarylinManson: {
     tittle: "Sweet Dreams -- Marilyn Manson",
+    timeout: 0,
     dificultad: dificultades[1],
     tiemposUrl: new URL("./tiempos/sweetDreams/tiempos.json", import.meta.url)
       .href,
@@ -76,6 +87,7 @@ export const level = {
   },
   BreakStuff_LimpBizkit: {
     tittle: "Break Stuff -- Limp Bizkit",
+    timeout: 0,
     dificultad: dificultades[3],
     tiemposUrl: new URL("./tiempos/breakStuff/tiempos.json", import.meta.url)
       .href,
@@ -86,6 +98,7 @@ export const level = {
   },
   WhatsUpPeople_MaximumTheHormone: {
     tittle: "What's up people?! -- Maximum The Hormone",
+    timeout: 0,
     dificultad: dificultades[3],
     tiemposUrl: new URL("./tiempos/whatsUpPeople/tiempos.json", import.meta.url)
       .href,
@@ -96,6 +109,7 @@ export const level = {
   },
   SpawnAgain_Silverchair: {
     tittle: "Spawn (Again) -- Silverchair",
+    timeout: 0,
     dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/spawnAgain/tiempos.json", import.meta.url)
       .href,
@@ -106,6 +120,7 @@ export const level = {
   },
   FiringTheLove: {
     tittle: "Firing the Love -- Skindred",
+    timeout: 2000,
     dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/firingTheLove/tiempos.json", import.meta.url)
       .href,
@@ -116,6 +131,7 @@ export const level = {
   },
   BigSurprise: {
     tittle: "Big Surprise -- Animal Alpha",
+    timeout: 0,
     dificultad: dificultades[1],
     tiemposUrl: new URL("./tiempos/bigSurprise/tiempos.json", import.meta.url)
       .href,
@@ -126,6 +142,7 @@ export const level = {
   },
   Silvera_Gojira: {
     tittle: "Silvera -- Gojira",
+    timeout: 0,
     dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/silvera/tiempos.json", import.meta.url).href,
     cancionUrl: new URL(
@@ -135,6 +152,7 @@ export const level = {
   },
   ItsOn_Korn: {
     tittle: "It's On -- Korn",
+    timeout: 0,
     dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/itsOn/tiempos.json", import.meta.url).href,
     cancionUrl: new URL(
@@ -144,6 +162,7 @@ export const level = {
   },
   Tablescrap: {
     tittle: "Tablescrap -- Stolen Babies",
+    timeout: 0,
     dificultad: dificultades[2],
     tiemposUrl: new URL("./tiempos/tablescrap/tiempos.json", import.meta.url)
       .href,
@@ -154,6 +173,7 @@ export const level = {
   },
   MortalKumbia: {
     tittle: "Mortal Kumbia -- aLee DJ",
+    timeout: 0,
     dificultad: dificultades[4],
     tiemposUrl: new URL("./tiempos/mortalKumbia/tiempos.json", import.meta.url)
       .href,
@@ -164,6 +184,7 @@ export const level = {
   },
   FingerPaintingOfTheInsane_AcidBath: {
     tittle: "Finger Painting of the Insane -- Acid Bath",
+    timeout: 0,
     dificultad: dificultades[2],
     tiemposUrl: new URL(
       "./tiempos/fingerPaintingOfTheInsane/tiempos.json",
@@ -197,6 +218,7 @@ export const level = {
   // },
   HandshakeWithHell_ArchEnemy: {
     tittle: "Handshake With Hell -- Arch Enemy",
+    timeout: 0,
     dificultad: dificultades[3],
     tiemposUrl: new URL(
       "./tiempos/handshakeWithHell/tiempos.json",
@@ -209,6 +231,7 @@ export const level = {
   },
   ZodiacVirtues: {
     tittle: "Zodiac Virtues -- Diablo Swing Orchestra",
+    timeout: 0,
     dificultad: dificultades[2],
     tiemposUrl: new URL("./tiempos/zodiacVirtues/tiempos.json", import.meta.url)
       .href,

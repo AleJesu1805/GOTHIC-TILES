@@ -64,12 +64,6 @@
   --shadow: rgba(0, 0, 0, 0.72);
 }
 
-@property --progress-scale {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 0;
-}
-
 * {
   box-sizing: border-box;
   user-select: none;
@@ -197,35 +191,6 @@ body::after {
   font-weight: 900;
   letter-spacing: 0.12em;
   transition: opacity 0.3s;
-}
-
-#timelapsed {
-  position: fixed;
-  z-index: 3;
-  top: 1rem;
-  left: 50%;
-  width: max(2rem, min(72vw, calc(100vw - 14rem)));
-  height: 7px;
-  transform: translateX(-50%);
-}
-
-#timelapsed::before,
-#timelapsed::after {
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  content: "";
-}
-
-#timelapsed::before {
-  border: 1px solid rgba(126, 77, 158, 0.42);
-  background: rgba(16, 18, 20, 0.88);
-}
-
-#timelapsed::after {
-  background: linear-gradient(90deg, #281334 0%, #542276 58%, #7838a8 100%);
-  transform: scaleX(var(--progress-scale));
-  transform-origin: left center;
 }
 
 .screen {
@@ -556,23 +521,6 @@ body::after {
   white-space: nowrap;
 }
 
-.level-option__difficulty--principiante,
-.level-option__difficulty--facil {
-  color: #265a85;
-}
-
-.level-option__difficulty--intermedio {
-  color: #3b751e;
-}
-
-.level-option__difficulty--dificil {
-  color: #b54c1c;
-}
-
-.level-option__difficulty--experto {
-  color: #840d17;
-}
-
 .level-option:focus-within {
   outline: 0px solid #fff;
   outline-offset: 2px;
@@ -645,8 +593,7 @@ button:focus-visible {
   font-size: 0.8rem;
 }
 
-body[data-game-active="true"] .pause-button,
-body[data-game-paused="true"] .pause-button {
+body[data-game-active="true"] .pause-button {
   display: block;
 }
 
@@ -727,7 +674,6 @@ body[data-game-paused="true"] .pause-button {
 
 @keyframes width {
   to {
-    --progress-scale: 1;
   }
 }
 

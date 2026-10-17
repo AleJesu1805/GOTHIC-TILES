@@ -318,9 +318,9 @@ export function detenerSonido(nombre) {
   source.stop();
 }
 
-for (let [number, sound] of Object.entries(sonidos)) {
-  cargarSonido(String(number), sound);
-}
+// for (let [number, sound] of Object.entries(sonidos)) {
+//   cargarSonido(String(number), sound);
+// }
 
 for (let [number, sound] of Object.entries(sonidosJson)) {
   cargarSonidoJson(sound, String(number)).catch((error) => {
