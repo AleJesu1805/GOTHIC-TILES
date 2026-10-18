@@ -239,4 +239,98 @@ export const level = {
       import.meta.url,
     ).href,
   },
+  DelusionsOfSaviour: {
+    tittle: "Delusions of Saviour -- Slayer",
+    timeout: 0,
+    dificultad: dificultades[2],
+    tiemposUrl: new URL(
+      "./tiempos/delusionsOfSaviour/tiempos.json",
+      import.meta.url,
+    ).href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Delusions of Saviour(MP3_160K).mp3",
+      import.meta.url,
+    ).href,
+  },
+  // Detached: {
+  //   tittle: "Detached",
+  //   timeout: 0,
+  //   dificultad: dificultades[2],
+  //   tiemposUrl: new URL("./tiempos/detached/tiempos.json", import.meta.url)
+  //     .href,
+  //   cancionUrl: new URL(
+  //     "../assets/audio/canciones/Detached(MP3_160K).mp3",
+  //     import.meta.url,
+  //   ).href,
+  // },
+  Frantic_Metallica: {
+    tittle: "Frantic -- Metallica",
+    timeout: 0,
+    dificultad: dificultades[3],
+    tiemposUrl: new URL(
+      "./tiempos/metallicaFrantic/tiempos.json",
+      import.meta.url,
+    ).href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Metallica- Frantic(MP3_160K).mp3",
+      import.meta.url,
+    ).href,
+  },
+  OneOfUsIsTheKiller: {
+    tittle: "One of Us is the Killer -- The Dillinger Escape Plan",
+    timeout: 0,
+    dificultad: dificultades[3],
+    tiemposUrl: new URL(
+      "./tiempos/oneOfUsIsTheKiller/tiempos.json",
+      import.meta.url,
+    ).href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/One of Us is the Killer(MP3_160K).mp3",
+      import.meta.url,
+    ).href,
+  },
+  OutOfTheBlack: {
+    tittle: "Out of the Black",
+    timeout: 0,
+    dificultad: dificultades[4],
+    tiemposUrl: new URL("./tiempos/outOfTheBlack/tiempos.json", import.meta.url)
+      .href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Out of the Black.m4a",
+      import.meta.url,
+    ).href,
+  },
+  NoOneKnows_QOTSA: {
+    tittle: "No One Knows -- Queens Of The Stone Age",
+    timeout: 0,
+    dificultad: dificultades[4],
+    tiemposUrl: new URL("./tiempos/noOneKnows/tiempos.json", import.meta.url)
+      .href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Queens Of The Stone Age - No One Knows (Official Music Video)(MP3_160K).mp3",
+      import.meta.url,
+    ).href,
+  },
+  // BABE_Scowl: {
+  //   tittle: "B.A.B.E. -- Scowl",
+  //   timeout: 0,
+  //   dificultad: dificultades[3],
+  //   tiemposUrl: new URL("./tiempos/scowlBabe/tiempos.json", import.meta.url)
+  //     .href,
+  //   cancionUrl: new URL(
+  //     "../assets/audio/canciones/Scowl - B.A.B.E. (Official Video)(MP3_160K).mp3",
+  //     import.meta.url,
+  //   ).href,
+  // },
+  RedStars_TBM: {
+    tittle: "Red Stars -- The Birthday Massacre",
+    timeout: 0,
+    dificultad: dificultades[3],
+    tiemposUrl: new URL("./tiempos/redStars/tiempos.json", import.meta.url)
+      .href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/The Birthday Massacre - Red Stars.opus",
+      import.meta.url,
+    ).href,
+  },
 };
