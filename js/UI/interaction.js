@@ -5,8 +5,6 @@ import {
   tilesCayendo,
   tilesStaticas,
 } from "../entities/Tiles.js";
-import { reproducirSonido, reproducirSonidoJson } from "../core/audio.js";
-import { time } from "../entities/cronometro.js";
 import {
   TILE_KEYS,
   homeButtons,
@@ -51,7 +49,6 @@ document.querySelectorAll(".setting-range").forEach((range) => {
 });
 
 function procesarEntrada(indice) {
-  // reproducirSonidoJson(String(indice));
   if (document.body.dataset.gameActive !== "true") return;
   iluminarCarril(indice);
 
@@ -83,8 +80,6 @@ function procesarEntrada(indice) {
     mostrarJuicioEnCarril(indice, "MALISIMO", "poor");
   }
   // console.log(tile);
-
-  // reproducirSonido(indice);
 }
 
 canvas.addEventListener("pointerdown", (e) => {
@@ -104,21 +99,10 @@ canvas.addEventListener("pointerdown", (e) => {
   procesarEntrada(tileIndex);
 });
 
-const listaDeTiempos = {
-  0: [],
-  1: [],
-  2: [],
-  3: [],
-};
 document.addEventListener("keydown", (e) => {
   TILE_KEYS.forEach((tecla, i) => {
     if (e.key === tecla || e.key === tecla.toUpperCase()) {
       procesarEntrada(i);
-      // listaDeTiempos[i].push(time);
     }
   });
-  if (e.key == "e") {
-    // console.log(JSON.stringify(listaDeTiempos, null, 2));
-    // console.log(tiemposGenerales);
-  }
 });

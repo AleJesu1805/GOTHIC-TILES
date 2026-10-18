@@ -274,7 +274,14 @@ self.addEventListener("fetch", (event) => {
         // para esa URL exacta, se cae de vuelta al index.html cacheado.
         caches.match(request).then((cacheado) => {
           if (cacheado) return cacheado;
-          if (request.mode === "navigate") return caches.match("./index.html");
+          if (request.mode === "navigate") {
+            return caches
+              .match(new URL("./index.html", self.location.href))
+              .then((indexCacheado) => {
+                if (indexCacheado) return indexCacheado;
+                return caches.match(new URL("./", self.location.href));
+              });
+          }
           return undefined;
         }),
       ),

@@ -14,7 +14,6 @@ import {
   getTiempoTranscurrido,
   initCronometer,
   resetCronometro,
-  time,
 } from "./entities/cronometro.js";
 import {
   cleanCanvas,
@@ -24,7 +23,6 @@ import {
 import "./UI/interaction.js";
 import {
   FRAME_DURATION,
-  cronometroElement,
   finalScreen,
   finalScore,
   finalTime,
@@ -37,12 +35,7 @@ import {
   TILE_FALL_DURATION,
   welcomeScreen,
 } from "./config.js";
-import {
-  audioCtx,
-  canciones,
-  detenerSonido,
-  reproducirSonido,
-} from "./core/audio.js";
+import { audioCtx, canciones } from "./core/audio.js";
 import {
   obtenerPuntaje,
   reiniciarPuntaje,
@@ -87,7 +80,6 @@ let reanudarPartidaAlDespausar = false;
 let juegoCompletado = false;
 let inicioEnCurso = false;
 let solicitudInicio = 0;
-let frameCount = 0;
 let duracionTotalPartida = 0;
 let nivelActual = level.Prueba;
 
@@ -163,9 +155,10 @@ export function finalizarJuego() {
   document.body.dataset.gameActive = "false";
   limpiarProgramacionTiles();
   detenerCronometro();
-  setTimeout(() => {
-    if (animationFrameId) cancelAnimationFrame(animationFrameId);
-  }, 1000);
+  if (animationFrameId !== null) {
+    cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
+  }
 
   const tiempoActual =
     formatearTiempoTranscurrido(getTiempoTranscurrido()) ?? "00:00:00";
@@ -284,7 +277,6 @@ export function gameLoop(tiempoActual) {
   renderizarEfectos();
   renderizarVisualizador(canciones.estaReproduciendo());
   renderizarBarraProgreso(getTiempoTranscurrido() / duracionTotalPartida);
-  frameCount++;
 }
 
 const musicVolumeInput = document.getElementById("music-volume");

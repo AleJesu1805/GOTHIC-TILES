@@ -22,7 +22,6 @@ export const difficultyColors = [
 ];
 
 export const canvas = document.getElementById("game-canvas");
-export const cronometroElement = document.querySelector("#cronometro");
 export const startButton = document.getElementById("start-button");
 export const restartButton = document.getElementById("restart-button");
 export const homeButtons = document.querySelectorAll(".home-button");
