@@ -60,7 +60,23 @@ import {
 inicializarVisualizador();
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
+  navigator.serviceWorker
+    .register("sw.js")
+    .then(async (registration) => {
+      await navigator.serviceWorker.ready;
+      const serviceWorker =
+        navigator.serviceWorker.controller ?? registration.active;
+      const recursos = Object.values(level).flatMap(
+        ({ tiemposUrl, cancionUrl }) => [tiemposUrl, cancionUrl],
+      );
+      serviceWorker?.postMessage({
+        type: "PRECACHE_RESOURCES",
+        urls: [...new Set(recursos)],
+      });
+    })
+    .catch((error) =>
+      console.warn("No se pudo iniciar la precarga offline:", error),
+    );
 }
 
 let ultimoTiempo = 0;

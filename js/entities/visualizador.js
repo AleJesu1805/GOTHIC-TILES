@@ -1,4 +1,4 @@
-const BAR_COUNT = 40;
+const BAR_COUNT = 36;
 const BAR_LENGTH_FACTOR = 1;
 const MAX_PIXEL_RATIO = 1.5;
 const MOBILE_MAX_PIXEL_RATIO = 1;
@@ -62,7 +62,7 @@ function dibujarAnillo(energia, animado) {
   const centerX = currentWidth / 2;
   const centerY = currentHeight / 3;
   const visualizerSize = Math.min(currentWidth, currentHeight);
-  const radius = visualizerSize * 0.2;
+  const radius = visualizerSize * 0.1;
   const baseLength = visualizerSize * 0.02 * (0.82 + energia * 0.55);
   const sensitivity = reducedMotion ? 0.58 : 1;
   const lineWidth = Math.max(1, visualizerSize * 0.012);

@@ -20,6 +20,48 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+self.addEventListener("message", (event) => {
+  if (event.data?.type !== "PRECACHE_RESOURCES") return;
+
+  const urls = [...new Set(event.data.urls || [])].filter((url) => {
+    try {
+      return new URL(url).origin === self.location.origin;
+    } catch {
+      return false;
+    }
+  });
+
+  event.waitUntil(
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      let siguiente = 0;
+
+      async function precargarSiguiente() {
+        while (siguiente < urls.length) {
+          const url = urls[siguiente++];
+          const request = new Request(url);
+
+          try {
+            if (await cache.match(request)) continue;
+            const respuesta = await fetch(request);
+            if (respuesta.ok) {
+              await cache.put(request, respuesta);
+            } else {
+              console.warn("[SW] no se pudo precargar", url, respuesta.status);
+            }
+          } catch (error) {
+            console.warn("[SW] no se pudo precargar", url, error);
+          }
+        }
+      }
+
+      await Promise.all(
+        Array.from({ length: Math.min(2, urls.length) }, precargarSiguiente),
+      );
+    })(),
+  );
+});
+
 // Descarga (o reusa si ya esta en cache) la version COMPLETA del archivo,
 // sin encabezado Range, y la guarda en cache. Es la unica forma de que un
 // audio/video pedido por rangos termine cacheado entero.
