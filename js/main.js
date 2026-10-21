@@ -179,10 +179,6 @@ function pausarJuego() {
   document.body.dataset.gamePaused = "true";
   document.body.dataset.gameActive = "false";
   pauseScreen?.classList.remove("hidden");
-  if (pauseButton) {
-    pauseButton.textContent = "Continuar";
-    pauseButton.setAttribute("aria-label", "Continuar juego");
-  }
   pausarVisualizador();
   void audioCtx?.suspend();
   canciones.pausarCancion();
@@ -200,10 +196,6 @@ function reanudarJuego() {
   juegoPausado = false;
   delete document.body.dataset.gamePaused;
   pauseScreen?.classList.add("hidden");
-  if (pauseButton) {
-    pauseButton.textContent = "Pausar";
-    pauseButton.setAttribute("aria-label", "Pausar juego");
-  }
   void audioCtx?.resume();
   canciones.reanudarCancion();
 

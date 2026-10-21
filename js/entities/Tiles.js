@@ -53,7 +53,7 @@ function dibujarBrilloCarril(tile, indice) {
   }
 
   ctx.save();
-  ctx.globalAlpha = Math.sin(progress * Math.PI) * 0.5;
+  ctx.globalAlpha = Math.sin(progress * Math.PI) * 0.2;
   ctx.fillStyle = `${tile.color}`.replace("aa", "ff");
   ctx.fillRect(tile.x, 0, tile.width, CANVAS_HEIGHT);
   ctx.restore();

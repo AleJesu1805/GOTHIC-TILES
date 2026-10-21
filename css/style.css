@@ -85,7 +85,7 @@ body {
 body {
   position: relative;
   isolation: isolate;
-  background: radial-gradient(circle at 50% 35%, #1e1e22 0%, #00020b 75%);
+  /* background: radial-gradient(circle at 50% 35%, #1e1e22 0%, #00020b 75%); */
 }
 
 body::after {

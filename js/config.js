@@ -2,7 +2,8 @@ export const FPS = 60;
 export const FRAME_DURATION = 1000 / FPS;
 export const TILE_FALL_DURATION = 1000;
 
-export const TILE_COLORS = ["#78121D", "#9bb5bb", "#78121D", "#9bb5bb"];
+let colors = ["#938b8b", "#740d0d"];
+export const TILE_COLORS = [colors[0], colors[1], colors[0], colors[1]];
 export const TILE_OFFSETS = [-2, -1, 0, 1];
 export const TILE_KEYS = ["a", "s", "d", "f"];
 
@@ -330,6 +331,17 @@ export const level = {
       .href,
     cancionUrl: new URL(
       "../assets/audio/canciones/The Birthday Massacre - Red Stars.opus",
+      import.meta.url,
+    ).href,
+  },
+  Luxurius: {
+    tittle: "Luxurius -- Gwen Stefani",
+    timeout: 0,
+    dificultad: dificultades[3],
+    tiemposUrl: new URL("./tiempos/luxurius/tiempos.json", import.meta.url)
+      .href,
+    cancionUrl: new URL(
+      "../assets/audio/canciones/Gwen Stefani - Luxurius.mp3",
       import.meta.url,
     ).href,
   },
