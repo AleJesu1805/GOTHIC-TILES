@@ -48,7 +48,7 @@ export const level = {
   NoRemorse_Slayer: {
     tittle: "No Remorse -- Slayer",
     timeout: 1000,
-    dificultad: dificultades[4],
+    dificultad: dificultades[3],
     tiemposUrl: new URL("./tiempos/noRemorse/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -88,7 +88,7 @@ export const level = {
   BreakStuff_LimpBizkit: {
     tittle: "Break Stuff -- Limp Bizkit",
     timeout: 0,
-    dificultad: dificultades[3],
+    dificultad: dificultades[2],
     tiemposUrl: new URL("./tiempos/breakStuff/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -99,7 +99,7 @@ export const level = {
   WhatsUpPeople_MaximumTheHormone: {
     tittle: "What's up people?! -- Maximum The Hormone",
     timeout: 0,
-    dificultad: dificultades[3],
+    dificultad: dificultades[2],
     tiemposUrl: new URL("./tiempos/whatsUpPeople/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -110,7 +110,7 @@ export const level = {
   SpawnAgain_Silverchair: {
     tittle: "Spawn (Again) -- Silverchair",
     timeout: 0,
-    dificultad: dificultades[4],
+    dificultad: dificultades[3],
     tiemposUrl: new URL("./tiempos/spawnAgain/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -121,7 +121,7 @@ export const level = {
   FiringTheLove: {
     tittle: "Firing the Love -- Skindred",
     timeout: 2000,
-    dificultad: dificultades[4],
+    dificultad: dificultades[3],
     tiemposUrl: new URL("./tiempos/firingTheLove/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -143,7 +143,7 @@ export const level = {
   Silvera_Gojira: {
     tittle: "Silvera -- Gojira",
     timeout: 0,
-    dificultad: dificultades[4],
+    dificultad: dificultades[2],
     tiemposUrl: new URL("./tiempos/silvera/tiempos.json", import.meta.url).href,
     cancionUrl: new URL(
       "../assets/audio/canciones/Gojira - Silvera [OFFICIAL VIDEO].mp3",
@@ -153,7 +153,7 @@ export const level = {
   ItsOn_Korn: {
     tittle: "It's On -- Korn",
     timeout: 0,
-    dificultad: dificultades[4],
+    dificultad: dificultades[3],
     tiemposUrl: new URL("./tiempos/itsOn/tiempos.json", import.meta.url).href,
     cancionUrl: new URL(
       "../assets/audio/canciones/Korn-It_s-On_-_Official-Audio_-_fdi173iq-DQ_.mp3",
@@ -174,7 +174,7 @@ export const level = {
   MortalKumbia: {
     tittle: "Mortal Kumbia -- aLee DJ",
     timeout: 0,
-    dificultad: dificultades[4],
+    dificultad: dificultades[3],
     tiemposUrl: new URL("./tiempos/mortalKumbia/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -219,7 +219,7 @@ export const level = {
   HandshakeWithHell_ArchEnemy: {
     tittle: "Handshake With Hell -- Arch Enemy",
     timeout: 0,
-    dificultad: dificultades[3],
+    dificultad: dificultades[2],
     tiemposUrl: new URL(
       "./tiempos/handshakeWithHell/tiempos.json",
       import.meta.url,
@@ -232,7 +232,7 @@ export const level = {
   ZodiacVirtues: {
     tittle: "Zodiac Virtues -- Diablo Swing Orchestra",
     timeout: 0,
-    dificultad: dificultades[2],
+    dificultad: dificultades[3],
     tiemposUrl: new URL("./tiempos/zodiacVirtues/tiempos.json", import.meta.url)
       .href,
     cancionUrl: new URL(
@@ -243,7 +243,7 @@ export const level = {
   DelusionsOfSaviour: {
     tittle: "Delusions of Saviour -- Slayer",
     timeout: 0,
-    dificultad: dificultades[2],
+    dificultad: dificultades[3],
     tiemposUrl: new URL(
       "./tiempos/delusionsOfSaviour/tiempos.json",
       import.meta.url,
@@ -280,7 +280,7 @@ export const level = {
   OneOfUsIsTheKiller: {
     tittle: "One of Us is the Killer -- The Dillinger Escape Plan",
     timeout: 0,
-    dificultad: dificultades[3],
+    dificultad: dificultades[2],
     tiemposUrl: new URL(
       "./tiempos/oneOfUsIsTheKiller/tiempos.json",
       import.meta.url,

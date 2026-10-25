@@ -211,7 +211,7 @@ function dibujarFondo(animado) {
   context.fillStyle = gradient;
   context.fillRect(0, 0, currentWidth, currentHeight);
 
-  dibujarOndas(ultimoRender, centerX, centerY, visualizerSize * 0.1, alcance);
+  // dibujarOndas(ultimoRender, centerX, centerY, visualizerSize * 0.1, alcance);
 }
 
 function dibujarAnillo(energia, animado) {
@@ -229,7 +229,7 @@ function dibujarAnillo(energia, animado) {
     Math.min(centerX, centerY) - radius - lineWidth / 2,
   );
   context.clearRect(0, 0, currentWidth, currentHeight);
-  dibujarFondo(animado);
+  // dibujarFondo(animado);
   context.lineWidth = lineWidth;
   context.lineCap = "round";
 
